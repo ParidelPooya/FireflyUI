@@ -2216,7 +2216,7 @@ App.provider('WebsiteSelectionHelpers', [
         },
         SelectBackEnd: function(host, cref) {
           var defaultBackEnd, i, l, len, list;
-          list = [["?p-m", "legacyprod"], ["?d-s", "develop_v2"], ["?d-m", "legacydevelop"], ["?b-m", "legacybeta"], ["?b-s", "beta_v2"], ["?s-m", "legacysaturn"], ["?s-s", "saturn_v2"], ["trial-my.moj.io", "legacytrial"], ["trial-simulator.moj.io", "trial_v2"], ["preview.my.moj.io", "production"], ["staging-simulator.", "staging2"], ["cz-my.moj.io", "legacychezh"], ["staging-cz-my.moj.io", "legacychezh"], ["cz-simulator.moj.io", "chezh_prod_v2"], ["eu-my.moj.io", "legacyeu"], ["eu-simulator.moj.io", "eu_prod_v2"], ["simulator", "sandbox_production"], ["develop.", "develop"], ["staging-my.", "legacystaging"], ["staging-admin.", "staging2"], ["staging.", "staging"], ["simulator.moj.io", "prod_v2"], ["my2.moj.io", "prod_legacy"], ["my.moj.io", "prod_legacy"], ["paridelpooya.github.io/FireflyUI", ""]];
+          list = [["?p-m", "legacyprod"], ["?d-s", "develop_v2"], ["?d-m", "legacydevelop"], ["?b-m", "legacybeta"], ["?b-s", "beta_v2"], ["?s-m", "legacysaturn"], ["?s-s", "saturn_v2"], ["trial-my.moj.io", "legacytrial"], ["trial-simulator.moj.io", "trial_v2"], ["preview.my.moj.io", "production"], ["staging-simulator.", "staging2"], ["cz-my.moj.io", "legacychezh"], ["staging-cz-my.moj.io", "legacychezh"], ["cz-simulator.moj.io", "chezh_prod_v2"], ["eu-my.moj.io", "legacyeu"], ["eu-simulator.moj.io", "eu_prod_v2"], ["simulator", "sandbox_production"], ["develop.", "develop"], ["staging-my.", "legacystaging"], ["staging-admin.", "staging2"], ["staging.", "staging"], ["simulator.moj.io", "prod_v2"], ["my2.moj.io", "prod_legacy"], ["my.moj.io", "prod_legacy"], ["paridelpooya.github.io/FireflyUI", "staging2"]];
           defaultBackEnd = "serenity_local";
           for (i = 0, len = list.length; i < len; i++) {
             l = list[i];
@@ -8481,28 +8481,6 @@ App.controller('observeController', [
   }
 ]);
 
-App.controller('serenityServiceController', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
-    var getServices;
-    getServices = function() {
-      return mojioRemote2.GET({
-        endpoint: "firefly",
-        operation: "servicetemplates",
-        onSuccess: function(res) {
-          return $scope.Service = res;
-        }
-      });
-    };
-    $scope.Service = [];
-    getServices();
-    $scope.EditService = function(id) {
-      $state.go("serenity.service_edit", {
-        id: id
-      });
-    };
-  }
-]);
-
 App.controller('portalController', [
   '$modal', '$templateCache', '$sce', '$compile', '$rootScope', '$stateParams', '$scope', 'mojioRemote', 'localStorage', 'toaster', 'mojioGlobal', function($modal, $templateCache, $sce, $compile, $rootScope, $stateParams, $scope, mojioRemote, localStorage, toaster, mojioGlobal) {
     var tohash;
@@ -8954,6 +8932,28 @@ App.controller('portalController', [
   }
 ]);
 
+App.controller('serenityServiceController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
+    var getServices;
+    getServices = function() {
+      return mojioRemote2.GET({
+        endpoint: "firefly",
+        operation: "servicetemplates",
+        onSuccess: function(res) {
+          return $scope.Service = res;
+        }
+      });
+    };
+    $scope.Service = [];
+    getServices();
+    $scope.EditService = function(id) {
+      $state.go("serenity.service_edit", {
+        id: id
+      });
+    };
+  }
+]);
+
 App.controller('serenityServiceEditController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels) {
     var getServices;
@@ -9071,19 +9071,6 @@ App.controller('serenityServiceEditController', [
   }
 ]);
 
-App.controller('serenitySituationController', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
-    $scope.Situation = [];
-    $scope.Situation.push(angular.copy(SerenityModels.Situation));
-    $scope.Situation.push(angular.copy(SerenityModels.Situation));
-    $scope.EditSituation = function(id) {
-      $state.go("serenity.situation_edit", {
-        id: id
-      });
-    };
-  }
-]);
-
 App.controller('serenityServiceInstanceController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
     var getFireflyVehicles, getServices, getVehicles, s;
@@ -9137,6 +9124,19 @@ App.controller('serenityServiceInstanceController', [
     $scope.Service.push(s);
     getFireflyVehicles();
     getServices();
+  }
+]);
+
+App.controller('serenitySituationController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
+    $scope.Situation = [];
+    $scope.Situation.push(angular.copy(SerenityModels.Situation));
+    $scope.Situation.push(angular.copy(SerenityModels.Situation));
+    $scope.EditSituation = function(id) {
+      $state.go("serenity.situation_edit", {
+        id: id
+      });
+    };
   }
 ]);
 
@@ -11879,6 +11879,25 @@ App.directive('gearGaugeLastDiagnostics', [
   }
 ]);
 
+App.directive('gearGaugeVehicleHealth', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'app/views/gear_gauge_vehicle_health.html',
+      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
+        return $scope.HealthStatus = function(FaultsDetected) {
+          if (FaultsDetected) {
+            return "gear.gear_gauge_vehicle_health.HealthStatus.FaultsDetected";
+          } else {
+            return "gear.gear_gauge_vehicle_health.HealthStatus.Good";
+          }
+        };
+      }],
+      link: function($rootScope, scope, element, attrs) {}
+    };
+  }
+]);
+
 App.directive('gearGaugeServiceSchedule', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', 'myMojioFactory', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, myMojioFactory) {
     return {
@@ -11903,25 +11922,6 @@ App.directive('gearGaugeServiceSchedule', [
             return true;
           } else {
             return false;
-          }
-        };
-      }],
-      link: function($rootScope, scope, element, attrs) {}
-    };
-  }
-]);
-
-App.directive('gearGaugeVehicleHealth', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/gear_gauge_vehicle_health.html',
-      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
-        return $scope.HealthStatus = function(FaultsDetected) {
-          if (FaultsDetected) {
-            return "gear.gear_gauge_vehicle_health.HealthStatus.FaultsDetected";
-          } else {
-            return "gear.gear_gauge_vehicle_health.HealthStatus.Good";
           }
         };
       }],
@@ -12381,22 +12381,6 @@ App.directive('gearTrekVehicleDetails', [
   }
 ]);
 
-App.directive('widgetCmsEmbed', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/widget_cms_embed.html',
-      scope: {
-        data: '='
-      },
-      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
-        console.log($scope);
-      }],
-      link: function($rootScope, scope, element, attrs) {}
-    };
-  }
-]);
-
 App.directive('widgetCmsGithubI1', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
@@ -12505,6 +12489,22 @@ App.directive('widgetCmsGithubI1', [
         };
       }],
       link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('widgetCmsEmbed', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'app/views/widget_cms_embed.html',
+      scope: {
+        data: '='
+      },
+      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
+        console.log($scope);
+      }],
+      link: function($rootScope, scope, element, attrs) {}
     };
   }
 ]);
@@ -13063,22 +13063,22 @@ App.directive('widgetJson', [
   }
 ]);
 
-App.directive('widgetMojioList', [
+App.directive('widgetTripList', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_mojio_list.html',
+      templateUrl: 'app/views/widget_trip_list.html',
       controller: ["$scope", function($scope) {}],
       link: function($rootScope, scope, element, attrs) {}
     };
   }
 ]);
 
-App.directive('widgetTripList', [
+App.directive('widgetMojioList', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_trip_list.html',
+      templateUrl: 'app/views/widget_mojio_list.html',
       controller: ["$scope", function($scope) {}],
       link: function($rootScope, scope, element, attrs) {}
     };
@@ -13468,23 +13468,6 @@ App.directive('widgetVehiclesTextDirection', [
   }
 ]);
 
-App.directive('serviceAdviceEdit', [
-  function() {
-    return {
-      scope: {
-        serviceAdviceEdit: '=',
-        parent: '='
-      },
-      restrict: 'EA',
-      templateUrl: 'app/views/service_advice_edit.html',
-      controller: ["$scope", function($scope) {
-        $scope.advice = $scope.serviceAdviceEdit;
-      }],
-      link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
 App.directive('serviceOfferEdit', [
   function() {
     return {
@@ -13502,17 +13485,17 @@ App.directive('serviceOfferEdit', [
   }
 ]);
 
-App.directive('cmsBreadcrumb', [
-  'contentFactory', function(contentFactory) {
+App.directive('serviceAdviceEdit', [
+  function() {
     return {
+      scope: {
+        serviceAdviceEdit: '=',
+        parent: '='
+      },
       restrict: 'EA',
-      templateUrl: 'app/views/cms_breadcrumb.html',
+      templateUrl: 'app/views/service_advice_edit.html',
       controller: ["$scope", function($scope) {
-        $scope.Content = contentFactory.Content;
-        $scope.Child = contentFactory.Child;
-        $scope.Parent = contentFactory.Parent;
-        $scope.MenuNodes = contentFactory.MenuNodes;
-        return $scope.GotoNode = contentFactory.GotoNode;
+        $scope.advice = $scope.serviceAdviceEdit;
       }],
       link: function(scope, element, attrs) {}
     };
@@ -13541,6 +13524,23 @@ App.directive('cmsMenu', [
   }
 ]);
 
+App.directive('cmsBreadcrumb', [
+  'contentFactory', function(contentFactory) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'app/views/cms_breadcrumb.html',
+      controller: ["$scope", function($scope) {
+        $scope.Content = contentFactory.Content;
+        $scope.Child = contentFactory.Child;
+        $scope.Parent = contentFactory.Parent;
+        $scope.MenuNodes = contentFactory.MenuNodes;
+        return $scope.GotoNode = contentFactory.GotoNode;
+      }],
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
 App.directive('cmsMenuListview', [
   'contentFactory', function(contentFactory) {
     return {
@@ -13550,6 +13550,27 @@ App.directive('cmsMenuListview', [
       },
       restrict: 'EA',
       templateUrl: 'app/views/cms_menu_listview.html',
+      controller: ["$scope", function($scope) {
+        $scope.Content = contentFactory.Content;
+        $scope.Child = contentFactory.Child;
+        $scope.Parent = contentFactory.Parent;
+        $scope.MenuNodes = contentFactory.MenuNodes;
+        return $scope.GotoNode = contentFactory.GotoNode;
+      }],
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('cmsMenuTile', [
+  'contentFactory', function(contentFactory) {
+    return {
+      scope: {
+        nodes: '=',
+        menuconfig: '='
+      },
+      restrict: 'EA',
+      templateUrl: 'app/views/cms_menu_tile.html',
       controller: ["$scope", function($scope) {
         $scope.Content = contentFactory.Content;
         $scope.Child = contentFactory.Child;
@@ -13601,27 +13622,6 @@ App.directive('deviceGrid', [
         "delete": '='
       },
       controller: 'mojioGridController',
-      link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
-App.directive('cmsMenuTile', [
-  'contentFactory', function(contentFactory) {
-    return {
-      scope: {
-        nodes: '=',
-        menuconfig: '='
-      },
-      restrict: 'EA',
-      templateUrl: 'app/views/cms_menu_tile.html',
-      controller: ["$scope", function($scope) {
-        $scope.Content = contentFactory.Content;
-        $scope.Child = contentFactory.Child;
-        $scope.Parent = contentFactory.Parent;
-        $scope.MenuNodes = contentFactory.MenuNodes;
-        return $scope.GotoNode = contentFactory.GotoNode;
-      }],
       link: function(scope, element, attrs) {}
     };
   }
