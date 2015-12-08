@@ -2731,7 +2731,7 @@ App.factory('mojioConnection', [
         url: 'https://staging-api.moj.io/v2/',
         login: 'https://staging-accounts.moj.io/OAuth2/authorize',
         logout: 'https://staging-api.moj.io/account/logout',
-        firefly: 'https://arcane-garden-2123.herokuapp.com/',
+        firefly: 'https://staging-firefly.herokuapp.com/',
         version: 'v2',
         scope: 'admin'
       },
@@ -4903,59 +4903,6 @@ App.service('Utils', ["$window", "APP_MEDIAQUERY", function($window, APP_MEDIAQU
   };
 }]);
 
-App.controller('admin2SearchController', [
-  '$scope', '$rootScope', 'mojioRemote2', 'toaster', function($scope, $rootScope, mojioRemote2, toaster) {
-    $scope.data = {
-      username: '',
-      email: '',
-      phonenumber: '',
-      imei: ''
-    };
-    $scope.result = [];
-    $scope.search = function() {
-      var moreparam, req;
-      moreparam = [];
-      if ($scope.data.username.length !== 0) {
-        moreparam.push({
-          param: 'username',
-          val: $scope.data.username
-        });
-      }
-      if ($scope.data.email.length !== 0) {
-        moreparam.push({
-          param: 'email',
-          val: $scope.data.email
-        });
-      }
-      if ($scope.data.phonenumber.length !== 0) {
-        moreparam.push({
-          param: 'phonenumber',
-          val: $scope.data.phonenumber
-        });
-      }
-      if ($scope.data.imei.length !== 0) {
-        moreparam.push({
-          param: 'imei',
-          val: $scope.data.imei
-        });
-      }
-      req = {
-        operation: "admin/users",
-        top: '20',
-        skip: '0',
-        moreparam: moreparam,
-        onSuccess: function(res) {
-          return $scope.result = res.Data;
-        },
-        onError: function(res) {
-          return $scope.result = [];
-        }
-      };
-      return mojioRemote2.GET(req);
-    };
-  }
-]);
-
 App.controller('Sim2MultiController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'simulatorFactory', 'sim2LogicFactory', 'googlemapFactory', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, simulatorFactory, sim2LogicFactory, googlemapFactory) {
     var AddSimLogics, myOptions;
@@ -5291,6 +5238,59 @@ App.controller('Sim2MultiController', [
       }
       return $scope.FileContent = null;
     });
+  }
+]);
+
+App.controller('admin2SearchController', [
+  '$scope', '$rootScope', 'mojioRemote2', 'toaster', function($scope, $rootScope, mojioRemote2, toaster) {
+    $scope.data = {
+      username: '',
+      email: '',
+      phonenumber: '',
+      imei: ''
+    };
+    $scope.result = [];
+    $scope.search = function() {
+      var moreparam, req;
+      moreparam = [];
+      if ($scope.data.username.length !== 0) {
+        moreparam.push({
+          param: 'username',
+          val: $scope.data.username
+        });
+      }
+      if ($scope.data.email.length !== 0) {
+        moreparam.push({
+          param: 'email',
+          val: $scope.data.email
+        });
+      }
+      if ($scope.data.phonenumber.length !== 0) {
+        moreparam.push({
+          param: 'phonenumber',
+          val: $scope.data.phonenumber
+        });
+      }
+      if ($scope.data.imei.length !== 0) {
+        moreparam.push({
+          param: 'imei',
+          val: $scope.data.imei
+        });
+      }
+      req = {
+        operation: "admin/users",
+        top: '20',
+        skip: '0',
+        moreparam: moreparam,
+        onSuccess: function(res) {
+          return $scope.result = res.Data;
+        },
+        onError: function(res) {
+          return $scope.result = [];
+        }
+      };
+      return mojioRemote2.GET(req);
+    };
   }
 ]);
 
@@ -8443,6 +8443,8 @@ App.controller('myMojioTripsController', [
   }
 ]);
 
+App.controller('obsCotroller', ['$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {}]);
+
 App.controller('observeController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'mojioConnection', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, mojioConnection, toaster, $filter) {
     var options;
@@ -8478,8 +8480,6 @@ App.controller('observeController', [
     });
   }
 ]);
-
-App.controller('obsCotroller', ['$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {}]);
 
 App.controller('portalController', [
   '$modal', '$templateCache', '$sce', '$compile', '$rootScope', '$stateParams', '$scope', 'mojioRemote', 'localStorage', 'toaster', 'mojioGlobal', function($modal, $templateCache, $sce, $compile, $rootScope, $stateParams, $scope, mojioRemote, localStorage, toaster, mojioGlobal) {
@@ -11929,6 +11929,17 @@ App.directive('gearGaugeBatteryLevel', [
   }
 ]);
 
+App.directive('gearGaugeLastDiagnostics', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'app/views/gear_gauge_last_diagnostics.html',
+      controller: ["$rootScope", "$scope", function($rootScope, $scope) {}],
+      link: function($rootScope, scope, element, attrs) {}
+    };
+  }
+]);
+
 App.directive('gearGaugeServiceSchedule', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', 'myMojioFactory', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, myMojioFactory) {
     return {
@@ -12281,17 +12292,6 @@ App.directive('gearTrekDrivingStat', [
         });
       }],
       link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
-App.directive('gearGaugeLastDiagnostics', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/gear_gauge_last_diagnostics.html',
-      controller: ["$rootScope", "$scope", function($rootScope, $scope) {}],
-      link: function($rootScope, scope, element, attrs) {}
     };
   }
 ]);
@@ -13563,36 +13563,11 @@ App.directive('serviceOfferEdit', [
   }
 ]);
 
-App.directive('cmsMenuListview', [
+App.directive('cmsBreadcrumb', [
   'contentFactory', function(contentFactory) {
     return {
-      scope: {
-        nodes: '=',
-        menuconfig: '='
-      },
       restrict: 'EA',
-      templateUrl: 'app/views/cms_menu_listview.html',
-      controller: ["$scope", function($scope) {
-        $scope.Content = contentFactory.Content;
-        $scope.Child = contentFactory.Child;
-        $scope.Parent = contentFactory.Parent;
-        $scope.MenuNodes = contentFactory.MenuNodes;
-        return $scope.GotoNode = contentFactory.GotoNode;
-      }],
-      link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
-App.directive('cmsMenuTile', [
-  'contentFactory', function(contentFactory) {
-    return {
-      scope: {
-        nodes: '=',
-        menuconfig: '='
-      },
-      restrict: 'EA',
-      templateUrl: 'app/views/cms_menu_tile.html',
+      templateUrl: 'app/views/cms_breadcrumb.html',
       controller: ["$scope", function($scope) {
         $scope.Content = contentFactory.Content;
         $scope.Child = contentFactory.Child;
@@ -13627,11 +13602,36 @@ App.directive('cmsMenu', [
   }
 ]);
 
-App.directive('cmsBreadcrumb', [
+App.directive('cmsMenuListview', [
   'contentFactory', function(contentFactory) {
     return {
+      scope: {
+        nodes: '=',
+        menuconfig: '='
+      },
       restrict: 'EA',
-      templateUrl: 'app/views/cms_breadcrumb.html',
+      templateUrl: 'app/views/cms_menu_listview.html',
+      controller: ["$scope", function($scope) {
+        $scope.Content = contentFactory.Content;
+        $scope.Child = contentFactory.Child;
+        $scope.Parent = contentFactory.Parent;
+        $scope.MenuNodes = contentFactory.MenuNodes;
+        return $scope.GotoNode = contentFactory.GotoNode;
+      }],
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('cmsMenuTile', [
+  'contentFactory', function(contentFactory) {
+    return {
+      scope: {
+        nodes: '=',
+        menuconfig: '='
+      },
+      restrict: 'EA',
+      templateUrl: 'app/views/cms_menu_tile.html',
       controller: ["$scope", function($scope) {
         $scope.Content = contentFactory.Content;
         $scope.Child = contentFactory.Child;
