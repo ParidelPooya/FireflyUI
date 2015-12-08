@@ -1,6 +1,6 @@
 <h3>Service Item Creator
    <div class="pull-right">
-      <button class="btn btn-default">Create</button>
+      <button ng-click="Create()" class="btn btn-default">Create</button>
    </div>
 </h3>
 <div class="row">
@@ -8,12 +8,12 @@
       <table class="table table-striped">
          <thead class="bb">
             <tr>
-               <th>Service</th>
+               <th>Service Template</th>
             </tr>
          </thead>
          <tbody>
-            <tr ng-repeat="(pos,row) in Service">
-               <td>{{row.name}}</td>
+            <tr ng-repeat="(pos,row) in Service" ng-click="selectServiceTemplate(row)">
+               <td ng-class="{'bg-gray':row.selected}">{{row.name}}</td>
             </tr>
          </tbody>
       </table>
@@ -22,14 +22,14 @@
       <table class="table table-striped">
          <thead class="bb">
             <tr>
-               <th><i class="fa fa-square-o"></i>
+               <th><i ng-click="selectAllVehicles()" ng-class="{'fa-check-square-o':VehicleSelectAll,'fa-square-o':!VehicleSelectAll}" class="fa fa-square-o"></i>
                </th>
                <th>Vehicles</th>
             </tr>
          </thead>
          <tbody>
             <tr ng-repeat="(pos,row) in Vehicle">
-               <th><i ng-click="row.Selected=!row.Selected" ng-class="{'fa-check-square-o':row.Selected,'fa-square-o':!row.Selected}" class="fa"></i>
+               <th><i ng-click="row.selected=!row.selected" ng-class="{'fa-check-square-o':row.selected,'fa-square-o':!row.selected}" class="fa"></i>
                </th>
                <td>{{row.Name}}</td>
             </tr>
