@@ -28,7 +28,7 @@
             </tr>
          </thead>
          <tbody>
-            <tr ng-repeat="(pos,row) in Vehicle">
+            <tr ng-repeat="(pos,row) in Vehicle" ng-show="row.fireflyVehicleId">
                <th><i ng-click="row.selected=!row.selected" ng-class="{'fa-check-square-o':row.selected,'fa-square-o':!row.selected}" class="fa"></i>
                </th>
                <td>{{row.Name}}</td>

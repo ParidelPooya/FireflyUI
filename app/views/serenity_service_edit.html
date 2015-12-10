@@ -16,8 +16,19 @@
    <ul class="fa-ul">
       <li><i class="fa-li fa fa-align-justify"></i>Description:&nbsp;<a href="" editable-text="Service.description" buttons="no">{{ Service.description || 'Enter Service Description' }}</a>
       </li>
+      <li><i class="fa-li fa fa-align-justify"></i>Category:&nbsp;<a href="" editable-text="Service.category" buttons="no">{{ Service.category || 'Enter Service Category' }}</a>
+      </li>
       <li><i class="fa-li fa fa-picture-o"></i>Artwork:&nbsp;
          <img image-modal="Service.artwork" style="max-width:32px;height:auto" src="{{Service.artwork}}" ng-click="" class="bt bl br bb" /><a ng-click="" image-uploader="Service.artwork">Change</a>
+      </li>
+      <li><i class="fa-li fa fa-align-justify"></i>Artwork Text:&nbsp;<a href="" editable-text="Service.artworktext" buttons="no">{{ Service.artworktext || 'Enter Artwork Text' }}</a>
+      </li>
+      <li><i class="fa-li fa fa-align-justify"></i>Artwork Subtext:&nbsp;<a href="" editable-text="Service.artworksubtext" buttons="no">{{ Service.artworksubtext || 'Enter Artwork Subtext' }}</a>
+      </li>
+      <li><i class="fa-li fa fa-align-justify"></i>Category:&nbsp;<a href="" editable-text="Service.category" buttons="no">{{ Service.category || 'Enter Service Category' }}</a>
+      </li>
+      <li><i class="fa-li fa fa-tag"></i>Tag:&nbsp;<a ng-click="AddTag(Service)">Add</a>
+         <span ng-repeat="(i,t) in Service.tag track by $index"><i ng-click="DeleteTag(Service.tag,i)" class="fa fa-times"></i><a href="" editable-text="Service.tag[i]" buttons="no">{{ Service.tag[i] || 'Edit Tag' }}</a>,&nbsp;</span>
       </li>
       <li><i class="fa-li fa fa-bullhorn"></i>Advice:&nbsp;
          <ul class="fa-ul">
@@ -39,8 +50,17 @@
                <ul ng-show="task.show" class="fa-ul">
                   <li><i class="fa-li fa fa-align-justify"></i>Description:&nbsp;<a href="" editable-text="task.description" buttons="no">{{task.description || 'No Description'}}</a>
                   </li>
+                  <li><i class="fa-li fa fa-align-justify"></i>Category:&nbsp;<a href="" editable-text="task.category" buttons="no">{{ task.category || 'Enter Task Category' }}</a>
+                  </li>
                   <li><i class="fa-li fa fa-picture-o"></i>Artwork:&nbsp;
                      <img image-modal="task.artwork" style="max-width:32px;height:auto" src="{{task.artwork}}" ng-click="" class="bt bl br bb" /><a ng-click="" image-uploader="task.artwork">Change</a>
+                  </li>
+                  <li><i class="fa-li fa fa-align-justify"></i>Artwork Text:&nbsp;<a href="" editable-text="task.artworktext" buttons="no">{{ task.artworktext || 'Enter Artwork Text' }}</a>
+                  </li>
+                  <li><i class="fa-li fa fa-align-justify"></i>Artwork Subtext:&nbsp;<a href="" editable-text="task.artworksubtext" buttons="no">{{ task.artworksubtext || 'Enter Artwork Subtext' }}</a>
+                  </li>
+                  <li><i class="fa-li fa fa-tag"></i>Tag:&nbsp;<a ng-click="AddTag(task)">Add</a>
+                     <span ng-repeat="(i,t) in task.tag track by $index"><i ng-click="DeleteTag(task.tag,i)" class="fa fa-times"></i><a href="" editable-text="task.tag[i]" buttons="no">{{ task.tag[i] || 'Edit Tag' }}</a>,&nbsp;</span>
                   </li>
                   <li><i class="fa-li fa fa-bullhorn"></i>Advice:&nbsp;
                      <ul class="fa-ul">
