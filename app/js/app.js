@@ -269,6 +269,17 @@ App = angular.module('angle', ['smart-table', 'ngRoute', 'ngAnimate', 'ngStorage
             'text': 'Advanced Simulator',
             'sref': 'dev.sim2',
             'icon': 'fa fa-car'
+          }
+        ]
+      },
+      'Simulator2m': {
+        ProjectName: "Simulator2m",
+        BackEnd: "",
+        SidebarMenu: [
+          {
+            'text': 'Advanced Simulator',
+            'sref': 'dev.sim2',
+            'icon': 'fa fa-car'
           }, {
             'text': 'Multi Vehicle Simulator',
             'sref': 'dev.sim2multi',
@@ -308,6 +319,9 @@ App = angular.module('angle', ['smart-table', 'ngRoute', 'ngAnimate', 'ngStorage
       }
     };
     $rootScope.selectedProject = $rootScope.ProjectOptions[WebsiteSelectionHelpers.SelectMenu(window.location.host, window.location.href)];
+    if ($rootScope.selectedProject.ProjectName === "Simulator2" && window.location.href.indexOf('?multi=true') > -1) {
+      $rootScope.selectedProject = $rootScope.ProjectOptions.Simulator2m;
+    }
     $rootScope.selectedProject.BackEnd = WebsiteSelectionHelpers.SelectBackEnd(window.location.host, window.location.href);
     mojioGlobal.checkAccess();
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -1241,6 +1255,56 @@ App.directive('latLngToAddress', [
                   localStorage.add(StorageKey, results[1].formatted_address);
                 }
               }
+            }
+          });
+        });
+      }
+    };
+  }
+]);
+
+App.directive('latLngToWeather', [
+  'sessionStorage', '$http', '$compile', function(sessionStorage, $http, $compile) {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        loc: '=',
+        cache: '=',
+        accuracy: '=',
+        type: '='
+      },
+      template: '<div></div>',
+      link: function(scope, element, attrs) {
+        scope.$watch('loc', function() {
+          var Lat, Lng, StorageKey, decPoints, geocoder, res;
+          geocoder = new google.maps.Geocoder;
+          if (typeof scope.loc === "undefined" || scope.loc === null) {
+            element.text("");
+            return;
+          }
+          Lat = scope.loc.Lat;
+          Lng = scope.loc.Lng;
+          StorageKey = "";
+          if (scope.cache === true) {
+            decPoints = Math.pow(10, scope.accuracy);
+            Lat = Math.round(scope.loc.Lat * decPoints) / decPoints;
+            Lng = Math.round(scope.loc.Lng * decPoints) / decPoints;
+            StorageKey = "geocode_" + Lat + "_" + Lng;
+            res = sessionStorage.get(StorageKey);
+            if (res !== null) {
+              element.text(res);
+              return;
+            }
+          }
+          $http.jsonp("http://api.openweathermap.org/data/2.5/weather?callback=JSON_CALLBACK&lat=" + Lat + "&lon=" + Lng + "&appid=a05b8aa681d54f2a4188807c3e84a1ce").success(function(result) {
+            var img;
+            if (scope.type === "weather") {
+              img = "<img src='http://openweathermap.org/img/w/" + result.weather[0].icon + ".png'>";
+              element.html(img);
+              return $compile(element.contents())(scope);
+            } else if (scope.type === "temp") {
+              return element.text(Math.round(result.main.temp - 273.15));
             }
           });
         });
@@ -2220,7 +2284,7 @@ App.provider('WebsiteSelectionHelpers', [
         },
         SelectMenu: function(host, cref) {
           var defaultMenu, i, l, len, list;
-          list = [["?p-m", "My"], ["?d-s", "Simulator2"], ["?d-m", "My"], ["?b-s", "Simulator2"], ["?b-m", "My"], ["?s-s", "Simulator2"], ["?s-m", "My"], ["simulator.moj.io", "Simulator2"], ["my2.moj.io", "My"], ["my.moj.io", "My"], ["preview.admin.moj.io", "Admin"], ["staging-my.moj.io", "My"], ["preview.my.moj.io", "My"], ["preview.developer.moj.io", "Developer"], ["preview.demo.moj.io", "Demo"], ["preview.simulator.moj.io", "Simulator"], ["staging-simulator.moj.io", "Simulator2"], ["trial-simulator.moj.io", "Simulator2"], ["staging-admin.moj.io", "Admin2"], ["cz-simulator.moj.io", "Simulator2"], ["cz-my.moj.io", "My"], ["eu-simulator.moj.io", "Simulator2"], ["eu-my.moj.io", "My"], ["staging-cz-my.moj.io", "My"], ["paridelpooya.github.io/FireflyUI", "Serenity"], ["localhost", "Serenity"]];
+          list = [["simulator.moj.io", "Simulator2"], ["my2.moj.io", "My"], ["my.moj.io", "My"], ["preview.admin.moj.io", "Admin"], ["staging-my.moj.io", "My"], ["preview.my.moj.io", "My"], ["preview.developer.moj.io", "Developer"], ["preview.demo.moj.io", "Demo"], ["preview.simulator.moj.io", "Simulator"], ["staging-simulator.moj.io", "Simulator2"], ["trial-simulator.moj.io", "Simulator2"], ["prod-simulator.moj.io", "Simulator2"], ["staging-admin.moj.io", "Admin2"], ["cz-simulator.moj.io", "Simulator2"], ["cz-my.moj.io", "My"], ["eu-simulator.moj.io", "Simulator2"], ["eu-my.moj.io", "My"], ["staging-cz-my.moj.io", "My"], ["paridelpooya.github.io/FireflyUI", "Serenity"], ["localhost", "Serenity"]];
           defaultMenu = "My";
           for (i = 0, len = list.length; i < len; i++) {
             l = list[i];
@@ -2232,7 +2296,7 @@ App.provider('WebsiteSelectionHelpers', [
         },
         SelectBackEnd: function(host, cref) {
           var defaultBackEnd, i, l, len, list;
-          list = [["?p-m", "legacyprod"], ["?d-s", "develop_v2"], ["?d-m", "legacydevelop"], ["?b-m", "legacybeta"], ["?b-s", "beta_v2"], ["?s-m", "legacysaturn"], ["?s-s", "saturn_v2"], ["trial-my.moj.io", "legacytrial"], ["trial-simulator.moj.io", "trial_v2"], ["preview.my.moj.io", "production"], ["staging-simulator.", "staging2"], ["cz-my.moj.io", "legacychezh"], ["staging-cz-my.moj.io", "legacychezh"], ["cz-simulator.moj.io", "chezh_prod_v2"], ["eu-my.moj.io", "legacyeu"], ["eu-simulator.moj.io", "eu_prod_v2"], ["simulator", "sandbox_production"], ["develop.", "develop"], ["staging-my.", "legacystaging"], ["staging-admin.", "staging2"], ["staging.", "staging"], ["simulator.moj.io", "prod_v2"], ["my2.moj.io", "prod_legacy"], ["my.moj.io", "prod_legacy"], ["paridelpooya.github.io/FireflyUI", "staging2"]];
+          list = [["trial-my.moj.io", "legacytrial"], ["trial-simulator.moj.io", "trial_v2"], ["prod-my.moj.io", "legacyprod"], ["prod-simulator.moj.io", "prod_v2"], ["preview.my.moj.io", "production"], ["staging-simulator.", "staging2"], ["cz-my.moj.io", "legacychezh"], ["staging-cz-my.moj.io", "legacychezh"], ["cz-simulator.moj.io", "chezh_main_v2"], ["eu-my.moj.io", "legacyeu"], ["eu-simulator.moj.io", "eu_main_v2"], ["develop.", "develop"], ["staging-my.", "legacystaging"], ["staging-admin.", "staging2"], ["staging.", "staging"], ["simulator.moj.io", "main_v2"], ["my2.moj.io", "main_legacy"], ["my.moj.io", "main_legacy"], ["paridelpooya.github.io/FireflyUI", "staging2"]];
           defaultBackEnd = "serenity_local";
           for (i = 0, len = list.length; i < len; i++) {
             l = list[i];
@@ -2814,6 +2878,15 @@ App.factory('mojioConnection', [
         version: 'v1',
         scope: 'full'
       },
+      prod_v2: {
+        application: '9852c940-19bb-47d0-9a7b-b9ec89776d14',
+        hostname: 'prod-api.moj.io',
+        url: 'https://prod-api.moj.io/v2/',
+        login: 'https://prod-api.moj.io/OAuth2/authorize',
+        logout: 'https://prod-api.moj.io/account/logout',
+        version: 'v2',
+        scope: 'full'
+      },
       legacytrial: {
         application: '9852c940-19bb-47d0-9a7b-b9ec89776d14',
         hostname: 'trial-api.moj.io',
@@ -2870,7 +2943,7 @@ App.factory('mojioConnection', [
         version: 'v2',
         scope: 'admin'
       },
-      prod_legacy: {
+      main_legacy: {
         application: '9852c940-19bb-47d0-9a7b-b9ec89776d14',
         hostname: 'api2.moj.io',
         url: 'https://api2.moj.io/v1/',
@@ -2879,7 +2952,7 @@ App.factory('mojioConnection', [
         version: 'v1',
         scope: 'full'
       },
-      prod_v2: {
+      main_v2: {
         application: 'b66b06d1-e3f1-4ff0-b329-a89fd33e1915',
         hostname: 'api2.moj.io',
         url: 'https://api2.moj.io/v2/',
@@ -2900,7 +2973,27 @@ App.factory('mojioConnection', [
       }
     };
     SelectedSettings = function() {
-      return Settings[$rootScope.selectedProject.BackEnd];
+      var getParameterByName, pre, setting;
+      setting = angular.copy(Settings[$rootScope.selectedProject.BackEnd]);
+      getParameterByName = function(name) {
+        var regex, results;
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        results = regex.exec(location.search);
+        if (results === null) {
+          return '';
+        } else {
+          return decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+      };
+      pre = getParameterByName('env');
+      if (pre !== "") {
+        setting.hostname = pre + '-' + setting.hostname.split('-')[1];
+        setting.url = 'https://' + pre + '-' + setting.url.split('-')[1];
+        setting.login = 'https://' + pre + '-' + setting.login.split('-')[1];
+        setting.logout = 'https://' + pre + '-' + setting.logout.split('-')[1];
+      }
+      return setting;
     };
     return {
       Settings: Settings,
@@ -3220,7 +3313,7 @@ App.factory('mojioGlobal', [
       param = window.location.toString().split('#')[1];
       if (typeof param !== 'undefined' && param.indexOf('/access_token=') === 0) {
         try {
-          access_token = window.location.toString().split('#')[1].split('&')[0].split('=')[1];
+          access_token = document.location.hash.match(/access_token=([0-9a-f-]{36})/)[1];
           if (access_token) {
             data.access_token = access_token;
             sessionStorage.add(TOKENKEY, data.access_token);
@@ -3248,7 +3341,7 @@ App.factory('mojioGlobal', [
       param = window.location.toString().split('#')[1];
       if (typeof param !== 'undefined' && param.indexOf('/access_token=') === 0) {
         try {
-          access_token = window.location.toString().split('=')[1].split('&')[0];
+          access_token = document.location.hash.match(/access_token=([0-9a-f-]{36})/)[1];
           if (access_token) {
             data.access_token = access_token;
             sessionStorage.add(TOKENKEY, data.access_token);
@@ -4421,8 +4514,12 @@ App.factory('sim2LogicFactory', [
         sEvent = angular.copy(cEvent);
         delete sEvent.ResponseTime;
         sEvent.IMEI = this.Vehicle.Imei;
+        sEvent.TelematicDevice.IMEI = this.Vehicle.Imei;
         sEvent.Vehicle.VIN = this.Vehicle.VIN;
-        sEvent.DeviceTime = (new Date()).toISOString();
+        sEvent.DeviceTime = {
+          Timestamp: (new Date()).toISOString(),
+          Status: 'Valid'
+        };
         if (step !== 0) {
           pEvent = this.Settings.VehicleStates[step - 1];
           if (pEvent.Vehicle.Battery.Connected === false && sEvent.Vehicle.Battery.Connected === true) {
@@ -4532,40 +4629,40 @@ App.factory('simulator2Factory', [
   function() {
     var VehicleState;
     VehicleState = {
-      "IMEI": "string",
       "Vehicle": {
         "VIN": "string",
         "MilStatus": false,
         "Acceleration": {
           "Value": 0,
-          "Units": "KilometersPerHourPerSecond"
+          "Unit": "KilometersPerHourPerSecond"
         },
         "Deceleration": {
           "Value": 0,
-          "Units": "KilometersPerHourPerSecond"
+          "Unit": "KilometersPerHourPerSecond"
         },
         "RPM": {
           "Value": 0,
-          "Units": "RevolutionsPerMinute"
+          "Unit": "RevolutionsPerMinute"
         },
         "IgnitionState": {
           "Value": true
         },
         "Speed": {
           "Value": 0,
-          "Units": "KilometersPerHour"
+          "Unit": "KilometersPerHour"
         },
         "FuelEfficiency": {
           "Value": 0,
-          "Units": "KilometerPerLiter"
+          "Unit": "KilometerPerLiter"
         },
         "FuelLevel": {
-          "Units": "Percentage",
+          "Unit": "Percentage",
           "Value": 0
         },
         "Battery": {
           "Connected": true,
-          "Value": 0
+          "Value": 0,
+          "Unit": "Volts"
         },
         "Location": {
           "Lat": 0,
@@ -4576,17 +4673,25 @@ App.factory('simulator2Factory', [
           "Altitude": 0
         },
         "Accelerometer": {
-          "Units": "MilliGUnits",
-          "X": 0,
-          "Y": 0,
-          "Z": 0
+          "X": {
+            "Value": 0,
+            "Unit": "MilliGUnits"
+          },
+          "Y": {
+            "Value": 0,
+            "Unit": "MilliGUnits"
+          },
+          "Z": {
+            "Value": 0,
+            "Unit": "MilliGUnits"
+          }
         },
         "Heading": {
           "Value": 0
         },
         "VirtualOdometer": {
           "Value": 0,
-          "Units": "Meters"
+          "Unit": "Meters"
         },
         "DiagnosticCodes": [
           {
@@ -4610,6 +4715,7 @@ App.factory('simulator2Factory', [
         }
       },
       "TelematicDevice": {
+        "IMEI": "string",
         "AwakeState": {
           "AwakeReason": "MotionStart",
           "Value": true
@@ -4623,7 +4729,7 @@ App.factory('simulator2Factory', [
         }
       },
       "IncludedData": {
-        "Diagnostics": true
+        "Diagnostics": false
       }
     };
     return {
@@ -4919,6 +5025,59 @@ App.service('Utils', ["$window", "APP_MEDIAQUERY", function($window, APP_MEDIAQU
   };
 }]);
 
+App.controller('admin2SearchController', [
+  '$scope', '$rootScope', 'mojioRemote2', 'toaster', function($scope, $rootScope, mojioRemote2, toaster) {
+    $scope.data = {
+      username: '',
+      email: '',
+      phonenumber: '',
+      imei: ''
+    };
+    $scope.result = [];
+    $scope.search = function() {
+      var moreparam, req;
+      moreparam = [];
+      if ($scope.data.username.length !== 0) {
+        moreparam.push({
+          param: 'username',
+          val: $scope.data.username
+        });
+      }
+      if ($scope.data.email.length !== 0) {
+        moreparam.push({
+          param: 'email',
+          val: $scope.data.email
+        });
+      }
+      if ($scope.data.phonenumber.length !== 0) {
+        moreparam.push({
+          param: 'phonenumber',
+          val: $scope.data.phonenumber
+        });
+      }
+      if ($scope.data.imei.length !== 0) {
+        moreparam.push({
+          param: 'imei',
+          val: $scope.data.imei
+        });
+      }
+      req = {
+        operation: "admin/users",
+        top: '20',
+        skip: '0',
+        moreparam: moreparam,
+        onSuccess: function(res) {
+          return $scope.result = res.Data;
+        },
+        onError: function(res) {
+          return $scope.result = [];
+        }
+      };
+      return mojioRemote2.GET(req);
+    };
+  }
+]);
+
 App.controller('Sim2MultiController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'simulatorFactory', 'sim2LogicFactory', 'googlemapFactory', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, simulatorFactory, sim2LogicFactory, googlemapFactory) {
     var AddSimLogics, myOptions;
@@ -4937,7 +5096,7 @@ App.controller('Sim2MultiController', [
     mojioRemote2.GET({
       operation: "mojios",
       onSuccess: function(res) {
-        var d, i, len, pointer, results;
+        var IMEI, d, i, len, pointer, results;
         pointer = null;
         if (typeof res._embedded !== "undefined") {
           pointer = res._embedded.MojioResponse;
@@ -4949,10 +5108,17 @@ App.controller('Sim2MultiController', [
         results = [];
         for (i = 0, len = pointer.length; i < len; i++) {
           d = pointer[i];
-          if (d.Imei.indexOf('999') === 0) {
+          IMEI = "";
+          if (typeof d.IMEI !== "undefined") {
+            IMEI = d.IMEI;
+          } else {
+            IMEI = d.Imei;
+          }
+          if (IMEI.indexOf('999') === 0) {
             results.push($scope.AllDevices.push({
-              Title: d.Imei,
-              Imei: d.Imei
+              Title: IMEI,
+              Imei: IMEI,
+              VIN: IMEI
             }));
           } else {
             results.push(void 0);
@@ -5254,59 +5420,6 @@ App.controller('Sim2MultiController', [
       }
       return $scope.FileContent = null;
     });
-  }
-]);
-
-App.controller('admin2SearchController', [
-  '$scope', '$rootScope', 'mojioRemote2', 'toaster', function($scope, $rootScope, mojioRemote2, toaster) {
-    $scope.data = {
-      username: '',
-      email: '',
-      phonenumber: '',
-      imei: ''
-    };
-    $scope.result = [];
-    $scope.search = function() {
-      var moreparam, req;
-      moreparam = [];
-      if ($scope.data.username.length !== 0) {
-        moreparam.push({
-          param: 'username',
-          val: $scope.data.username
-        });
-      }
-      if ($scope.data.email.length !== 0) {
-        moreparam.push({
-          param: 'email',
-          val: $scope.data.email
-        });
-      }
-      if ($scope.data.phonenumber.length !== 0) {
-        moreparam.push({
-          param: 'phonenumber',
-          val: $scope.data.phonenumber
-        });
-      }
-      if ($scope.data.imei.length !== 0) {
-        moreparam.push({
-          param: 'imei',
-          val: $scope.data.imei
-        });
-      }
-      req = {
-        operation: "admin/users",
-        top: '20',
-        skip: '0',
-        moreparam: moreparam,
-        onSuccess: function(res) {
-          return $scope.result = res.Data;
-        },
-        onError: function(res) {
-          return $scope.result = [];
-        }
-      };
-      return mojioRemote2.GET(req);
-    };
   }
 ]);
 
@@ -8497,6 +8610,28 @@ App.controller('observeController', [
   }
 ]);
 
+App.controller('serenityServiceController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
+    var getServices;
+    getServices = function() {
+      return mojioRemote2.GET({
+        endpoint: "firefly",
+        operation: "servicetemplates",
+        onSuccess: function(res) {
+          return $scope.Service = res;
+        }
+      });
+    };
+    $scope.Service = [];
+    getServices();
+    $scope.EditService = function(id) {
+      $state.go("serenity.service_edit", {
+        id: id
+      });
+    };
+  }
+]);
+
 App.controller('portalController', [
   '$modal', '$templateCache', '$sce', '$compile', '$rootScope', '$stateParams', '$scope', 'mojioRemote', 'localStorage', 'toaster', 'mojioGlobal', function($modal, $templateCache, $sce, $compile, $rootScope, $stateParams, $scope, mojioRemote, localStorage, toaster, mojioGlobal) {
     var tohash;
@@ -8948,28 +9083,6 @@ App.controller('portalController', [
   }
 ]);
 
-App.controller('serenityServiceController', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
-    var getServices;
-    getServices = function() {
-      return mojioRemote2.GET({
-        endpoint: "firefly",
-        operation: "servicetemplates",
-        onSuccess: function(res) {
-          return $scope.Service = res;
-        }
-      });
-    };
-    $scope.Service = [];
-    getServices();
-    $scope.EditService = function(id) {
-      $state.go("serenity.service_edit", {
-        id: id
-      });
-    };
-  }
-]);
-
 App.controller('serenityServiceEditController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels) {
     var getServices;
@@ -9242,6 +9355,464 @@ App.controller('serenitySituationEditController', [
           $scope.Situation.events.splice(i, 1);
           return;
         }
+      }
+    };
+  }
+]);
+
+App.controller('tempSim2Controller', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'simulator2Factory', '$http', 'sim2LogicFactory', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, simulator2Factory, $http, sim2LogicFactory) {
+    var CreateShortcut, changeMapCenter, defLocation, getVehicles, googleMap, info, legs, setting;
+    $scope.Options = {
+      AwakeReason: ['MotionStart', 'PeriodicAlarm', 'Voltage', 'Sleeping', 'DeviceRemoved', 'DeviceAdded'],
+      LocationStatus: ['Unknown', 'Locked', 'NotLocked', 'Predicted', 'DiffCorrected', 'LastKnown', 'TwoDFix', 'Historic', 'InvalidTime', 'CommunicationsFailure', 'GPSOff', 'PreviousValidState']
+    };
+    if (typeof localStorage["HideSimulatorGuide"] === "undefined" || localStorage["HideSimulatorGuide"] === "true") {
+      $scope.GuideStatus = true;
+    } else {
+      $scope.GuideStatus = false;
+    }
+    $scope.HideGuide = function() {
+      localStorage.setItem("HideSimulatorGuide", "true");
+      $scope.GuideStatus = false;
+    };
+    $scope.ShowGuide = function() {
+      localStorage.setItem("HideSimulatorGuide", "false");
+      $scope.GuideStatus = true;
+    };
+    googleMap = null;
+    legs = null;
+    info = null;
+    setting = null;
+    CreateShortcut = function() {
+      googleMap = $scope.SimulatorLogic.map;
+      legs = $scope.SimulatorLogic.legs;
+      info = $scope.SimulatorLogic.Info;
+      setting = $scope.SimulatorLogic.Settings;
+    };
+    $scope.SimulatorLogic = sim2LogicFactory.CreateSimulatorLogic();
+    CreateShortcut();
+    $scope.SelState = {
+      No: 1,
+      Obj: null
+    };
+    $scope.Vehicle = {
+      Selected: null,
+      VIN: ''
+    };
+    $scope.AllDevices = [];
+    mojioRemote2.GET({
+      operation: "mojios",
+      onSuccess: function(res) {
+        var pointer;
+        pointer = null;
+        if (typeof res._embedded !== "undefined") {
+          pointer = res._embedded.MojioResponse;
+        } else if (typeof res.Data !== "undefined") {
+          pointer = res.Data;
+        } else {
+          pointer = [];
+        }
+        return getVehicles(pointer);
+      }
+    });
+    getVehicles = function(mojios) {
+      return mojioRemote2.GET({
+        operation: "vehicles",
+        onSuccess: function(res) {
+          var IMEI, d, i, len, newImei;
+          for (i = 0, len = mojios.length; i < len; i++) {
+            d = mojios[i];
+            IMEI = "";
+            if (typeof d.IMEI !== "undefined") {
+              IMEI = d.IMEI;
+            } else {
+              IMEI = d.Imei;
+            }
+            if (IMEI.indexOf('999') === 0) {
+              $scope.AllDevices.push({
+                Title: IMEI,
+                Imei: IMEI,
+                VIN: IMEI
+              });
+            }
+          }
+          newImei = "999" + parseInt(Math.random() * 1000000000);
+          $scope.AllDevices.push({
+            Title: newImei + '(new)',
+            Imei: newImei,
+            VIN: newImei
+          });
+          $scope.Vehicle.Selected = $scope.AllDevices[0].Imei;
+          $scope.Vehicle.VIN = $scope.AllDevices[0].Imei;
+          return $scope.updateVehicle();
+        }
+      });
+    };
+    $scope.showVehicle = function() {
+      return $filter('filter')($scope.AllDevices, {
+        Imei: $scope.Vehicle.Selected
+      })[0].Title;
+    };
+    $scope.updateVehicle = function() {
+      $scope.SimulatorLogic.Vehicle.Imei = $scope.Vehicle.Selected;
+      $scope.SimulatorLogic.Vehicle.VIN = $scope.Vehicle.VIN;
+    };
+    $scope.$watch('Vehicle.VIN', function() {
+      $scope.updateVehicle();
+    });
+    $scope.$watch('SelState.No', function() {
+      if (setting.VehicleStates === null || setting.VehicleStates.length <= $scope.SelState.No) {
+        return;
+      }
+      $scope.SelState.Obj = setting.VehicleStates[$scope.SelState.No];
+    });
+    $scope.CircularTrip = function() {
+      setting.CircularTrip = !setting.CircularTrip;
+      $scope.ShowRoute();
+      setting.VehicleStates = null;
+    };
+    $scope.SavedSimulatorTrip = [];
+    if (typeof localStorage["SavedSimulatorTrip"] !== "undefined") {
+      $scope.SavedSimulatorTrip = JSON.parse(localStorage["SavedSimulatorTrip"]);
+    }
+    $scope.createMarker = function(latlng, name, html, color) {
+      var contentString, marker;
+      contentString = html;
+      marker = new google.maps.Marker({
+        position: latlng,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          strokeColor: color,
+          scale: 3
+        },
+        draggable: true,
+        map: googleMap.map
+      });
+      google.maps.event.trigger(marker, 'click');
+      return marker;
+    };
+    $scope.PointType = "s";
+    defLocation = {
+      coords: {
+        latitude: 43.907787,
+        longitude: -79.359741
+      }
+    };
+    if (typeof localStorage["lastPosition"] !== "undefined") {
+      defLocation = JSON.parse(localStorage["lastPosition"]);
+    }
+    $scope.SimulatorLogic.CreateAllMapRelatedObjects(document.getElementById("map_canvas"), document.getElementById("pano"), defLocation);
+    google.maps.event.addListener(googleMap.map, 'click', function(event) {
+      var CurrentMarker, m;
+      m = googleMap.Marker;
+      CurrentMarker = null;
+      if ($scope.PointType === "s") {
+        if (m.Start) {
+          m.Start.setMap(null);
+          m.Start = null;
+        }
+        m.Start = $scope.createMarker(event.latLng, "Start Point", "Start Point", "blue");
+        CurrentMarker = m.Start;
+        $scope.$apply(function() {
+          return $scope.PointType = "e";
+        });
+      } else if ($scope.PointType === "e") {
+        if (m.End) {
+          m.End.setMap(null);
+          m.End = null;
+        }
+        m.End = $scope.createMarker(event.latLng, "End Point", "End Point", "red");
+        CurrentMarker = m.End;
+        $scope.$apply(function() {
+          return $scope.PointType = "w";
+        });
+      } else if ($scope.PointType === "w") {
+        if (m.WayPoint.length < 7) {
+          m.WayPoint.push($scope.createMarker(event.latLng, "Way Point", "Way Point", "#green"));
+          CurrentMarker = m.WayPoint[m.WayPoint.length - 1];
+        }
+      }
+      if (CurrentMarker !== null) {
+        google.maps.event.addListener(CurrentMarker, 'dragend', function(m) {
+          $scope.ShowRoute();
+          setting.VehicleStates = null;
+          $scope.SavePoints();
+        });
+      }
+      $scope.ShowRoute();
+      setting.VehicleStates = null;
+      return $scope.SavePoints();
+    });
+    changeMapCenter = function(position) {
+      var pos;
+      pos = {
+        coords: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        }
+      };
+      localStorage.setItem("lastPosition", JSON.stringify(pos));
+      if (typeof position.coords === "undefined") {
+        return;
+      }
+      if (googleMap.Marker.Start) {
+        return;
+      }
+      return googleMap.map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+    };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(changeMapCenter, changeMapCenter, {
+        timeout: 10000
+      });
+    }
+    $scope.ClearPoints = function() {
+      var i, len, m, ref, wp;
+      m = googleMap.Marker;
+      googleMap.directionsDisplay.setDirections({
+        routes: []
+      });
+      $scope.SimulatorLogic.legs = [];
+      $scope.PointType = "s";
+      if (m.Start) {
+        m.Start.setMap(null);
+        m.Start = null;
+      }
+      if (m.End) {
+        m.End.setMap(null);
+        m.End = null;
+      }
+      ref = m.WayPoint;
+      for (i = 0, len = ref.length; i < len; i++) {
+        wp = ref[i];
+        if (wp) {
+          wp.setMap(null);
+          wp = null;
+        }
+      }
+      m.WayPoint = [];
+      setting.VehicleStates = null;
+      $scope.SavePoints();
+    };
+    $scope.SavePoints = function() {
+      var WayPoint, i, len, m, ref, wp;
+      m = googleMap.Marker;
+      if (m.Start) {
+        setting.Points.Start = [m.Start.position.lat(), m.Start.position.lng()];
+      } else {
+        setting.Points.Start = null;
+      }
+      if (m.End) {
+        setting.Points.End = [m.End.position.lat(), m.End.position.lng()];
+      } else {
+        setting.Points.End = null;
+      }
+      WayPoint = [];
+      ref = m.WayPoint;
+      for (i = 0, len = ref.length; i < len; i++) {
+        wp = ref[i];
+        WayPoint.push([wp.position.lat(), wp.position.lng()]);
+      }
+      setting.Points.WayPoint = WayPoint;
+    };
+    $scope.LoadPoints = function() {
+      var AllPoints, LatLng, WayPoint, i, j, k, len, len1, len2, m, marker, op, ref, ref1, wp;
+      CreateShortcut();
+      m = googleMap.Marker;
+      AllPoints = [];
+      if (m.Start) {
+        m.Start.setMap(null);
+        m.Start = null;
+      }
+      if (setting.Points.Start) {
+        LatLng = new google.maps.LatLng(setting.Points.Start[0], setting.Points.Start[1]);
+        m.Start = $scope.createMarker(LatLng, "Start Point", "Start Point", "blue");
+        AllPoints.push(m.Start);
+      } else {
+        m.Start.setMap(null);
+        m.Start = null;
+      }
+      if (m.End) {
+        m.End.setMap(null);
+        m.End = null;
+      }
+      if (setting.Points.End) {
+        LatLng = new google.maps.LatLng(setting.Points.End[0], setting.Points.End[1]);
+        m.End = $scope.createMarker(LatLng, "End Point", "End Point", "red");
+        AllPoints.push(m.End);
+      } else {
+        m.End.setMap(null);
+        m.End = null;
+      }
+      WayPoint = [];
+      ref = m.WayPoint;
+      for (i = 0, len = ref.length; i < len; i++) {
+        wp = ref[i];
+        wp.setMap(null);
+        wp = null;
+      }
+      m.WayPoint = [];
+      ref1 = setting.Points.WayPoint;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        wp = ref1[j];
+        LatLng = new google.maps.LatLng(wp[0], wp[1]);
+        marker = $scope.createMarker(LatLng, "Way Point", "Way Point", "#green");
+        m.WayPoint.push(marker);
+        AllPoints.push(marker);
+      }
+      for (k = 0, len2 = AllPoints.length; k < len2; k++) {
+        op = AllPoints[k];
+        google.maps.event.addListener(op, 'dragend', function(m) {
+          $scope.ShowRoute();
+          setting.VehicleStates = null;
+          $scope.SavePoints();
+        });
+      }
+    };
+    $scope.ClearVehicleStates = function() {
+      $scope.SimulatorLogic.ClearVehicleStates();
+    };
+    $scope.ShowRoute = function() {
+      var i, ipos, len, ref, request, waypts, wp;
+      if (!googleMap.Marker.Start || !googleMap.Marker.End) {
+        return;
+      }
+      googleMap.directionsDisplay.setMap(null);
+      googleMap.directionsDisplay.setMap(googleMap.map);
+      waypts = [];
+      ipos = 0;
+      ref = googleMap.Marker.WayPoint;
+      for (i = 0, len = ref.length; i < len; i++) {
+        wp = ref[i];
+        waypts.push({
+          location: wp.position,
+          stopover: true
+        });
+      }
+      request = {
+        origin: googleMap.Marker.Start.position,
+        destination: googleMap.Marker.End.position,
+        waypoints: waypts,
+        optimizeWaypoints: true,
+        travelMode: google.maps.TravelMode.DRIVING
+      };
+      if (setting.CircularTrip) {
+        waypts.push({
+          location: googleMap.Marker.End.position,
+          stopover: true
+        });
+        request.destination = googleMap.Marker.Start.position;
+      }
+      googleMap.directionsService.route(request, function(response, status) {
+        var StepsNo, VehicleStatesNo, j, k, leg, len1, len2, ref1, ref2, step;
+        if (status === google.maps.DirectionsStatus.OK) {
+          info.VehicleStatesNo = 0;
+          info.LegsNo = 0;
+          info.StepsNo = 0;
+          $scope.$apply(function() {
+            $scope.SimulatorLogic.legs = response.routes[0].legs;
+            return info.LegsNo += legs.length;
+          });
+          StepsNo = 0;
+          VehicleStatesNo = 0;
+          ref1 = $scope.SimulatorLogic.legs;
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            leg = ref1[j];
+            StepsNo += leg.steps.length;
+            ref2 = leg.steps;
+            for (k = 0, len2 = ref2.length; k < len2; k++) {
+              step = ref2[k];
+              VehicleStatesNo += step.path.length;
+            }
+          }
+          $scope.$apply(function() {
+            info.StepsNo += StepsNo;
+            return info.VehicleStatesNo += VehicleStatesNo;
+          });
+          return googleMap.directionsDisplay.setDirections(response);
+        }
+      });
+    };
+    $scope.CreateVehicleStates = function() {
+      $scope.SimulatorLogic.CreateVehicleStates();
+      $scope.SelState.No = 0;
+      setting.DurationLimit.Min = Math.round(setting.VehicleStates.length / 2);
+      if (setting.DurationLimit.Min < 10) {
+        setting.DurationLimit.Min = 10;
+      }
+      if (setting.Duration < setting.DurationLimit.Min) {
+        setting.Duration = setting.DurationLimit.Min;
+      }
+    };
+    $scope.SimulationPlay = function() {
+      return $scope.SimulatorLogic.SimulationPlay();
+    };
+    $scope.SimulationPause = function() {
+      return $scope.SimulatorLogic.SimulationPause();
+    };
+    $scope.SimulationStop = function() {
+      return $scope.SimulatorLogic.SimulationStop();
+    };
+    $scope.SimulatorLogic.OnStateSendCallback = function(RelaredLogic, VehicleState) {
+      return googleMap.sv.getPanoramaByLocation(new google.maps.LatLng(VehicleState.Vehicle.Location.Lat, VehicleState.Vehicle.Location.Lng), 50, function(data, status) {
+        if (status === google.maps.StreetViewStatus.OK) {
+          googleMap.panorama.setPano(data.location.pano);
+          googleMap.panorama.setPov({
+            heading: VehicleState.Vehicle.Heading.Value,
+            pitch: 0
+          });
+          return googleMap.panorama.setVisible(true);
+        }
+      });
+    };
+    $scope.MinTripDuration = function() {
+      var DurationText, sec;
+      sec = setting.VehicleStates.length / 2;
+      DurationText = Math.round(sec / 60) + " minutes and " + (sec % 60) + " seconds";
+      return DurationText;
+    };
+    $scope.SaveSimulator = function(Title) {
+      setting.Title = Title;
+      $scope.SavedSimulatorTrip.push(angular.copy($scope.SimulatorLogic.Settings));
+      localStorage.setItem("SavedSimulatorTrip", JSON.stringify($scope.SavedSimulatorTrip));
+      toaster.success({
+        title: "Save Trip",
+        body: "Trip Saved Successfully"
+      });
+    };
+    $scope.LoadSimulator = function(sst) {
+      $scope.SimulatorLogic.Settings = angular.copy(sst);
+      $scope.LoadPoints();
+      $scope.ShowRoute();
+    };
+    $scope.DeleteSimulator = function(pos) {
+      $scope.SavedSimulatorTrip.splice(pos, 1);
+      localStorage.setItem("SavedSimulatorTrip", JSON.stringify($scope.SavedSimulatorTrip));
+    };
+    $scope.ImportFile = function(data) {
+      if (data === null) {
+        return;
+      }
+      $scope.SimulatorLogic.Settings = JSON.parse(data);
+      $scope.LoadPoints();
+      return $scope.ShowRoute();
+    };
+    $scope.ExportSimulator = function() {
+      var data;
+      data = new Blob([JSON.stringify($scope.SimulatorLogic.Settings)], {
+        type: 'application/json'
+      });
+      saveAs(data, "Simulator.json");
+    };
+    $scope.gotoState = function(mode) {
+      if (mode === "first") {
+        return $scope.SelState.No = 0;
+      } else if (mode === "previous" && $scope.SelState.No > 0) {
+        return $scope.SelState.No--;
+      } else if (mode === "next" && $scope.SelState.No < $scope.SimulatorLogic.Settings.VehicleStates.length - 1) {
+        return $scope.SelState.No++;
+      } else if (mode === "last") {
+        return $scope.SelState.No = $scope.SimulatorLogic.Settings.VehicleStates.length - 1;
       }
     };
   }
@@ -9871,458 +10442,6 @@ App.controller('tempSim2ControllerOld', [
         type: 'application/json'
       });
       saveAs(data, "Simulator.json");
-    };
-  }
-]);
-
-App.controller('tempSim2Controller', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'simulator2Factory', '$http', 'sim2LogicFactory', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, simulator2Factory, $http, sim2LogicFactory) {
-    var CreateShortcut, changeMapCenter, defLocation, getVehicles, googleMap, info, legs, setting;
-    $scope.Options = {
-      AwakeReason: ['MotionStart', 'PeriodicAlarm', 'Voltage', 'Sleeping', 'DeviceRemoved', 'DeviceAdded'],
-      LocationStatus: ['Unknown', 'Locked', 'NotLocked', 'Predicted', 'DiffCorrected', 'LastKnown', 'TwoDFix', 'Historic', 'InvalidTime', 'CommunicationsFailure', 'GPSOff', 'PreviousValidState']
-    };
-    if (typeof localStorage["HideSimulatorGuide"] === "undefined" || localStorage["HideSimulatorGuide"] === "true") {
-      $scope.GuideStatus = true;
-    } else {
-      $scope.GuideStatus = false;
-    }
-    $scope.HideGuide = function() {
-      localStorage.setItem("HideSimulatorGuide", "true");
-      $scope.GuideStatus = false;
-    };
-    $scope.ShowGuide = function() {
-      localStorage.setItem("HideSimulatorGuide", "false");
-      $scope.GuideStatus = true;
-    };
-    googleMap = null;
-    legs = null;
-    info = null;
-    setting = null;
-    CreateShortcut = function() {
-      googleMap = $scope.SimulatorLogic.map;
-      legs = $scope.SimulatorLogic.legs;
-      info = $scope.SimulatorLogic.Info;
-      setting = $scope.SimulatorLogic.Settings;
-    };
-    $scope.SimulatorLogic = sim2LogicFactory.CreateSimulatorLogic();
-    CreateShortcut();
-    $scope.SelState = {
-      No: 1,
-      Obj: null
-    };
-    $scope.Vehicle = {
-      Selected: null,
-      VIN: ''
-    };
-    $scope.AllDevices = [];
-    mojioRemote2.GET({
-      operation: "mojios",
-      onSuccess: function(res) {
-        var pointer;
-        pointer = null;
-        if (typeof res._embedded !== "undefined") {
-          pointer = res._embedded.MojioResponse;
-        } else if (typeof res.Data !== "undefined") {
-          pointer = res.Data;
-        } else {
-          pointer = [];
-        }
-        return getVehicles(pointer);
-      }
-    });
-    getVehicles = function(mojios) {
-      return mojioRemote2.GET({
-        operation: "vehicles",
-        onSuccess: function(res) {
-          var d, i, len, newImei;
-          for (i = 0, len = mojios.length; i < len; i++) {
-            d = mojios[i];
-            if (d.Imei.indexOf('999') === 0) {
-              $scope.AllDevices.push({
-                Title: d.Imei,
-                Imei: d.Imei,
-                VIN: d.Imei
-              });
-            }
-          }
-          newImei = "999" + parseInt(Math.random() * 1000000000);
-          $scope.AllDevices.push({
-            Title: newImei + '(new)',
-            Imei: newImei,
-            VIN: newImei
-          });
-          $scope.Vehicle.Selected = $scope.AllDevices[0].Imei;
-          $scope.Vehicle.VIN = $scope.AllDevices[0].Imei;
-          return $scope.updateVehicle();
-        }
-      });
-    };
-    $scope.showVehicle = function() {
-      return $filter('filter')($scope.AllDevices, {
-        Imei: $scope.Vehicle.Selected
-      })[0].Title;
-    };
-    $scope.updateVehicle = function() {
-      $scope.SimulatorLogic.Vehicle.Imei = $scope.Vehicle.Selected;
-      $scope.SimulatorLogic.Vehicle.VIN = $scope.Vehicle.VIN;
-    };
-    $scope.$watch('Vehicle.VIN', function() {
-      $scope.updateVehicle();
-    });
-    $scope.$watch('SelState.No', function() {
-      if (setting.VehicleStates === null || setting.VehicleStates.length <= $scope.SelState.No) {
-        return;
-      }
-      $scope.SelState.Obj = setting.VehicleStates[$scope.SelState.No];
-    });
-    $scope.CircularTrip = function() {
-      setting.CircularTrip = !setting.CircularTrip;
-      $scope.ShowRoute();
-      setting.VehicleStates = null;
-    };
-    $scope.SavedSimulatorTrip = [];
-    if (typeof localStorage["SavedSimulatorTrip"] !== "undefined") {
-      $scope.SavedSimulatorTrip = JSON.parse(localStorage["SavedSimulatorTrip"]);
-    }
-    $scope.createMarker = function(latlng, name, html, color) {
-      var contentString, marker;
-      contentString = html;
-      marker = new google.maps.Marker({
-        position: latlng,
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          strokeColor: color,
-          scale: 3
-        },
-        draggable: true,
-        map: googleMap.map
-      });
-      google.maps.event.trigger(marker, 'click');
-      return marker;
-    };
-    $scope.PointType = "s";
-    defLocation = {
-      coords: {
-        latitude: 43.907787,
-        longitude: -79.359741
-      }
-    };
-    if (typeof localStorage["lastPosition"] !== "undefined") {
-      defLocation = JSON.parse(localStorage["lastPosition"]);
-    }
-    $scope.SimulatorLogic.CreateAllMapRelatedObjects(document.getElementById("map_canvas"), document.getElementById("pano"), defLocation);
-    google.maps.event.addListener(googleMap.map, 'click', function(event) {
-      var CurrentMarker, m;
-      m = googleMap.Marker;
-      CurrentMarker = null;
-      if ($scope.PointType === "s") {
-        if (m.Start) {
-          m.Start.setMap(null);
-          m.Start = null;
-        }
-        m.Start = $scope.createMarker(event.latLng, "Start Point", "Start Point", "blue");
-        CurrentMarker = m.Start;
-        $scope.$apply(function() {
-          return $scope.PointType = "e";
-        });
-      } else if ($scope.PointType === "e") {
-        if (m.End) {
-          m.End.setMap(null);
-          m.End = null;
-        }
-        m.End = $scope.createMarker(event.latLng, "End Point", "End Point", "red");
-        CurrentMarker = m.End;
-        $scope.$apply(function() {
-          return $scope.PointType = "w";
-        });
-      } else if ($scope.PointType === "w") {
-        if (m.WayPoint.length < 7) {
-          m.WayPoint.push($scope.createMarker(event.latLng, "Way Point", "Way Point", "#green"));
-          CurrentMarker = m.WayPoint[m.WayPoint.length - 1];
-        }
-      }
-      if (CurrentMarker !== null) {
-        google.maps.event.addListener(CurrentMarker, 'dragend', function(m) {
-          $scope.ShowRoute();
-          setting.VehicleStates = null;
-          $scope.SavePoints();
-        });
-      }
-      $scope.ShowRoute();
-      setting.VehicleStates = null;
-      return $scope.SavePoints();
-    });
-    changeMapCenter = function(position) {
-      var pos;
-      pos = {
-        coords: {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        }
-      };
-      localStorage.setItem("lastPosition", JSON.stringify(pos));
-      if (typeof position.coords === "undefined") {
-        return;
-      }
-      if (googleMap.Marker.Start) {
-        return;
-      }
-      return googleMap.map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-    };
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(changeMapCenter, changeMapCenter, {
-        timeout: 10000
-      });
-    }
-    $scope.ClearPoints = function() {
-      var i, len, m, ref, wp;
-      m = googleMap.Marker;
-      googleMap.directionsDisplay.setDirections({
-        routes: []
-      });
-      $scope.SimulatorLogic.legs = [];
-      $scope.PointType = "s";
-      if (m.Start) {
-        m.Start.setMap(null);
-        m.Start = null;
-      }
-      if (m.End) {
-        m.End.setMap(null);
-        m.End = null;
-      }
-      ref = m.WayPoint;
-      for (i = 0, len = ref.length; i < len; i++) {
-        wp = ref[i];
-        if (wp) {
-          wp.setMap(null);
-          wp = null;
-        }
-      }
-      m.WayPoint = [];
-      setting.VehicleStates = null;
-      $scope.SavePoints();
-    };
-    $scope.SavePoints = function() {
-      var WayPoint, i, len, m, ref, wp;
-      m = googleMap.Marker;
-      if (m.Start) {
-        setting.Points.Start = [m.Start.position.lat(), m.Start.position.lng()];
-      } else {
-        setting.Points.Start = null;
-      }
-      if (m.End) {
-        setting.Points.End = [m.End.position.lat(), m.End.position.lng()];
-      } else {
-        setting.Points.End = null;
-      }
-      WayPoint = [];
-      ref = m.WayPoint;
-      for (i = 0, len = ref.length; i < len; i++) {
-        wp = ref[i];
-        WayPoint.push([wp.position.lat(), wp.position.lng()]);
-      }
-      setting.Points.WayPoint = WayPoint;
-    };
-    $scope.LoadPoints = function() {
-      var AllPoints, LatLng, WayPoint, i, j, k, len, len1, len2, m, marker, op, ref, ref1, wp;
-      CreateShortcut();
-      m = googleMap.Marker;
-      AllPoints = [];
-      if (m.Start) {
-        m.Start.setMap(null);
-        m.Start = null;
-      }
-      if (setting.Points.Start) {
-        LatLng = new google.maps.LatLng(setting.Points.Start[0], setting.Points.Start[1]);
-        m.Start = $scope.createMarker(LatLng, "Start Point", "Start Point", "blue");
-        AllPoints.push(m.Start);
-      } else {
-        m.Start.setMap(null);
-        m.Start = null;
-      }
-      if (m.End) {
-        m.End.setMap(null);
-        m.End = null;
-      }
-      if (setting.Points.End) {
-        LatLng = new google.maps.LatLng(setting.Points.End[0], setting.Points.End[1]);
-        m.End = $scope.createMarker(LatLng, "End Point", "End Point", "red");
-        AllPoints.push(m.End);
-      } else {
-        m.End.setMap(null);
-        m.End = null;
-      }
-      WayPoint = [];
-      ref = m.WayPoint;
-      for (i = 0, len = ref.length; i < len; i++) {
-        wp = ref[i];
-        wp.setMap(null);
-        wp = null;
-      }
-      m.WayPoint = [];
-      ref1 = setting.Points.WayPoint;
-      for (j = 0, len1 = ref1.length; j < len1; j++) {
-        wp = ref1[j];
-        LatLng = new google.maps.LatLng(wp[0], wp[1]);
-        marker = $scope.createMarker(LatLng, "Way Point", "Way Point", "#green");
-        m.WayPoint.push(marker);
-        AllPoints.push(marker);
-      }
-      for (k = 0, len2 = AllPoints.length; k < len2; k++) {
-        op = AllPoints[k];
-        google.maps.event.addListener(op, 'dragend', function(m) {
-          $scope.ShowRoute();
-          setting.VehicleStates = null;
-          $scope.SavePoints();
-        });
-      }
-    };
-    $scope.ClearVehicleStates = function() {
-      $scope.SimulatorLogic.ClearVehicleStates();
-    };
-    $scope.ShowRoute = function() {
-      var i, ipos, len, ref, request, waypts, wp;
-      if (!googleMap.Marker.Start || !googleMap.Marker.End) {
-        return;
-      }
-      googleMap.directionsDisplay.setMap(null);
-      googleMap.directionsDisplay.setMap(googleMap.map);
-      waypts = [];
-      ipos = 0;
-      ref = googleMap.Marker.WayPoint;
-      for (i = 0, len = ref.length; i < len; i++) {
-        wp = ref[i];
-        waypts.push({
-          location: wp.position,
-          stopover: true
-        });
-      }
-      request = {
-        origin: googleMap.Marker.Start.position,
-        destination: googleMap.Marker.End.position,
-        waypoints: waypts,
-        optimizeWaypoints: true,
-        travelMode: google.maps.TravelMode.DRIVING
-      };
-      if (setting.CircularTrip) {
-        waypts.push({
-          location: googleMap.Marker.End.position,
-          stopover: true
-        });
-        request.destination = googleMap.Marker.Start.position;
-      }
-      googleMap.directionsService.route(request, function(response, status) {
-        var StepsNo, VehicleStatesNo, j, k, leg, len1, len2, ref1, ref2, step;
-        if (status === google.maps.DirectionsStatus.OK) {
-          info.VehicleStatesNo = 0;
-          info.LegsNo = 0;
-          info.StepsNo = 0;
-          $scope.$apply(function() {
-            $scope.SimulatorLogic.legs = response.routes[0].legs;
-            return info.LegsNo += legs.length;
-          });
-          StepsNo = 0;
-          VehicleStatesNo = 0;
-          ref1 = $scope.SimulatorLogic.legs;
-          for (j = 0, len1 = ref1.length; j < len1; j++) {
-            leg = ref1[j];
-            StepsNo += leg.steps.length;
-            ref2 = leg.steps;
-            for (k = 0, len2 = ref2.length; k < len2; k++) {
-              step = ref2[k];
-              VehicleStatesNo += step.path.length;
-            }
-          }
-          $scope.$apply(function() {
-            info.StepsNo += StepsNo;
-            return info.VehicleStatesNo += VehicleStatesNo;
-          });
-          return googleMap.directionsDisplay.setDirections(response);
-        }
-      });
-    };
-    $scope.CreateVehicleStates = function() {
-      $scope.SimulatorLogic.CreateVehicleStates();
-      $scope.SelState.No = 0;
-      setting.DurationLimit.Min = Math.round(setting.VehicleStates.length / 2);
-      if (setting.DurationLimit.Min < 10) {
-        setting.DurationLimit.Min = 10;
-      }
-      if (setting.Duration < setting.DurationLimit.Min) {
-        setting.Duration = setting.DurationLimit.Min;
-      }
-    };
-    $scope.SimulationPlay = function() {
-      return $scope.SimulatorLogic.SimulationPlay();
-    };
-    $scope.SimulationPause = function() {
-      return $scope.SimulatorLogic.SimulationPause();
-    };
-    $scope.SimulationStop = function() {
-      return $scope.SimulatorLogic.SimulationStop();
-    };
-    $scope.SimulatorLogic.OnStateSendCallback = function(RelaredLogic, VehicleState) {
-      return googleMap.sv.getPanoramaByLocation(new google.maps.LatLng(VehicleState.Vehicle.Location.Lat, VehicleState.Vehicle.Location.Lng), 50, function(data, status) {
-        if (status === google.maps.StreetViewStatus.OK) {
-          googleMap.panorama.setPano(data.location.pano);
-          googleMap.panorama.setPov({
-            heading: VehicleState.Vehicle.Heading.Value,
-            pitch: 0
-          });
-          return googleMap.panorama.setVisible(true);
-        }
-      });
-    };
-    $scope.MinTripDuration = function() {
-      var DurationText, sec;
-      sec = setting.VehicleStates.length / 2;
-      DurationText = Math.round(sec / 60) + " minutes and " + (sec % 60) + " seconds";
-      return DurationText;
-    };
-    $scope.SaveSimulator = function(Title) {
-      setting.Title = Title;
-      $scope.SavedSimulatorTrip.push(angular.copy($scope.SimulatorLogic.Settings));
-      localStorage.setItem("SavedSimulatorTrip", JSON.stringify($scope.SavedSimulatorTrip));
-      toaster.success({
-        title: "Save Trip",
-        body: "Trip Saved Successfully"
-      });
-    };
-    $scope.LoadSimulator = function(sst) {
-      $scope.SimulatorLogic.Settings = angular.copy(sst);
-      $scope.LoadPoints();
-      $scope.ShowRoute();
-    };
-    $scope.DeleteSimulator = function(pos) {
-      $scope.SavedSimulatorTrip.splice(pos, 1);
-      localStorage.setItem("SavedSimulatorTrip", JSON.stringify($scope.SavedSimulatorTrip));
-    };
-    $scope.ImportFile = function(data) {
-      if (data === null) {
-        return;
-      }
-      $scope.SimulatorLogic.Settings = JSON.parse(data);
-      $scope.LoadPoints();
-      return $scope.ShowRoute();
-    };
-    $scope.ExportSimulator = function() {
-      var data;
-      data = new Blob([JSON.stringify($scope.SimulatorLogic.Settings)], {
-        type: 'application/json'
-      });
-      saveAs(data, "Simulator.json");
-    };
-    $scope.gotoState = function(mode) {
-      if (mode === "first") {
-        return $scope.SelState.No = 0;
-      } else if (mode === "previous" && $scope.SelState.No > 0) {
-        return $scope.SelState.No--;
-      } else if (mode === "next" && $scope.SelState.No < $scope.SimulatorLogic.Settings.VehicleStates.length - 1) {
-        return $scope.SelState.No++;
-      } else if (mode === "last") {
-        return $scope.SelState.No = $scope.SimulatorLogic.Settings.VehicleStates.length - 1;
-      }
     };
   }
 ]);
@@ -11933,9 +12052,11 @@ App.directive('gearGaugeBatteryLevel', [
       controller: ["$rootScope", "$scope", function($rootScope, $scope) {
         return $scope.BatteryStatus = function(bv) {
           if (typeof bv === "undefined" || bv === null || isNaN(bv)) {
-            return "gear.gear_gauge_battery_level.level.DEAD";
+            return "gear.gear_gauge_battery_level.level.UNKNOWN";
           }
-          if (bv < 9) {
+          if (bv === 0) {
+            return "gear.gear_gauge_battery_level.level.DISCONNECTED";
+          } else if (bv < 9) {
             return "gear.gear_gauge_battery_level.level.DEAD";
           } else if (bv < 11) {
             return "gear.gear_gauge_battery_level.level.LOW";
@@ -12318,21 +12439,6 @@ App.directive('gearTrekDrivingStat', [
   }
 ]);
 
-App.directive('gearTrekVehicleDetails', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/gear_trek_vehicle_details.html',
-      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
-        return $scope.showDuration = function(row) {
-          return ((new Date(row.EndTime)) - (new Date(row.StartTime))) / 1000;
-        };
-      }],
-      link: function($rootScope, scope, element, attrs) {}
-    };
-  }
-]);
-
 App.directive('gearTrekLastTripMap', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', 'myMojioFactory', '$timeout', 'googlemapFactory', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, myMojioFactory, $timeout, googlemapFactory) {
     return {
@@ -12464,6 +12570,37 @@ App.directive('gearTrekLastTripMap', [
   }
 ]);
 
+App.directive('gearTrekVehicleDetails', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'app/views/gear_trek_vehicle_details.html',
+      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
+        return $scope.showDuration = function(row) {
+          return ((new Date(row.EndTime)) - (new Date(row.StartTime))) / 1000;
+        };
+      }],
+      link: function($rootScope, scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('widgetCmsEmbed', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'app/views/widget_cms_embed.html',
+      scope: {
+        data: '='
+      },
+      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
+        console.log($scope);
+      }],
+      link: function($rootScope, scope, element, attrs) {}
+    };
+  }
+]);
+
 App.directive('widgetCmsGithubI1', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
@@ -12572,22 +12709,6 @@ App.directive('widgetCmsGithubI1', [
         };
       }],
       link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
-App.directive('widgetCmsEmbed', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/widget_cms_embed.html',
-      scope: {
-        data: '='
-      },
-      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
-        console.log($scope);
-      }],
-      link: function($rootScope, scope, element, attrs) {}
     };
   }
 ]);
@@ -12905,6 +13026,64 @@ App.directive('widgetDetailInfo', [
   }
 ]);
 
+App.directive('widgetDetailTrip', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'app/views/widget_detail_trip.html',
+      controller: ["$rootScope", "$scope", "mojioRemote", function($rootScope, $scope, mojioRemote) {
+        $scope.reset = function() {
+          return $scope.rel = {
+            users: [],
+            loadUsers: false,
+            trips: [],
+            moreTrips: false,
+            loadTrips: false,
+            events: [],
+            moreEvents: false,
+            loadEvents: false
+          };
+        };
+        $scope.reset();
+        $rootScope.$on('MojioObjectSelected', function(event, data) {
+          if (data.Type === "Trip") {
+            return $scope.reset();
+          }
+        });
+        $scope.broadcast = function(data) {
+          $rootScope.$broadcast('MojioObjectSelected', data);
+        };
+        $scope.showVehicle = function() {
+          mojioRemote.GET("Vehicles/" + $scope.data.VehicleId, null, null, null, null, function(result) {
+            return $rootScope.$broadcast('MojioObjectSelected', result);
+          });
+        };
+        $scope.showDevice = function() {
+          mojioRemote.GET("Mojios/" + $scope.data.MojioId, null, null, null, null, function(result) {
+            return $rootScope.$broadcast('MojioObjectSelected', result);
+          });
+        };
+        $scope.showRecentEvents = function() {
+          $scope.rel.loadEvents = true;
+          $scope.rel.moreEvents = false;
+          mojioRemote.GET("Trips/" + $scope.data._id + "/Events", 10, $scope.rel.events.length, null, "sortBy=Time&desc=true", function(result) {
+            $scope.rel.events = $scope.rel.events.concat(result.Data);
+            $scope.rel.loadEvents = false;
+            if (result.TotalRows > $scope.rel.events.length) {
+              return $scope.rel.moreEvents = true;
+            } else {
+              return $scope.rel.moreEvents = false;
+            }
+          });
+        };
+      }],
+      link: function($rootScope, $scope, element, attrs) {
+        $scope.data = attrs.data;
+      }
+    };
+  }
+]);
+
 App.directive('widgetDetailUser', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
@@ -12972,64 +13151,6 @@ App.directive('widgetDetailUser', [
           $scope.rel.loadEvents = true;
           $scope.rel.moreEvents = false;
           mojioRemote.GET("Users/" + $scope.data._id + "/Events", 10, $scope.rel.events.length, null, "sortBy=Time&desc=true", function(result) {
-            $scope.rel.events = $scope.rel.events.concat(result.Data);
-            $scope.rel.loadEvents = false;
-            if (result.TotalRows > $scope.rel.events.length) {
-              return $scope.rel.moreEvents = true;
-            } else {
-              return $scope.rel.moreEvents = false;
-            }
-          });
-        };
-      }],
-      link: function($rootScope, $scope, element, attrs) {
-        $scope.data = attrs.data;
-      }
-    };
-  }
-]);
-
-App.directive('widgetDetailTrip', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/widget_detail_trip.html',
-      controller: ["$rootScope", "$scope", "mojioRemote", function($rootScope, $scope, mojioRemote) {
-        $scope.reset = function() {
-          return $scope.rel = {
-            users: [],
-            loadUsers: false,
-            trips: [],
-            moreTrips: false,
-            loadTrips: false,
-            events: [],
-            moreEvents: false,
-            loadEvents: false
-          };
-        };
-        $scope.reset();
-        $rootScope.$on('MojioObjectSelected', function(event, data) {
-          if (data.Type === "Trip") {
-            return $scope.reset();
-          }
-        });
-        $scope.broadcast = function(data) {
-          $rootScope.$broadcast('MojioObjectSelected', data);
-        };
-        $scope.showVehicle = function() {
-          mojioRemote.GET("Vehicles/" + $scope.data.VehicleId, null, null, null, null, function(result) {
-            return $rootScope.$broadcast('MojioObjectSelected', result);
-          });
-        };
-        $scope.showDevice = function() {
-          mojioRemote.GET("Mojios/" + $scope.data.MojioId, null, null, null, null, function(result) {
-            return $rootScope.$broadcast('MojioObjectSelected', result);
-          });
-        };
-        $scope.showRecentEvents = function() {
-          $scope.rel.loadEvents = true;
-          $scope.rel.moreEvents = false;
-          mojioRemote.GET("Trips/" + $scope.data._id + "/Events", 10, $scope.rel.events.length, null, "sortBy=Time&desc=true", function(result) {
             $scope.rel.events = $scope.rel.events.concat(result.Data);
             $scope.rel.loadEvents = false;
             if (result.TotalRows > $scope.rel.events.length) {
@@ -13597,11 +13718,16 @@ App.directive('serviceOfferEdit', [
   }
 ]);
 
-App.directive('cmsBreadcrumb', [
+App.directive('cmsMenu', [
   'contentFactory', function(contentFactory) {
     return {
+      scope: {
+        viewmode: '=',
+        nodes: '=',
+        menuconfig: '='
+      },
       restrict: 'EA',
-      templateUrl: 'app/views/cms_breadcrumb.html',
+      templateUrl: 'app/views/cms_menu.html',
       controller: ["$scope", function($scope) {
         $scope.Content = contentFactory.Content;
         $scope.Child = contentFactory.Child;
@@ -13614,16 +13740,11 @@ App.directive('cmsBreadcrumb', [
   }
 ]);
 
-App.directive('cmsMenu', [
+App.directive('cmsBreadcrumb', [
   'contentFactory', function(contentFactory) {
     return {
-      scope: {
-        viewmode: '=',
-        nodes: '=',
-        menuconfig: '='
-      },
       restrict: 'EA',
-      templateUrl: 'app/views/cms_menu.html',
+      templateUrl: 'app/views/cms_breadcrumb.html',
       controller: ["$scope", function($scope) {
         $scope.Content = contentFactory.Content;
         $scope.Child = contentFactory.Child;

@@ -332,6 +332,8 @@
       "VOLTS":"VOLTS",
 
       "level":{
+        "UNKNOWN":"UNKNOWN"
+        "DISCONNECTED":"DISCONNECTED",
         "DEAD":"DEAD",
         "LOW":"LOW",
         "MEDIUM":"MEDIUM",

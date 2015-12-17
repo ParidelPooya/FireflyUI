@@ -264,8 +264,6 @@
                         <div>
                            <a ng-show="!row.ShowMap" ng-click="row.ShowMap=true" class="ShowMapBtn hidden-md hidden-lg">
                               <em class="fa fa-globe"></em>&nbsp; {{ "mymojio_trip.ShowRoute" | translate}}</a>
-                           <a ng-show="!row.ShowDetail" ng-click="row.ShowDetail=true" class="ShowMapBtn ml-lg">
-                              <em class="fa fa-info"></em>&nbsp; {{ "mymojio_trip.ShowDetail" | translate}}</a>
                         </div>
                         <div trip-map="trip-map" ng-if="row.ShowMap" events="tripEvents(row)" style="height:200px"></div>
                         <div trip-detail="trip-detail" ng-if="row.ShowDetail" trip="row" events="tripEvents(row)" class="ShowMapBtn"></div>

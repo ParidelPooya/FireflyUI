@@ -296,6 +296,9 @@
             "SubTitle": "PODLE UKAZATELE",
             "VOLTS": "VOLTŮ",
             "level": {
+                "UNKNOWN":"Neznámý",
+                "DISCONNECTED":"ZCELA VYBITÁ",
+
                 "DEAD": "ZCELA VYBITÁ",
                 "LOW": "NÍZKÁ",
                 "MEDIUM": "STŘEDNÍ",

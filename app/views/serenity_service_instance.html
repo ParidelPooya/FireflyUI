@@ -4,7 +4,7 @@
    </div>
 </h3>
 <div class="row">
-   <div class="col-xs-4">
+   <div class="col-xs-2">
       <table class="table table-striped">
          <thead class="bb">
             <tr>
@@ -18,13 +18,19 @@
          </tbody>
       </table>
    </div>
-   <div class="col-xs-8">
+   <div class="col-xs-10">
       <table class="table table-striped">
          <thead class="bb">
             <tr>
                <th><i ng-click="selectAllVehicles()" ng-class="{'fa-check-square-o':VehicleSelectAll,'fa-square-o':!VehicleSelectAll}" class="fa fa-square-o"></i>
                </th>
                <th>Vehicles</th>
+               <th>MIL</th>
+               <th>DTC</th>
+               <th>Locotion</th>
+               <th>Weather</th>
+               <th>Temp</th>
+               <th>Battery</th>
             </tr>
          </thead>
          <tbody>
@@ -32,6 +38,18 @@
                <th><i ng-click="row.selected=!row.selected" ng-class="{'fa-check-square-o':row.selected,'fa-square-o':!row.selected}" class="fa"></i>
                </th>
                <td>{{row.Name}}</td>
+               <td>{{row.MilStatus}}</td>
+               <td>{{row.DiagnosticCodes.length}}</td>
+               <td>
+                  <lat-lng-to-address loc="row.Location" cache="true" accuracy="3"></lat-lng-to-address>
+               </td>
+               <td>
+                  <lat-lng-to-weather type="'weather'" loc="row.Location" cache="true" accuracy="3"></lat-lng-to-weather>
+               </td>
+               <td>
+                  <lat-lng-to-weather type="'temp'" loc="row.Location" cache="true" accuracy="3"></lat-lng-to-weather>
+               </td>
+               <td>{{row.Battery.Value}}</td>
             </tr>
          </tbody>
       </table>
