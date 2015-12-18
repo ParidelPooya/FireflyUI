@@ -25,6 +25,7 @@
                <th><i ng-click="selectAllVehicles()" ng-class="{'fa-check-square-o':VehicleSelectAll,'fa-square-o':!VehicleSelectAll}" class="fa fa-square-o"></i>
                </th>
                <th>Vehicles</th>
+               <th>VIN</th>
                <th>MIL</th>
                <th>DTC</th>
                <th>Locotion</th>
@@ -38,6 +39,7 @@
                <th><i ng-click="row.selected=!row.selected" ng-class="{'fa-check-square-o':row.selected,'fa-square-o':!row.selected}" class="fa"></i>
                </th>
                <td>{{row.Name}}</td>
+               <td>{{row.VIN}}</td>
                <td>{{row.MilStatus}}</td>
                <td>{{row.DiagnosticCodes.length}}</td>
                <td>

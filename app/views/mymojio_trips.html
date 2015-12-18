@@ -204,8 +204,8 @@
                      </div>
                   </div>
                   <div class="row pt-sm pb-sm">
-                     <div class="col-xs-5 col-xs-offset-1 trip-title">{{ "mymojio_trip.Trip" | translate}} {{ "mymojio_trip.TimeStamp" | translate}}</div>
-                     <div class="col-xs-6 trip-title">{{ "mymojio_trip.TripDetails" | translate}}
+                     <div class="col-xs-6 col-xs-offset-1 trip-title">{{ "mymojio_trip.Trip" | translate}}</div>
+                     <div class="col-xs-5 trip-title">{{ "mymojio_trip.TripDetails" | translate}}
                         <div class="pull-right">
                            <span ng-click="selectAll()">
                               <span ng-show="SelectedTrips.length!=Trips.length">{{ "mymojio_trip.SelectAll" | translate}}</span>
@@ -241,7 +241,7 @@
                         <div class="line-between"></div>
                         <div class="point-end text-circle2">B</div>
                      </div>
-                     <div class="col-xs-5">
+                     <div class="col-xs-6">
                         <div ng-show="row.StartAddress">{{row.StartAddress.Address1}}, {{row.StartAddress.City}}, {{row.StartAddress.State}}</div>
                         <lat-lng-to-address ng-if="!row.EndAddress" loc="row.StartLocation" cache="true" accuracy="3"></lat-lng-to-address>
                         <span class="text-sm1">{{row.StartTime | date:'MMM d, yyyy'}} &nbsp;&nbsp; {{row.StartTime | date:'h:mm:ss a'}}</span>
@@ -251,14 +251,18 @@
                         <lat-lng-to-address ng-if="!row.EndAddress" loc="row.EndLocation" cache="true" accuracy="3"></lat-lng-to-address>
                         <span class="text-sm1">{{row.EndTime | date:'MMM d, yyyy'}} &nbsp;&nbsp; {{row.EndTime | date:'h:mm:ss a'}}</span>
                      </div>
-                     <div class="col-xs-6">
+                     <div class="col-xs-5">
                         <em ng-click="selectTrip($event,row,true)" ng-class="{'fa-check-square-o':row.selected,'fa-square-o':!row.selected}" class="fa pull-right"></em>
-                        <div class="fa-20px">
-                           <em class="fa icon-trip mt-lg fa-20px"></em>&nbsp; {{row.Distance | convertUnit:'distance':$root.app.layout.unit | number:'1'}} {{'Km' | unitTitle:$root.app.layout.unit}}</div>
-                        <div class="fa-20px">
-                           <em class="fa fa-clock-o mt-lg mb-lg fa-20px"></em>&nbsp; {{row.EndTime | duration:row.StartTime}}</div>
-                        <div ng-show="row.FuelEfficiency" class="fa-20px">
-                           <em class="icon-fuel mt-lg fa-20px"></em>&nbsp;{{row.FuelEfficiency | convertUnit:'FuelEfficiency':$root.app.layout.unit | number:'1'}} {{'liter/100km' | unitTitle:$root.app.layout.unit}}</div>
+                        <div>
+                           <em class="fa icon-trip mt-sm"></em>&nbsp; {{row.Distance | convertUnit:'distance':$root.app.layout.unit | number:'1'}} {{'Km' | unitTitle:$root.app.layout.unit}}</div>
+                        <div>
+                           <em class="fa fa-clock-o mt-sm"></em>&nbsp; {{row.EndTime | duration:row.StartTime}}</div>
+                        <div>
+                           <em class="fa fa-dashboard mt-sm mb-sm"></em>&nbsp; {{row.MaxSpeed | convertUnit:'speed':$root.app.layout.unit | number:'1'}} {{'maxSpeed' | unitTitle:$root.app.layout.unit}}</div>
+                        <div>
+                           <em class="fa fa-dashboard mt-sm mb-sm"></em>&nbsp; {{row.MaxRPM}} RPM</div>
+                        <div ng-show="row.FuelEfficiency">
+                           <em class="icon-fuel mt-lg"></em>&nbsp;{{row.FuelEfficiency | convertUnit:'FuelEfficiency':$root.app.layout.unit | number:'1'}} {{'liter/100km' | unitTitle:$root.app.layout.unit}}</div>
                      </div>
                      <div ng-if="row.hasEvents" class="col-xs-12">
                         <div>

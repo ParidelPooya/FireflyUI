@@ -213,7 +213,7 @@
     "NoTripsAvailable":"No Trips Available",
     "Trip":"Trip",
     "TimeStamp":"TimeStamp",
-    "TripDetails":"Trip Details",
+    "TripDetails":"Details",
 
     "MergeTrips":{
       "success":{
@@ -332,7 +332,7 @@
       "VOLTS":"VOLTS",
 
       "level":{
-        "UNKNOWN":"UNKNOWN"
+        "UNKNOWN":"UNKNOWN",
         "DISCONNECTED":"DISCONNECTED",
         "DEAD":"DEAD",
         "LOW":"LOW",
