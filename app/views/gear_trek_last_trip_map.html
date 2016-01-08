@@ -38,7 +38,7 @@
             <span class="bb">{{$parent.AllData.SelectedVehicle.LastTripData.EndTime | date:'MMM d, yyyy'}} &nbsp;&nbsp; {{$parent.AllData.SelectedVehicle.LastTripData.EndTime | date:'h:mm:ss a'}}</span>
          </div>
       </div>
-      <div class="row text-center mt-lg">
+      <div ng-show="$parent.AllData.SelectedVehicle.LastTripData.Distance!=0" class="row text-center mt-lg">
          <div class="col-xs-1 col-xs-offset-1">
             <em class="icon-trip"></em>
          </div>

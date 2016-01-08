@@ -1,0 +1,39 @@
+<span dropdown="dropdown" class="dropdown dropdown-list">
+   <span dropdown-toggle="dropdown-toggle">
+      <em ng-show="vehicles.length&gt;1" class="fa fa-angle-down"></em>&nbsp;{{selectedVehicle.Name || ("common.NoNameVehicle" | translate)}}</span>
+   <ul role="menu" style="top:initial" ng-show="vehicles.length&gt;1" class="dropdown-menu">
+      <li>
+         <div class="list-group">
+            <a ng-click="$event.stopPropagation()" ng-show="vehicles.length&gt;10" class="list-group-item">
+               <div class="media-box">
+                  <div class="pull-left">
+                     <div ng-attr-style="height:50px" class="cartag"></div>
+                  </div>
+                  <div class="media-box-body clearfix">
+                     <p class="m0">
+                        <em class="fa fa-search"></em>
+                        <input ng-model="VehicleSearch" />
+                     </p>
+                  </div>
+               </div>
+            </a>
+            <a ng-repeat="v in vehicles" ng-click="changeSelectedVehicle(v)" ng-show="$index&lt;=10 &amp;&amp; (VehicleSearch.length==0 || v.Name.toLowerCase().indexOf(VehicleSearch.toLowerCase())&gt;-1 || v.VIN.toLowerCase().indexOf(VehicleSearch.toLowerCase())&gt;-1)"
+            class="list-group-item">
+               <div class="media-box">
+                  <div class="pull-left">
+                     <div ng-attr-style="height:50px;background-color:{{VehicleColor(v._id)}}" class="cartag"></div>
+                  </div>
+                  <div class="media-box-body clearfix">
+                     <p class="m0">
+                        <em class="fa fa-car"></em>&nbsp; {{v.Name || ("common.NoNameVehicle" | translate) }}</p>
+                     <p class="m0 text-muted">
+                        <div ng-if="v.VIN!=null &amp;&amp; v.VIN!=''" class="small">{{("common.VIN" | translate) }}: {{v.VIN}}</div>
+                        <div ng-if="v.LicensePlate!=null" class="small">{{("common.LicensePlate" | translate) }}: {{v.LicensePlate}}</div>
+                     </p>
+                  </div>
+               </div>
+            </a>
+         </div>
+      </li>
+   </ul>
+</span>

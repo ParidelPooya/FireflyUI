@@ -9,8 +9,55 @@
       <span class="widget-byapp">{{ "gear.gear_gauge_vehicle_health.SubTitle" | translate }}</span>
    </div>
 </div>
-<div class="text-center mt-xl">
-   <h4 class="text-gray-darker text-thin widget-status mt-lg">{{HealthStatus($parent.AllData.SelectedVehicle.FaultsDetected) | translate }}</h4>
-   <h2 class="text-info num-lg">{{$parent.AllData.SelectedVehicle.Diagnostic.length || 0}}</h2>
+<div ng-if="ShowMode=='Overall'" ng-click="ChangeMode('Detail')" class="text-center mt-sm">
+   <div ng-if="$parent.AllData.SelectedVehicle.MilStatus==true" class="text-center mt0 mb-md">
+      <img src="app/img/engine-error.png" width="61" height="40" />
+   </div>
+   <div ng-if="$parent.AllData.SelectedVehicle.MilStatus==false" class="text-center mt0 mb-md">
+      <img src="app/img/engine-ok.png" width="61" height="40" />
+   </div>
+   <h4 class="text-gray-darker text-thin widget-status mt-md">{{HealthStatus($parent.AllData.SelectedVehicle.FaultsDetected) | translate }}</h4>
+   <h3 class="text-info num-lg">{{$parent.AllData.SelectedVehicle.Diagnostic.length || 0}}</h3>
    <h4 class="text-gray-darker text-thin widget-units">{{ "gear.gear_gauge_vehicle_health.TotalDtcFaults" | translate }}</h4>
+</div>
+<div ng-if="ShowMode=='Detail'" class="row pt-lg">
+   <div ng-repeat="(k,r) in $parent.AllData.SelectedVehicle.FaultsSummary" class="col-md-12 text-center mt-md mb0">
+      <div ng-show="r.count==0" class="row">
+         <div class="h5 col-xs-6 text-right mb0 pb0">{{r.title | translate}}</div>
+         <div class="h5 col-xs-5 text-left mb0 pb0">
+            <em class="fa fa-check"></em>
+         </div>
+      </div>
+      <div ng-show="r.count!=0" ng-click="ChangeMode('MoreDetail',k)" class="row">
+         <div class="h5 col-xs-6 text-right mb0 pb0">{{r.title | translate}}</div>
+         <div class="h5 col-xs-5 text-left mb0 pb0">
+            <span ng-show="r.count!=0">{{r.count}}</span>
+         </div>
+      </div>
+   </div>
+   <div class="col-md-10 col-md-offset-2">
+      <em ng-click="ChangeMode('Overall')" class="fa fa-arrow-left fa-2x"></em>
+   </div>
+</div>
+<div ng-if="ShowMode=='MoreDetail'" class="row pt-lg">
+   <div ng-repeat="d in $parent.AllData.SelectedVehicle.Diagnostic" ng-if="ShowThisCategory(d.Category)" class="col-md-12 text-center mt-md mb0">
+      <div class="row">
+         <div class="h5 col-xs-6 text-right mb0 pb0">Type</div>
+         <div class="h5 col-xs-5 text-left mb0 pb0">{{d.Type}}</div>
+      </div>
+      <div class="row">
+         <div class="h5 col-xs-6 text-right mb0 pb0">Code</div>
+         <div class="h5 col-xs-5 text-left mb0 pb0">{{d.Code}}</div>
+      </div>
+      <div class="row">
+         <div class="h5 col-xs-6 text-right mb0 pb0">Category</div>
+         <div class="h5 col-xs-5 text-left mb0 pb0">{{d.Category}}</div>
+      </div>
+      <div class="row">
+         <div class="h5 col-xs-12 text-center mb0 pb0">{{d.Description}}</div>
+      </div>
+   </div>
+   <div class="col-md-10 col-md-offset-2">
+      <em ng-click="ChangeMode('Overall')" class="fa fa-arrow-left fa-2x"></em>
+   </div>
 </div>

@@ -239,7 +239,10 @@
             "Displacement": "Obsah válců",
             "MaxHorsepower": "Max. výkon",
             "Transmission": "Převodovka",
-            "Recalls": "Znovu volá číslo"
+            "Recalls": "Znovu volá číslo",
+
+            "NotEnoughData":"Není dostatek dat",
+            "Loading":"Načítání"
         },
         "gear_trek_last_trip_map": {
             "Title": "MOJE POSLEDNÍ CESTA",

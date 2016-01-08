@@ -1,28 +1,5 @@
 <h3 class="mb0 visible-md visible-lg">
-   <span dropdown="dropdown" class="dropdown dropdown-list">
-      <span dropdown-toggle="dropdown-toggle">
-         <em ng-show="AllData.Vehicles.length&gt;1" class="fa fa-angle-down ml-lg"></em>&nbsp;{{AllData.SelectedVehicle.Name || ("common.NoNameVehicle" | translate) }}</span>
-      <ul role="menu" style="top:initial" ng-show="AllData.Vehicles.length&gt;1" class="dropdown-menu">
-         <li>
-            <div class="list-group">
-               <a ng-repeat="v in AllData.Vehicles" ng-click="changeSelectedVehicle(v)" class="list-group-item">
-                  <div class="media-box">
-                     <div class="pull-left">
-                        <em class="fa fa-car"></em>
-                     </div>
-                     <div class="media-box-body clearfix">
-                        <p class="m0">{{v.Name || ("common.NoNameVehicle" | translate) }}</p>
-                        <p class="m0 text-muted">
-                           <small ng-if="v.VIN!=null &amp;&amp; v.VIN!=''">{{"common.VIN" | translate }}: {{v.VIN}}</small>
-                           <small ng-if="v.LicensePlate!=null">{{"common.LicensePlate" | translate }}: {{v.LicensePlate}}</small>
-                        </p>
-                     </div>
-                  </div>
-               </a>
-            </div>
-         </li>
-      </ul>
-   </span>
+   <vehicle-dropdown selected-vehicle="AllData.SelectedVehicle" vehicles="AllData.Vehicles"></vehicle-dropdown>
    <div class="pull-right">
       <span ng-if="!AllEvents" class="mr-lg"><i class="fa fa-spinner fa-spin text-gray"></i>{{ "mymojio_trip.LoadingHeatMap" | translate}}</span>
       <span dropdown="dropdown" ng-if="AllEvents" class="dropdown dropdown-list mr-lg">
@@ -92,30 +69,7 @@
    </div>
 </h3>
 <div class="hidden-md hidden-lg">
-   <span dropdown="dropdown" class="dropdown dropdown-list">
-      <span dropdown-toggle="dropdown-toggle">
-         <em ng-show="AllData.Vehicles.length&gt;1" class="fa fa-angle-down ml-lg"></em>&nbsp;{{AllData.SelectedVehicle.Name || ("common.NoNameVehicle" | translate) }}</span>
-      <ul role="menu" style="top:initial" ng-show="AllData.Vehicles.length&gt;1" class="dropdown-menu">
-         <li>
-            <div class="list-group">
-               <a ng-repeat="v in AllData.Vehicles" ng-click="changeSelectedVehicle(v)" class="list-group-item">
-                  <div class="media-box">
-                     <div class="pull-left">
-                        <em class="fa fa-car"></em>
-                     </div>
-                     <div class="media-box-body clearfix">
-                        <p class="m0">{{v.Name || ("common.NoNameVehicle" | translate) }}</p>
-                        <p class="m0 text-muted">
-                           <small ng-if="v.VIN!=null &amp;&amp; v.VIN!=''">{{"common.VIN" | translate }}: {{v.VIN}}</small>
-                           <small ng-if="v.LicensePlate!=null">{{"common.LicensePlate" | translate }}: {{v.LicensePlate}}</small>
-                        </p>
-                     </div>
-                  </div>
-               </a>
-            </div>
-         </li>
-      </ul>
-   </span>
+   <vehicle-dropdown selected-vehicle="AllData.SelectedVehicle" vehicles="AllData.Vehicles"></vehicle-dropdown>
    <br/>
    <span ng-if="!AllEvents" class="mr-lg"><i class="fa fa-spinner fa-spin text-gray"></i>{{ "mymojio_trip.LoadingHeatMap" | translate}}</span>
    <span dropdown="dropdown" ng-if="AllEvents" class="dropdown dropdown-list mr-lg">
@@ -195,7 +149,7 @@
                   <div class="row bb">
                      <div class="col-xs-11 col-xs-offset-1 trip-title mb-sm">{{Trips.length}} {{ "mymojio_trip.Trips" | translate}}
                         <br/>{{SelectedTrips.length}} {{ "mymojio_trip.Selected" | translate}}
-                        <span ng-show="SelectedTrips.length&gt;1" are-you-sure="mergeTrips()" class="pull-right ml-sm trip-title mb-sm">
+                        <span ng-show="true==false &amp;&amp; SelectedTrips.length&gt;1" are-you-sure="mergeTrips()" class="pull-right ml-sm trip-title mb-sm">
                            <em class="fa fa-compress"></em>&nbsp;{{ "mymojio_trip.Merge" | translate}}</span>
                         <span ng-show="SelectedTrips.length&gt;0" are-you-sure="deleteTrips()" class="pull-right ml-sm trip-title mb-sm">
                            <em class="fa fa-trash-o"></em>&nbsp;{{ "mymojio_trip.Delete" | translate}}</span>
@@ -253,15 +207,15 @@
                      </div>
                      <div class="col-xs-5">
                         <em ng-click="selectTrip($event,row,true)" ng-class="{'fa-check-square-o':row.selected,'fa-square-o':!row.selected}" class="fa pull-right"></em>
-                        <div>
+                        <div popover="Distance" popover-placement="left" popover-trigger="mouseenter" ng-show="row.Distance!=0">
                            <em class="fa icon-trip mt-sm"></em>&nbsp; {{row.Distance | convertUnit:'distance':$root.app.layout.unit | number:'1'}} {{'Km' | unitTitle:$root.app.layout.unit}}</div>
-                        <div>
+                        <div popover="Duration" popover-placement="left" popover-trigger="mouseenter">
                            <em class="fa fa-clock-o mt-sm"></em>&nbsp; {{row.EndTime | duration:row.StartTime}}</div>
-                        <div>
+                        <div popover="Max Speed" popover-placement="left" popover-trigger="mouseenter">
                            <em class="fa fa-dashboard mt-sm mb-sm"></em>&nbsp; {{row.MaxSpeed | convertUnit:'speed':$root.app.layout.unit | number:'1'}} {{'maxSpeed' | unitTitle:$root.app.layout.unit}}</div>
-                        <div>
+                        <div popover="Max RPM" popover-placement="left" popover-trigger="mouseenter">
                            <em class="fa fa-dashboard mt-sm mb-sm"></em>&nbsp; {{row.MaxRPM}} RPM</div>
-                        <div ng-show="row.FuelEfficiency">
+                        <div popover="Fuel Efficiency" popover-placement="left" popover-trigger="mouseenter" ng-show="row.FuelEfficiency">
                            <em class="icon-fuel mt-lg"></em>&nbsp;{{row.FuelEfficiency | convertUnit:'FuelEfficiency':$root.app.layout.unit | number:'1'}} {{'liter/100km' | unitTitle:$root.app.layout.unit}}</div>
                      </div>
                      <div ng-if="row.hasEvents" class="col-xs-12">
@@ -270,7 +224,6 @@
                               <em class="fa fa-globe"></em>&nbsp; {{ "mymojio_trip.ShowRoute" | translate}}</a>
                         </div>
                         <div trip-map="trip-map" ng-if="row.ShowMap" events="tripEvents(row)" style="height:200px"></div>
-                        <div trip-detail="trip-detail" ng-if="row.ShowDetail" trip="row" events="tripEvents(row)" class="ShowMapBtn"></div>
                      </div>
                   </div>
                </td>

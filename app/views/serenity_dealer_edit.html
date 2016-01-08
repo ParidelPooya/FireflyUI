@@ -1,0 +1,35 @@
+<h3>
+   <span ng-show="DataReadyState">
+      <img width="32" height="32" src="{{Dealer.icon}}" ng-click="" image-uploader="Dealer.icon" class="bt bl br bb" />&nbsp;<a href="" editable-text="Dealer.name" buttons="no">{{ Dealer.name || 'Enter Dealer Name' }}</a>
+      <div class="pull-right m-sm">
+         <button are-you-sure="SaveDealer()" class="btn btn-primary">Save</button>
+         <button are-you-sure="DiscardChange()" class="btn btn-warning">Discard</button>
+         <button are-you-sure="DeleteDealer()" class="btn btn-danger">Delete</button>
+      </div>
+   </span>
+   <span ng-show="!DataReadyState"><i class="fa fa-spinner fa-spin text-gray"></i>&nbsp; Loading . . .</span>
+</h3>
+<div ng-show="DataReadyState" class="well">
+   <json-formatter open="0" json="Dealer"></json-formatter>
+</div>
+<div ng-show="DataReadyState" class="well">
+   <ul class="fa-ul">
+      <li><i class="fa-li fa fa-align-justify"></i>address:&nbsp;<a href="" editable-text="Dealer.address" buttons="no">{{ Dealer.address || 'Enter Dealer address' }}</a>
+      </li>
+      <li><i class="fa-li fa fa-align-justify"></i>phone:&nbsp;<a href="" editable-text="Dealer.phone" buttons="no">{{ Dealer.phone || 'Enter Dealer phone' }}</a>
+      </li>
+      <li><i class="fa-li fa fa-align-justify"></i>email:&nbsp;<a href="" editable-text="Dealer.email" buttons="no">{{ Dealer.email || 'Enter Dealer phone' }}</a>
+      </li>
+      <li><i class="fa-li fa fa-picture-o"></i>Artwork:&nbsp;
+         <img image-modal="Dealer.artwork" style="max-width:32px;height:auto" src="{{Dealer.artwork}}" ng-click="" class="bt bl br bb" /><a ng-click="" image-uploader="Dealer.artwork">Change</a>
+      </li>
+      <li><i class="fa-li fa fa-align-justify"></i>lat:&nbsp;<a href="" editable-text="Dealer.lat" buttons="no">{{ Dealer.lat || 'Enter lat' }}</a>
+      </li>
+      <li><i class="fa-li fa fa-align-justify"></i>lat:&nbsp;<a href="" editable-text="Dealer.lon" buttons="no">{{ Dealer.lon || 'Enter lon' }}</a>
+      </li>
+      <li><i class="fa-li fa fa-align-justify"></i>MojioUserId:&nbsp;<a href="" editable-text="Dealer.MojioUserId" buttons="no">{{ Dealer.MojioUserId || 'Enter MojioUserId' }}</a>
+      </li>
+      <li><i class="fa-li fa fa-align-justify"></i>MojioGroupId:&nbsp;<a href="" editable-text="Dealer.MojioGroupId" buttons="no">{{ Dealer.MojioGroupId || 'Enter MojioGroupId' }}</a>
+      </li>
+   </ul>
+</div>

@@ -14,7 +14,7 @@ if (typeof $ === 'undefined') {
   throw new Error('This application\'s JavaScript requires jQuery');
 }
 
-App = angular.module('angle', ['smart-table', 'ngRoute', 'ngAnimate', 'ngStorage', 'ngCookies', 'pascalprecht.translate', 'ui.bootstrap', 'ui.router', 'cfp.loadingBar', 'ngSanitize', 'ngResource', 'ui.utils', 'toaster', 'jsonFormatter', 'angularRangeSlider', 'xeditable', 'ngMessages', 'lrDragNDrop']).run([
+App = angular.module('angle', ['templates', 'smart-table', 'ngRoute', 'ngAnimate', 'ngStorage', 'ngCookies', 'pascalprecht.translate', 'ui.bootstrap', 'ui.router', 'cfp.loadingBar', 'ngSanitize', 'ngResource', 'ui.utils', 'toaster', 'jsonFormatter', 'angularRangeSlider', 'xeditable', 'ngMessages', 'lrDragNDrop']).run([
   'mojioGlobal', '$rootScope', '$state', '$stateParams', '$window', '$templateCache', '$translate', 'WebsiteSelectionHelpers', 'editableOptions', 'editableThemes', function(mojioGlobal, $rootScope, $state, $stateParams, $window, $templateCache, $translate, WebsiteSelectionHelpers, editableOptions, editableThemes) {
     var today, todayString, yesterday, yesterdayString;
     editableThemes.bs3.inputClass = 'input-sm';
@@ -311,9 +311,28 @@ App = angular.module('angle', ['smart-table', 'ngRoute', 'ngAnimate', 'ngStorage
             'sref': 'serenity.sinstance',
             'icon': 'fa fa-wrench'
           }, {
+            'text': 'Dealer',
+            'sref': 'serenity.dealer',
+            'icon': 'fa fa-bank'
+          }, {
             'text': 'Situation',
             'sref': 'serenity.situation',
             'icon': 'fa fa-balance-scale'
+          }
+        ]
+      },
+      'FireflyOnboarding': {
+        ProjectName: "FireflyOnboarding",
+        BackEnd: "",
+        SidebarMenu: [
+          {
+            'text': 'Onboarding',
+            'sref': 'fonboarding.onboarding',
+            'icon': 'fa fa-beer'
+          }, {
+            'text': 'Choose Dealer',
+            'sref': 'fonboarding.choosedealer',
+            'icon': 'fa fa-beer'
           }
         ]
       }
@@ -349,226 +368,252 @@ App.config([
     $stateProvider.state('admin', {
       url: '/admin',
       abstract: true,
-      templateUrl: helper.basepath('app.html'),
+      templateUrl: 'app.html',
       controller: 'AppController'
     }).state('admin.dashboard', {
       url: '/dashboard',
       title: 'Admin Dashboard',
-      templateUrl: helper.basepath('admin_dashboard.html')
+      templateUrl: 'admin_dashboard.html'
     }).state('admin.devicelist', {
       url: '/devicelist/:search',
       title: 'Device List',
-      templateUrl: helper.basepath('devicelist.html')
+      templateUrl: 'devicelist.html'
     }).state('admin.devicedetail', {
       url: '/devicedetail/:id',
       title: 'Device Management',
-      templateUrl: helper.basepath('devicedetail.html')
+      templateUrl: 'devicedetail.html'
     }).state('admin.configlist', {
       url: '/configlist',
       title: 'Config List',
-      templateUrl: helper.basepath('configlist.html')
+      templateUrl: 'configlist.html'
     }).state('admin.configdetail', {
       url: '/configdetail/:id',
       title: 'Config Detail',
-      templateUrl: helper.basepath('configdetail.html')
+      templateUrl: 'configdetail.html'
     }).state('admin.firmwarelist', {
       url: '/firmwarelist',
       title: 'Firmware List',
-      templateUrl: helper.basepath('firmwarelist.html')
+      templateUrl: 'firmwarelist.html'
     }).state('admin.firmwaredetail', {
       url: '/firmwaredetail/:id',
       title: 'Firmware Detail',
-      templateUrl: helper.basepath('firmwaredetail.html')
+      templateUrl: 'firmwaredetail.html'
     }).state('admin.simcardlist', {
       url: '/simcardlist',
       title: 'SIM Card List',
-      templateUrl: helper.basepath('simcard.html')
+      templateUrl: 'simcard.html'
     }).state('admin.adminsearch', {
       url: '/search/:key',
       title: 'Admin Search',
-      templateUrl: helper.basepath('adminsearch.html')
+      templateUrl: 'adminsearch.html'
     }).state('admin.operations', {
       url: '/operations',
       title: 'Operation List',
-      templateUrl: helper.basepath('operations_list.html')
+      templateUrl: 'operations_list.html'
     }).state('admin.importdevices', {
       url: '/importdevices',
       title: 'Import Mojio Devices',
-      templateUrl: helper.basepath('import_devices.html')
+      templateUrl: 'import_devices.html'
     }).state('admin.importsims', {
       url: '/importsims',
       title: 'Import SIMs',
-      templateUrl: helper.basepath('import_sims.html')
+      templateUrl: 'import_sims.html'
     }).state('admin.tcuvisualizer', {
       url: '/tcuvisualizer',
       title: 'TCU Visualizer',
-      templateUrl: helper.basepath('tcu_visualizer.html')
+      templateUrl: 'tcu_visualizer.html'
     }).state('admin.exportevents', {
       url: '/exportevents',
       title: 'Export Events',
-      templateUrl: helper.basepath('export_events.html')
+      templateUrl: 'export_events.html'
     });
     $stateProvider.state('app', {
       url: '/app',
       abstract: true,
-      templateUrl: helper.basepath('app.html'),
+      templateUrl: 'app.html',
       controller: 'AppController'
     }).state('app.portal', {
       url: '/portal/:pid/:full?',
       title: 'Portal',
-      templateUrl: helper.basepath('portal.html')
+      templateUrl: 'portal.html'
     });
     $stateProvider.state('my', {
       url: '/my',
       abstract: true,
-      templateUrl: helper.basepath('mymojio.html'),
+      templateUrl: 'mymojio.html',
       controller: 'AppController'
     }).state('my.dashboard', {
       url: '/dashboard',
       title: 'MyMojio Dashboard',
-      templateUrl: helper.basepath('mymojio_dashboard.html'),
+      templateUrl: 'mymojio_dashboard.html',
       controller: 'myMojioDashboardController'
     }).state('my.trips', {
       url: '/mymojiotrips',
       title: 'My Trips',
-      templateUrl: helper.basepath('mymojio_trips.html'),
+      templateUrl: 'mymojio_trips.html',
       controller: 'myMojioTripsController'
     }).state('my.eventdetail', {
       url: '/eventdetail',
       title: 'Notification Detail',
-      templateUrl: helper.basepath('event_detail.html')
+      templateUrl: 'event_detail.html'
     }).state('my.managedevice', {
       url: '/managedevice',
       title: 'Manage Device',
-      templateUrl: helper.basepath('manage_device.html'),
+      templateUrl: 'manage_device.html',
       controller: 'manageDeviceController'
     }).state('my.support', {
       url: '/support',
       title: 'My Support Resources',
-      templateUrl: helper.basepath('mymojio_support.html'),
+      templateUrl: 'mymojio_support.html',
       controller: 'mymojioSupportController'
     });
     $stateProvider.state('my2', {
       url: '/my2',
       abstract: true,
-      templateUrl: helper.basepath('mymojio.html'),
+      templateUrl: 'mymojio.html',
       controller: 'AppController'
     }).state('my2.trips', {
       url: '/mymojio2trips',
       title: 'My Trips',
-      templateUrl: helper.basepath('mymojio2_trips.html'),
+      templateUrl: 'mymojio2_trips.html',
       controller: 'myMojio2TripsController'
     });
     $stateProvider.state('admin2', {
       url: '/admin2',
       abstract: true,
-      templateUrl: helper.basepath('mymojio.html'),
+      templateUrl: 'mymojio.html',
       controller: 'AppController'
     }).state('admin2.search', {
       url: '/search',
       title: 'Admin Search',
-      templateUrl: helper.basepath('admin2_search.html'),
+      templateUrl: 'admin2_search.html',
       controller: 'admin2SearchController'
     });
     $stateProvider.state('dev', {
       url: '/dev',
       abstract: true,
-      templateUrl: helper.basepath('simulator.html'),
+      templateUrl: 'simulator.html',
       controller: 'AppController'
     }).state('dev.manageapps', {
       url: '/manageapps',
       title: 'Manage Apps',
-      templateUrl: helper.basepath('manage_apps.html')
+      templateUrl: 'manage_apps.html'
     }).state('dev.appide', {
       url: '/appide/:id',
       title: 'Application IDE',
-      templateUrl: helper.basepath('app_ide.html')
+      templateUrl: 'app_ide.html'
     }).state('dev.managepages', {
       url: '/managepages/:id',
       title: 'Manage Pages',
-      templateUrl: helper.basepath('manage_pages.html')
+      templateUrl: 'manage_pages.html'
     }).state('dev.simulator', {
       url: '/simulator',
       title: 'Simulator',
-      templateUrl: helper.basepath('simulator.html')
+      templateUrl: 'simulator.html'
     }).state('dev.simplesimulator', {
       url: '/simplesimulator',
       title: 'Simple Simulator',
-      templateUrl: helper.basepath('simple_simulator.html')
+      templateUrl: 'simple_simulator.html'
     }).state('dev.multisimulator', {
       url: '/multisimulator',
       title: 'Multi Vehicle Simulator',
-      templateUrl: helper.basepath('multi_simulator.html')
+      templateUrl: 'multi_simulator.html'
     }).state('dev.eventsimulator', {
       url: '/eventsimulator',
       title: 'Event Simulator',
-      templateUrl: helper.basepath('event_simulator.html')
+      templateUrl: 'event_simulator.html'
     }).state('dev.sim2', {
       url: '/sim2',
       title: 'Simulator 2 Advanced',
-      templateUrl: helper.basepath('sim2_adv.html')
+      templateUrl: 'sim2_adv.html'
     }).state('dev.sim2multi', {
       url: '/sim2multi',
       title: 'Simulator 2 Multi',
-      templateUrl: helper.basepath('sim2_multi.html')
+      templateUrl: 'sim2_multi.html'
     }).state('dev.dummyvehicles', {
       url: '/dummyvehicles',
       title: 'Manage Dummy Vehicles',
-      templateUrl: helper.basepath('dummy_vehicles.html')
+      templateUrl: 'dummy_vehicles.html'
     }).state('dev.content', {
       url: '/content/:uri',
       title: 'Content Viewer',
-      templateUrl: helper.basepath('content.html'),
+      templateUrl: 'content.html',
       controller: 'contentController'
     }).state('dev.codewizard', {
       url: '/codewizard/:uri',
       title: 'Code Wizard',
-      templateUrl: helper.basepath('code_wizard.html')
+      templateUrl: 'code_wizard.html'
     }).state('dev.obs', {
       url: '/obs',
       title: 'Observer Test',
-      templateUrl: helper.basepath('observe.html')
+      templateUrl: 'observe.html'
     });
     $stateProvider.state('fleet', {
       url: '/fleet',
       abstract: true,
-      templateUrl: helper.basepath('app.html'),
+      templateUrl: 'app.html',
       controller: 'AppController'
     }).state('fleet.dashboard', {
       url: '/fleet_dashboard',
       title: 'Fleet Dashboard',
-      templateUrl: helper.basepath('fleet_dashboard.html')
+      templateUrl: 'fleet_dashboard.html'
     });
     $stateProvider.state('serenity', {
       url: '/serenity',
       abstract: true,
-      templateUrl: helper.basepath('mymojio.html'),
+      templateUrl: 'mymojio.html',
       controller: 'AppController'
     }).state('serenity.service', {
       url: '/service',
       title: 'Service Editor',
-      templateUrl: helper.basepath('serenity_service.html'),
+      templateUrl: 'serenity_service.html',
       controller: 'serenityServiceController'
     }).state('serenity.service_edit', {
       url: '/service_edit/:id',
       title: 'Service Editor',
-      templateUrl: helper.basepath('serenity_service_edit.html'),
+      templateUrl: 'serenity_service_edit.html',
       controller: 'serenityServiceEditController'
     }).state('serenity.situation', {
       url: '/situation',
       title: 'Situation Editor',
-      templateUrl: helper.basepath('serenity_situation.html'),
+      templateUrl: 'serenity_situation.html',
       controller: 'serenitySituationController'
     }).state('serenity.situation_edit', {
       url: '/situation_edit/:id',
       title: 'Situation Editor',
-      templateUrl: helper.basepath('serenity_situation_edit.html'),
+      templateUrl: 'serenity_situation_edit.html',
       controller: 'serenitySituationEditController'
     }).state('serenity.sinstance', {
       url: '/sinstance',
       title: 'Service Instance',
-      templateUrl: helper.basepath('serenity_service_instance.html'),
+      templateUrl: 'serenity_service_instance.html',
       controller: 'serenityServiceInstanceController'
+    }).state('serenity.dealer', {
+      url: '/sdealer',
+      title: 'Dealer Management',
+      templateUrl: 'serenity_dealer.html',
+      controller: 'serenityDealerController'
+    }).state('serenity.dealer_edit', {
+      url: '/sdealer_edit/:id',
+      title: 'Dealer Management',
+      templateUrl: 'serenity_dealer_edit.html',
+      controller: 'serenityDealerEditController'
+    });
+    $stateProvider.state('fonboarding', {
+      url: '/fonboarding',
+      abstract: true,
+      templateUrl: 'mymojio.html',
+      controller: 'AppController'
+    }).state('fonboarding.choosedealer', {
+      url: '/choosedealer',
+      title: 'Choose Dealer',
+      templateUrl: 'fo_choose_dealer.html',
+      controller: 'foChooseDealerController'
+    }).state('fonboarding.onboarding', {
+      url: '/onboarding',
+      title: 'Onboarding',
+      templateUrl: 'fo_onboarding.html',
+      controller: 'foOnboardingController'
     });
   }
 ]).config([
@@ -1165,28 +1210,23 @@ App.controller('SidebarTimeline', [
   '$rootScope', '$scope', '$state', '$http', '$timeout', 'Utils', 'myMojioFactory', function($rootScope, $scope, $state, $http, $timeout, Utils, myMojioFactory) {
     var getNotifications;
     $scope.Notifications = [];
+    $scope.NotificationStatus = "Loading";
     getNotifications = function() {
-      myMojioFactory.AllVehicleNotifications(20).then(function(data) {
+      myMojioFactory.AllVehicleNotifications(16).then(function(data) {
         $scope.Notifications = data;
+        $scope.NotificationStatus = "Done";
         $timeout((function() {
           return getNotifications();
-        }), 15000);
+        }), 30000);
       });
     };
     $scope.VehicleName = function(id) {
-      var i, len, ref, title, v;
+      var title, v;
       title = null;
-      ref = myMojioFactory.Content.Vehicles;
-      for (i = 0, len = ref.length; i < len; i++) {
-        v = ref[i];
-        if (v._id === id) {
-          if (typeof v.Name !== "undefined" && v.Name !== null && v.Name !== "") {
-            title = v.Name;
-          }
-          break;
-        }
-      }
-      if (title === null) {
+      v = myMojioFactory.Content.VehiclesObj[id];
+      if (typeof v !== "undefined" && typeof v.Name !== "undefined" && v.Name !== null && v.Name !== "") {
+        title = v.Name;
+      } else {
         title = "New Car";
       }
       return title;
@@ -1264,7 +1304,7 @@ App.directive('latLngToAddress', [
 ]);
 
 App.directive('latLngToWeather', [
-  'sessionStorage', '$http', '$compile', function(sessionStorage, $http, $compile) {
+  'sessionStorage', '$http', '$compile', 'mojioRemote2', function(sessionStorage, $http, $compile, mojioRemote2) {
     return {
       restrict: 'E',
       replace: true,
@@ -1297,14 +1337,18 @@ App.directive('latLngToWeather', [
               return;
             }
           }
-          $http.jsonp("http://api.openweathermap.org/data/2.5/weather?callback=JSON_CALLBACK&lat=" + Lat + "&lon=" + Lng + "&appid=a05b8aa681d54f2a4188807c3e84a1ce").success(function(result) {
-            var img;
-            if (scope.type === "weather") {
-              img = "<img src='http://openweathermap.org/img/w/" + result.weather[0].icon + ".png'>";
-              element.html(img);
-              return $compile(element.contents())(scope);
-            } else if (scope.type === "temp") {
-              return element.text(Math.round(result.main.temp - 273.15));
+          mojioRemote2.GET({
+            endpoint: "firefly",
+            operation: "weather/lat=" + Lat + "&lon=" + Lng,
+            onSuccess: function(result) {
+              var img;
+              if (scope.type === "weather") {
+                img = "<img src='http://openweathermap.org/img/w/" + result.weather[0].icon + ".png'>";
+                element.html(img);
+                return $compile(element.contents())(scope);
+              } else if (scope.type === "temp") {
+                return element.text(Math.round(result.main.temp - 273.15));
+              }
             }
           });
         });
@@ -2157,7 +2201,7 @@ App.directive('toggleState', [
 
 App.factory('SerenityModels', [
   function() {
-    var EmptyPic, Service, ServiceAdvice, ServiceOffer, ServiceTask, Situation, SituationEvent;
+    var Dealer, EmptyPic, Service, ServiceAdvice, ServiceOffer, ServiceTask, Situation, SituationEvent;
     EmptyPic = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQImWP4//8/AAX+Av5Y8msOAAAAAElFTkSuQmCC";
     Service = {
       "name": "",
@@ -2224,13 +2268,26 @@ App.factory('SerenityModels', [
       "State": false,
       "Conjunction": "and"
     };
+    Dealer = {
+      "name": "",
+      "address": "",
+      "phone": "",
+      "email": "",
+      "artwork": "",
+      "icon": "",
+      "lat": "",
+      "lon": "",
+      "MojioUserId": "",
+      "MojioGroupId": ""
+    };
     return {
       Service: Service,
       ServiceAdvice: ServiceAdvice,
       ServiceOffer: ServiceOffer,
       ServiceTask: ServiceTask,
       Situation: Situation,
-      SituationEvent: SituationEvent
+      SituationEvent: SituationEvent,
+      Dealer: Dealer
     };
   }
 ]);
@@ -2284,7 +2341,7 @@ App.provider('WebsiteSelectionHelpers', [
         },
         SelectMenu: function(host, cref) {
           var defaultMenu, i, l, len, list;
-          list = [["simulator.moj.io", "Simulator2"], ["my2.moj.io", "My"], ["my.moj.io", "My"], ["preview.admin.moj.io", "Admin"], ["staging-my.moj.io", "My"], ["preview.my.moj.io", "My"], ["preview.developer.moj.io", "Developer"], ["preview.demo.moj.io", "Demo"], ["preview.simulator.moj.io", "Simulator"], ["staging-simulator.moj.io", "Simulator2"], ["trial-simulator.moj.io", "Simulator2"], ["prod-simulator.moj.io", "Simulator2"], ["staging-admin.moj.io", "Admin2"], ["cz-simulator.moj.io", "Simulator2"], ["cz-my.moj.io", "My"], ["eu-simulator.moj.io", "Simulator2"], ["eu-my.moj.io", "My"], ["staging-cz-my.moj.io", "My"], ["paridelpooya.github.io/FireflyUI", "Serenity"], ["localhost", "Serenity"]];
+          list = [["simulator.moj.io", "Simulator2"], ["my2.moj.io", "My"], ["my.moj.io", "My"], ["preview.admin.moj.io", "Admin"], ["staging-my.moj.io", "My"], ["preview.my.moj.io", "My"], ["preview.developer.moj.io", "Developer"], ["preview.demo.moj.io", "Demo"], ["preview.simulator.moj.io", "Simulator"], ["staging-simulator.moj.io", "Simulator2"], ["trial-simulator.moj.io", "Simulator2"], ["prod-simulator.moj.io", "Simulator2"], ["staging-admin.moj.io", "Admin2"], ["cz-simulator.moj.io", "Simulator2"], ["cz-my.moj.io", "My"], ["eu-simulator.moj.io", "Simulator2"], ["eu-my.moj.io", "My"], ["staging-cz-my.moj.io", "My"], ["paridelpooya.github.io/FireflyUI", "Serenity"], ["localhost", "FireflyOnboarding"]];
           defaultMenu = "My";
           for (i = 0, len = list.length; i < len; i++) {
             l = list[i];
@@ -2617,93 +2674,7 @@ App.factory('contentFactory', [
 App.factory('googlemapFactory', [
   function() {
     var MapStyle;
-    MapStyle = [
-      {
-        "featureType": "administrative",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on"
-          }, {
-            "saturation": -100
-          }, {
-            "lightness": 20
-          }
-        ]
-      }, {
-        "featureType": "landscape.man_made",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "simplified"
-          }, {
-            "saturation": -60
-          }, {
-            "lightness": 10
-          }
-        ]
-      }, {
-        "featureType": "landscape.natural",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "simplified"
-          }, {
-            "saturation": -60
-          }, {
-            "lightness": 60
-          }
-        ]
-      }, {
-        "featureType": "poi",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "off"
-          }, {
-            "saturation": -100
-          }, {
-            "lightness": 60
-          }
-        ]
-      }, {
-        "featureType": "road",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on"
-          }, {
-            "saturation": -100
-          }, {
-            "lightness": 40
-          }
-        ]
-      }, {
-        "featureType": "transit",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "off"
-          }, {
-            "saturation": -100
-          }, {
-            "lightness": 60
-          }
-        ]
-      }, {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on"
-          }, {
-            "saturation": -10
-          }, {
-            "lightness": 30
-          }
-        ]
-      }
-    ];
+    MapStyle = [];
     return {
       MapStyle: MapStyle
     };
@@ -3062,17 +3033,6 @@ App.factory('mojioGear', [
             Size: [4, 3],
             Color: '#ffffff',
             BGColor: '#42B6E9',
-            SupportedSize: [[1, 1], [2, 2]],
-            Data: {},
-            SelBGColor: '#484848'
-          }, {
-            Portlet: 'gear-gauge-last-diagnostics',
-            Title: 'Last Diagnostics',
-            Desc: 'View Last Diagnostics',
-            Icon: 'icon-health',
-            Size: [4, 3],
-            Color: '#ffffff',
-            BGColor: '#484848',
             SupportedSize: [[1, 1], [2, 2]],
             Data: {},
             SelBGColor: '#484848'
@@ -3726,243 +3686,21 @@ App.factory('mojioRemote2', [
   }
 ]);
 
-App.factory('myMojio2Factory', [
-  '$http', 'mojioRemote2', '$q', '$timeout', function($http, mojioRemote, $q, $timeout) {
-    var CheckForVehicleNewData, Clear, Content, GetFaultsDetail, GetVehicleInformation, LastTripEvents, SetTimeoutForVehicleNewData, VehicleServices, VehicleTimer, changeSelectedVehicle, forcePrepareData, getLastTrip, prepareData, processVehiclesData;
-    Content = {
-      Vehicles: [],
-      SelectedVehicle: null,
-      Devices: [],
-      VehiclesWithFaults: []
-    };
-    Clear = function() {
-      Content.Vehicles = [];
-      Content.SelectedVehicle = null;
-      Content.Devices = [];
-      Content.VehiclesWithFaults = [];
-    };
-    changeSelectedVehicle = function(vehicle) {
-      Content.SelectedVehicle = vehicle;
-      if (vehicle === null) {
-        return;
-      }
-      if (typeof vehicle.LastTripData === "undefined") {
-        getLastTrip(vehicle);
-      }
-    };
-    getLastTrip = function(vehicle) {
-      var LastTripId;
-      LastTripId = "";
-      if (typeof vehicle.CurrentTrip !== "undefined" && vehicle.CurrentTrip !== "") {
-        LastTripId = vehicle.CurrentTrip;
-      } else if (typeof vehicle.LastTrip !== "undefined" && vehicle.LastTrip !== "") {
-        LastTripId = vehicle.LastTrip;
-      }
-      if (LastTripId === "") {
-        return;
-      }
-      mojioRemote2.GET({
-        operation: "trips/" + LastTripId,
-        onSuccess: function(res) {
-          return vehicle.LastTripData = res;
-        }
-      });
-    };
-    VehicleServices = function() {
-      var VIN, deferred;
-      deferred = $q.defer();
-      VIN = "0";
-      if (typeof Content.SelectedVehicle.VIN !== "undefined" && Content.SelectedVehicle.VIN !== null) {
-        VIN = Content.SelectedVehicle.VIN;
-      }
-      mojioRemote2.GET({
-        operation: "vehicles/" + Content.SelectedVehicle._id + "/vin",
-        onSuccess: function(res) {
-          return deferred.resolve(res);
-        },
-        onError: function() {
-          return deferred.resolve([]);
-        }
-      });
-      return deferred.promise;
-    };
-    LastTripEvents = function() {
-      var LastTripId, deferred;
-      deferred = $q.defer();
-      LastTripId = "";
-      if (typeof Content.SelectedVehicle.CurrentTrip !== "undefined" && Content.SelectedVehicle.CurrentTrip !== "") {
-        LastTripId = Content.SelectedVehicle.CurrentTrip;
-      } else if (typeof Content.SelectedVehicle.LastTrip !== "undefined" && Content.SelectedVehicle.LastTrip !== "") {
-        LastTripId = Content.SelectedVehicle.LastTrip;
-      }
-      if (LastTripId !== "") {
-        mojioRemote.GET("Trips/" + LastTripId + "/Events", 3000, null, null, "sortBy=Time&desc=true", function(result) {
-          return deferred.resolve(result.Data);
-        });
-      } else {
-        $timeout((function() {
-          return deferred.resolve([]);
-        }), 0);
-      }
-      return deferred.promise;
-    };
-    VehicleTimer = null;
-    SetTimeoutForVehicleNewData = function() {
-      if (VehicleTimer !== null) {
-        $timeout.cancel(VehicleTimer);
-      }
-      VehicleTimer = $timeout((function() {
-        return CheckForVehicleNewData();
-      }), 15000);
-    };
-    CheckForVehicleNewData = function() {
-      if (Content.SelectedVehicle !== null) {
-        mojioRemote.GET("Vehicles/" + Content.SelectedVehicle._id, null, null, null, null, function(result) {
-          var NewFaults;
-          if (result._id !== Content.SelectedVehicle._id) {
-            SetTimeoutForVehicleNewData();
-            return;
-          }
-          if (result.LastContactTime === Content.SelectedVehicle.LastContactTime) {
-            SetTimeoutForVehicleNewData();
-            return;
-          }
-          NewFaults = false;
-          if (JSON.stringify(result.DiagnosticCodes) !== JSON.stringify(Content.SelectedVehicle)) {
-            NewFaults = true;
-          }
-          Content.SelectedVehicle = result;
-          getLastTrip(Content.SelectedVehicle);
-          if (NewFaults) {
-            GetFaultsDetail(Content.SelectedVehicle);
-          }
-          SetTimeoutForVehicleNewData();
-        });
-      }
-    };
-    forcePrepareData = function(callback) {
-      Clear();
-      prepareData(callback);
-    };
-    processVehiclesData = function(data) {
-      var i, len, ref, v;
-      Content.Vehicles = angular.copy(data);
-      Content.Vehicles.sort(function(a, b) {
-        var diff;
-        diff = (new Date(a.LastContactTime)) - (new Date(b.LastContactTime));
-        if (diff === 0) {
-          return 0;
-        } else {
-          return Math.abs(diff) / diff;
-        }
-      });
-      if (Content.Vehicles.length > 0) {
-        changeSelectedVehicle(Content.Vehicles[0]);
-      } else {
-        changeSelectedVehicle(null);
-      }
-      CheckForVehicleNewData();
-      Content.VehiclesWithFaults = [];
-      ref = Content.Vehicles;
-      for (i = 0, len = ref.length; i < len; i++) {
-        v = ref[i];
-        v.FaultsSummary = {
-          "Unknown": {
-            count: 0,
-            title: "common.FaultsSummary.Unknown"
-          },
-          "SensorFault": {
-            count: 0,
-            title: "common.FaultsSummary.SensorFault"
-          },
-          "DrivetrainFault": {
-            count: 0,
-            title: "common.FaultsSummary.Drivetrain"
-          },
-          "EmissionsFault": {
-            count: 0,
-            title: "common.FaultsSummary.Emissions"
-          },
-          "SensorFault": {
-            count: 0,
-            title: "common.FaultsSummary.Sensor"
-          }
-        };
-        if (v.FaultsDetected) {
-          Content.VehiclesWithFaults.push(v);
-          GetFaultsDetail(v);
-        }
-        if (typeof v.VIN !== "undefined" && v.VIN !== null && v.VIN.length === 17) {
-          GetVehicleInformation(v);
-        }
-      }
-    };
-    prepareData = function(callback) {
-      if (Content.Vehicles.length !== 0) {
-        if (typeof callback !== "undefined") {
-          callback();
-        }
-        return;
-      }
-      return mojioRemote.GET("Vehicles", 20, null, null, "sortBy=LastContactTime&desc=true", function(result) {
-        processVehiclesData(result.Data);
-        if (typeof callback !== "undefined") {
-          return callback();
-        }
-      });
-    };
-    GetFaultsDetail = function(v) {
-      mojioRemote.GET("Vehicles/" + v._id + "/Diagnostics", null, null, null, null, function(result) {
-        var cat, drow, i, len, ref, results;
-        v.Diagnostic = result.Data;
-        ref = v.Diagnostic;
-        results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          drow = ref[i];
-          cat = "Unknown";
-          if (drow.Category !== null) {
-            cat = drow.Category.replace(' ', '');
-          }
-          results.push(v.FaultsSummary[cat].count++);
-        }
-        return results;
-      });
-    };
-    GetVehicleInformation = function(v) {
-      mojioRemote.GET("Vins/" + v.VIN, null, null, null, null, function(result) {
-        return v.Info = result;
-      }, function(error) {
-        return console.log("Invalid VIN Number");
-      });
-    };
-    return {
-      Content: Content,
-      LastTripEvents: LastTripEvents,
-      prepareData: prepareData,
-      changeSelectedVehicle: changeSelectedVehicle,
-      VehicleServices: VehicleServices,
-      VehicleNotifications: VehicleNotifications,
-      AllVehicleNotifications: AllVehicleNotifications,
-      Clear: Clear,
-      forcePrepareData: forcePrepareData
-    };
-  }
-]);
-
 App.factory('myMojioFactory', [
-  '$http', 'mojioRemote', '$q', '$timeout', function($http, mojioRemote, $q, $timeout) {
-    var AllVehicleNotifications, CheckForVehicleNewData, Clear, Content, GetFaultsDetail, GetVehicleInformation, LastTripEvents, SetTimeoutForVehicleNewData, VehicleNotifications, VehicleServices, VehicleTimer, changeSelectedVehicle, forcePrepareData, getLastTrip, prepareData, processVehiclesData;
+  '$http', 'mojioRemote', '$q', '$timeout', 'localStorage', function($http, mojioRemote, $q, $timeout, localStorage) {
+    var AllVehicleNotifications, CheckForVehicleNewData, Clear, Content, FindGoodNameForVehicle, GetFaultsDetail, GetVehicleInformation, IsInorderPoint, IsValidLocation, LastTripEvents, LastUsedColor, SetTimeoutForVehicleNewData, VehicleColor, VehicleNotifications, VehicleServices, VehicleTimer, changeSelectedVehicle, forcePrepareData, getLastTrip, prepareData, processVehiclesData, updateVehicleName;
     Content = {
       Vehicles: [],
+      VehiclesObj: {},
       SelectedVehicle: null,
       Devices: [],
-      VehiclesWithFaults: []
+      VehiclesColor: {}
     };
     Clear = function() {
       Content.Vehicles = [];
+      Content.VehiclesObj = {};
       Content.SelectedVehicle = null;
       Content.Devices = [];
-      Content.VehiclesWithFaults = [];
     };
     changeSelectedVehicle = function(vehicle) {
       Content.SelectedVehicle = vehicle;
@@ -3971,6 +3709,46 @@ App.factory('myMojioFactory', [
       }
       if (typeof vehicle.LastTripData === "undefined") {
         getLastTrip(vehicle);
+      }
+      if (typeof vehicle.VIN !== "undefined" && vehicle.VIN !== null && vehicle.VIN.length === 17) {
+        GetVehicleInformation(vehicle);
+      } else {
+        vehicle.InfoStatus = "NoData";
+      }
+      vehicle.FaultsSummary = {
+        "Unknown": {
+          count: 0,
+          title: "common.FaultsSummary.Unknown"
+        },
+        "SensorFault": {
+          count: 0,
+          title: "common.FaultsSummary.SensorFault"
+        },
+        "AirFilterFault": {
+          count: 0,
+          title: "common.FaultsSummary.AirFilter"
+        },
+        "CoolantFault": {
+          count: 0,
+          title: "common.FaultsSummary.Coolant"
+        },
+        "DrivetrainFault": {
+          count: 0,
+          title: "common.FaultsSummary.Drivetrain"
+        },
+        "EmissionsFault": {
+          count: 0,
+          title: "common.FaultsSummary.Emissions"
+        },
+        "SensorFault": {
+          count: 0,
+          title: "common.FaultsSummary.Sensor"
+        }
+      };
+      if (vehicle.FaultsDetected) {
+        GetFaultsDetail(vehicle);
+      } else {
+        vehicle.FaultsStatus = "Ready";
       }
     };
     getLastTrip = function(vehicle) {
@@ -4062,7 +3840,8 @@ App.factory('myMojioFactory', [
           if (JSON.stringify(result.DiagnosticCodes) !== JSON.stringify(Content.SelectedVehicle)) {
             NewFaults = true;
           }
-          Content.SelectedVehicle = result;
+          console.log("extend");
+          angular.extend(Content.SelectedVehicle, result);
           getLastTrip(Content.SelectedVehicle);
           if (NewFaults) {
             GetFaultsDetail(Content.SelectedVehicle);
@@ -4075,8 +3854,25 @@ App.factory('myMojioFactory', [
       Clear();
       prepareData(callback);
     };
+    FindGoodNameForVehicle = function(v) {
+      if (typeof v.VIN !== "undefined" && v.VIN !== null && v.VIN.length === 17) {
+        return mojioRemote.GET("Vins/" + v.VIN, null, null, null, null, function(result) {
+          return updateVehicleName(v, result.Make + " " + result.Model + " " + result.Year);
+        }, function(error) {
+          return updateVehicleName(v, "No Name Vehicle");
+        });
+      } else {
+        return updateVehicleName(v, "No Name Vehicle");
+      }
+    };
+    updateVehicleName = function(v, name) {
+      mojioRemote.PUT("Vehicles/" + v._id, {
+        "Type": "Vehicle",
+        Name: name
+      }, function(result) {}, function() {});
+    };
     processVehiclesData = function(data) {
-      var i, len, ref, v;
+      var ChangeNameCount, i, j, len, len1, ref, ref1, v;
       Content.Vehicles = angular.copy(data);
       Content.Vehicles.sort(function(a, b) {
         var diff;
@@ -4087,44 +3883,24 @@ App.factory('myMojioFactory', [
           return Math.abs(diff) / diff;
         }
       });
+      ref = Content.Vehicles;
+      for (i = 0, len = ref.length; i < len; i++) {
+        v = ref[i];
+        Content.VehiclesObj[v._id] = v;
+      }
       if (Content.Vehicles.length > 0) {
         changeSelectedVehicle(Content.Vehicles[0]);
       } else {
         changeSelectedVehicle(null);
       }
       CheckForVehicleNewData();
-      Content.VehiclesWithFaults = [];
-      ref = Content.Vehicles;
-      for (i = 0, len = ref.length; i < len; i++) {
-        v = ref[i];
-        v.FaultsSummary = {
-          "Unknown": {
-            count: 0,
-            title: "common.FaultsSummary.Unknown"
-          },
-          "SensorFault": {
-            count: 0,
-            title: "common.FaultsSummary.SensorFault"
-          },
-          "DrivetrainFault": {
-            count: 0,
-            title: "common.FaultsSummary.Drivetrain"
-          },
-          "EmissionsFault": {
-            count: 0,
-            title: "common.FaultsSummary.Emissions"
-          },
-          "SensorFault": {
-            count: 0,
-            title: "common.FaultsSummary.Sensor"
-          }
-        };
-        if (v.FaultsDetected) {
-          Content.VehiclesWithFaults.push(v);
-          GetFaultsDetail(v);
-        }
-        if (typeof v.VIN !== "undefined" && v.VIN !== null && v.VIN.length === 17) {
-          GetVehicleInformation(v);
+      ChangeNameCount = 0;
+      ref1 = Content.Vehicles;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        v = ref1[j];
+        if ((typeof v.Name === "undefined" || v.Name === null) && ChangeNameCount < 3) {
+          FindGoodNameForVehicle(v);
+          ChangeNameCount++;
         }
       }
     };
@@ -4135,7 +3911,7 @@ App.factory('myMojioFactory', [
         }
         return;
       }
-      return mojioRemote.GET("Vehicles", 20, null, null, "sortBy=LastContactTime&desc=true", function(result) {
+      return mojioRemote.GET("Vehicles", 200, null, null, "sortBy=LastContactTime&desc=true", function(result) {
         processVehiclesData(result.Data);
         if (typeof callback !== "undefined") {
           return callback();
@@ -4143,28 +3919,103 @@ App.factory('myMojioFactory', [
       });
     };
     GetFaultsDetail = function(v) {
+      if (typeof v.FaultsStatus !== "undefined" && v.FaultsStatus === "Loading") {
+        return;
+      }
+      v.FaultsStatus = "Loading";
       mojioRemote.GET("Vehicles/" + v._id + "/Diagnostics", null, null, null, null, function(result) {
-        var cat, drow, i, len, ref, results;
+        var cat, drow, fk, fv, i, len, ref, ref1;
         v.Diagnostic = result.Data;
-        ref = v.Diagnostic;
-        results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          drow = ref[i];
+        ref = v.FaultsSummary;
+        for (fk in ref) {
+          fv = ref[fk];
+          fv.count = 0;
+        }
+        ref1 = v.Diagnostic;
+        for (i = 0, len = ref1.length; i < len; i++) {
+          drow = ref1[i];
           cat = "Unknown";
           if (drow.Category !== null) {
             cat = drow.Category.replace(' ', '');
           }
-          results.push(v.FaultsSummary[cat].count++);
+          v.FaultsSummary[cat].count++;
         }
-        return results;
+        return v.FaultsStatus = "Ready";
       });
     };
     GetVehicleInformation = function(v) {
+      var StorageKey, info;
+      if (typeof v.InfoStatus !== "undefined") {
+        return;
+      }
+      StorageKey = "Vins-" + v.VIN;
+      info = localStorage.get(StorageKey);
+      if (info !== null) {
+        v.InfoStatus = "Ready";
+        v.Info = info;
+        return;
+      }
+      v.InfoStatus = "Loading";
       mojioRemote.GET("Vins/" + v.VIN, null, null, null, null, function(result) {
-        return v.Info = result;
+        v.InfoStatus = "Ready";
+        v.Info = result;
+        return localStorage.add(StorageKey, result);
       }, function(error) {
+        v.InfoStatus = "NoData";
         return console.log("Invalid VIN Number");
       });
+    };
+    IsValidLocation = function(e, att) {
+      var loc;
+      if (typeof e[att] === "undefined") {
+        return false;
+      }
+      loc = e[att];
+      if (loc !== null && typeof loc.Lng !== "undefined" && typeof loc.Lat !== "undefined" && !isNaN(loc.Lat) && !isNaN(loc.Lng) && loc.IsValid === true) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+    LastUsedColor = 0;
+    VehicleColor = function(id) {
+      var colors;
+      colors = ['#4a75e6', '#caf200', 'green', 'black', '#DE1B1B', '#E9E581', '#118C4E', '#DFE2DB'];
+      if (typeof Content.VehiclesColor[id] === "undefined") {
+        Content.VehiclesColor[id] = colors[LastUsedColor++ % colors.length];
+      }
+      return Content.VehiclesColor[id];
+    };
+    IsInorderPoint = function(cur, pre, nxt) {
+      var distanceLat, distanceLng, maxLat, maxLng, middleLat, middleLng, minLat, minLng;
+      if (typeof document.TripRouteEnhancement !== "undefined" && document.TripRouteEnhancement === false) {
+        return true;
+      }
+      if (!IsValidLocation(cur, "Location") || !IsValidLocation(pre, "Location") || !IsValidLocation(nxt, "Location")) {
+        return true;
+      }
+      if (typeof pre.Heading === "undefined" || typeof cur.Heading === "undefined" || typeof nxt.Heading === "undefined") {
+        return true;
+      }
+      if (Math.abs(pre.Heading - cur.Heading) > 3 || Math.abs(nxt.Heading - cur.Heading) > 3) {
+        return true;
+      }
+      distanceLat = Math.abs(pre.Location.Lat - nxt.Location.Lat);
+      distanceLng = Math.abs(pre.Location.Lng - nxt.Location.Lng);
+      middleLat = (pre.Location.Lat + nxt.Location.Lat) / 2;
+      middleLng = (pre.Location.Lng + nxt.Location.Lng) / 2;
+      minLat = middleLat - distanceLat * 1;
+      maxLat = middleLat + distanceLat * 1;
+      minLng = middleLng - distanceLng * 1;
+      maxLng = middleLng + distanceLng * 1;
+      if (cur.Location.Lat < minLat || cur.Location.Lat > maxLat || cur.Location.Lng < minLng || cur.Location.Lng > maxLng) {
+        console.log("Pre " + pre.EventType + " Lat:" + pre.Location.Lat + " Lng:" + pre.Location.Lng);
+        console.log("Cur " + cur.EventType + " Lat:" + cur.Location.Lat + " Lng:" + cur.Location.Lng);
+        console.log("Nxt " + nxt.EventType + " Lat:" + nxt.Location.Lat + " Lng:" + nxt.Location.Lng);
+        return false;
+      } else {
+        return true;
+      }
     };
     return {
       Content: Content,
@@ -4175,7 +4026,11 @@ App.factory('myMojioFactory', [
       VehicleNotifications: VehicleNotifications,
       AllVehicleNotifications: AllVehicleNotifications,
       Clear: Clear,
-      forcePrepareData: forcePrepareData
+      forcePrepareData: forcePrepareData,
+      GetVehicleInformation: GetVehicleInformation,
+      IsValidLocation: IsValidLocation,
+      IsInorderPoint: IsInorderPoint,
+      VehicleColor: VehicleColor
     };
   }
 ]);
@@ -5025,102 +4880,6 @@ App.service('Utils', ["$window", "APP_MEDIAQUERY", function($window, APP_MEDIAQU
   };
 }]);
 
-App.controller('adminDashboardController', [
-  '$rootScope', '$stateParams', '$scope', 'mojioRemote', function($rootScope, $stateParams, $scope, mojioRemote) {
-    var today;
-    $scope.mojiosTotal = "";
-    mojioRemote.GET('mojios', 0, 0, "", null, function(result) {
-      return $scope.mojiosTotal = result.TotalRows;
-    }, function(result) {
-      return $scope.mojiosTotal = "?";
-    });
-    $scope.carsTotal = "";
-    mojioRemote.GET('vehicles', 0, 0, "", null, function(result) {
-      return $scope.carsTotal = result.TotalRows;
-    }, function(result) {
-      return $scope.carsTotal = "?";
-    });
-    $scope.usersTotal = "";
-    mojioRemote.GET('users', 0, 0, "", null, function(result) {
-      return $scope.usersTotal = result.TotalRows;
-    }, function(result) {
-      return $scope.usersTotal = "?";
-    });
-    $scope.tripsTotal = "";
-    mojioRemote.GET('trips', 0, 0, "", null, function(result) {
-      return $scope.tripsTotal = result.TotalRows;
-    }, function(result) {
-      return $scope.tripsTotal = "?";
-    });
-    $scope.carsDriving = "";
-    mojioRemote.GET('vehicles', 0, 0, "IgnitionOn=true", null, function(result) {
-      return $scope.carsDriving = result.TotalRows;
-    }, function(result) {
-      return $scope.carsDriving = "?";
-    });
-    today = new Date();
-    $scope.carsConnected = "";
-    return mojioRemote.GET('vehicles', 0, 0, "LastContactTime=0000.00.00-" + today.toString("yyyy.mm.dd"), null, function(result) {
-      return $scope.carsConnected = result.TotalRows;
-    }, function(result) {
-      return $scope.carsConnected = "?";
-    });
-  }
-]);
-
-App.controller('admin2SearchController', [
-  '$scope', '$rootScope', 'mojioRemote2', 'toaster', function($scope, $rootScope, mojioRemote2, toaster) {
-    $scope.data = {
-      username: '',
-      email: '',
-      phonenumber: '',
-      imei: ''
-    };
-    $scope.result = [];
-    $scope.search = function() {
-      var moreparam, req;
-      moreparam = [];
-      if ($scope.data.username.length !== 0) {
-        moreparam.push({
-          param: 'username',
-          val: $scope.data.username
-        });
-      }
-      if ($scope.data.email.length !== 0) {
-        moreparam.push({
-          param: 'email',
-          val: $scope.data.email
-        });
-      }
-      if ($scope.data.phonenumber.length !== 0) {
-        moreparam.push({
-          param: 'phonenumber',
-          val: $scope.data.phonenumber
-        });
-      }
-      if ($scope.data.imei.length !== 0) {
-        moreparam.push({
-          param: 'imei',
-          val: $scope.data.imei
-        });
-      }
-      req = {
-        operation: "admin/users",
-        top: '20',
-        skip: '0',
-        moreparam: moreparam,
-        onSuccess: function(res) {
-          return $scope.result = res.Data;
-        },
-        onError: function(res) {
-          return $scope.result = [];
-        }
-      };
-      return mojioRemote2.GET(req);
-    };
-  }
-]);
-
 App.controller('Sim2MultiController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'simulatorFactory', 'sim2LogicFactory', 'googlemapFactory', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, simulatorFactory, sim2LogicFactory, googlemapFactory) {
     var AddSimLogics, myOptions;
@@ -5466,23 +5225,99 @@ App.controller('Sim2MultiController', [
   }
 ]);
 
-App.controller('configDetailController', [
-  '$rootScope', '$stateParams', function($rootScope, $stateParams) {
-    this.configRow = $rootScope.configRow;
-    this.showArray = function(arr) {
-      var eg;
-      eg = arr.join('<br/>');
-      return arr.join('\n\r');
+App.controller('admin2SearchController', [
+  '$scope', '$rootScope', 'mojioRemote2', 'toaster', function($scope, $rootScope, mojioRemote2, toaster) {
+    $scope.data = {
+      username: '',
+      email: '',
+      phonenumber: '',
+      imei: ''
     };
-    this.changeMode = function() {
-      mojioGlobal.changeProducationMode();
+    $scope.result = [];
+    $scope.search = function() {
+      var moreparam, req;
+      moreparam = [];
+      if ($scope.data.username.length !== 0) {
+        moreparam.push({
+          param: 'username',
+          val: $scope.data.username
+        });
+      }
+      if ($scope.data.email.length !== 0) {
+        moreparam.push({
+          param: 'email',
+          val: $scope.data.email
+        });
+      }
+      if ($scope.data.phonenumber.length !== 0) {
+        moreparam.push({
+          param: 'phonenumber',
+          val: $scope.data.phonenumber
+        });
+      }
+      if ($scope.data.imei.length !== 0) {
+        moreparam.push({
+          param: 'imei',
+          val: $scope.data.imei
+        });
+      }
+      req = {
+        operation: "admin/users",
+        top: '20',
+        skip: '0',
+        moreparam: moreparam,
+        onSuccess: function(res) {
+          return $scope.result = res.Data;
+        },
+        onError: function(res) {
+          return $scope.result = [];
+        }
+      };
+      return mojioRemote2.GET(req);
     };
-    this.UserData = function() {
-      return mojioGlobal.data.user_data;
-    };
-    this.logout = function() {
-      mojioGlobal.logout();
-    };
+  }
+]);
+
+App.controller('adminDashboardController', [
+  '$rootScope', '$stateParams', '$scope', 'mojioRemote', function($rootScope, $stateParams, $scope, mojioRemote) {
+    var today;
+    $scope.mojiosTotal = "";
+    mojioRemote.GET('mojios', 0, 0, "", null, function(result) {
+      return $scope.mojiosTotal = result.TotalRows;
+    }, function(result) {
+      return $scope.mojiosTotal = "?";
+    });
+    $scope.carsTotal = "";
+    mojioRemote.GET('vehicles', 0, 0, "", null, function(result) {
+      return $scope.carsTotal = result.TotalRows;
+    }, function(result) {
+      return $scope.carsTotal = "?";
+    });
+    $scope.usersTotal = "";
+    mojioRemote.GET('users', 0, 0, "", null, function(result) {
+      return $scope.usersTotal = result.TotalRows;
+    }, function(result) {
+      return $scope.usersTotal = "?";
+    });
+    $scope.tripsTotal = "";
+    mojioRemote.GET('trips', 0, 0, "", null, function(result) {
+      return $scope.tripsTotal = result.TotalRows;
+    }, function(result) {
+      return $scope.tripsTotal = "?";
+    });
+    $scope.carsDriving = "";
+    mojioRemote.GET('vehicles', 0, 0, "IgnitionOn=true", null, function(result) {
+      return $scope.carsDriving = result.TotalRows;
+    }, function(result) {
+      return $scope.carsDriving = "?";
+    });
+    today = new Date();
+    $scope.carsConnected = "";
+    return mojioRemote.GET('vehicles', 0, 0, "LastContactTime=0000.00.00-" + today.toString("yyyy.mm.dd"), null, function(result) {
+      return $scope.carsConnected = result.TotalRows;
+    }, function(result) {
+      return $scope.carsConnected = "?";
+    });
   }
 ]);
 
@@ -5556,6 +5391,26 @@ App.controller('codeWizardController', [
     };
     return quote = function(str) {
       return str.replace(/(?=[\/\\^$*+?.()|{}[\]])/g, '\\');
+    };
+  }
+]);
+
+App.controller('configDetailController', [
+  '$rootScope', '$stateParams', function($rootScope, $stateParams) {
+    this.configRow = $rootScope.configRow;
+    this.showArray = function(arr) {
+      var eg;
+      eg = arr.join('<br/>');
+      return arr.join('\n\r');
+    };
+    this.changeMode = function() {
+      mojioGlobal.changeProducationMode();
+    };
+    this.UserData = function() {
+      return mojioGlobal.data.user_data;
+    };
+    this.logout = function() {
+      mojioGlobal.logout();
     };
   }
 ]);
@@ -6075,13 +5930,6 @@ App.controller('deviceDetailController', [
   }
 ]);
 
-App.controller('eventDetailController', [
-  '$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
-    console.log($rootScope.eventRow);
-    $scope.Event = $rootScope.eventRow;
-  }
-]);
-
 App.controller('dummyVehiclesController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster) {
     var ModifyVehicle, MojioName;
@@ -6429,6 +6277,13 @@ App.controller('eventSimulatorController', [
   }
 ]);
 
+App.controller('eventDetailController', [
+  '$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
+    console.log($rootScope.eventRow);
+    $scope.Event = $rootScope.eventRow;
+  }
+]);
+
 App.controller('exportEventsController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {
     $scope.row = $rootScope["tripRow"];
@@ -6554,6 +6409,33 @@ App.controller('fleetDashboardController', [
   }
 ]);
 
+App.controller('foChooseDealerController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', 'localStorage', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state, localStorage) {
+    var getDealer;
+    getDealer = function() {
+      return mojioRemote2.GET({
+        moreparam: [
+          {
+            param: 'limit',
+            val: 1000
+          }
+        ],
+        endpoint: "firefly",
+        operation: "dealers",
+        onSuccess: function(res) {
+          return $scope.Dealer = res;
+        }
+      });
+    };
+    $scope.Dealer = [];
+    getDealer();
+    $scope.ChooseDealer = function(dealer) {
+      localStorage.add("Dealer", dealer);
+      alert("Dealer Selected");
+    };
+  }
+]);
+
 App.controller('importDevicesController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {
     $scope.data = {
@@ -6580,6 +6462,118 @@ App.controller('importDevicesController', [
           body: "Error Importing Device"
         });
       });
+    };
+  }
+]);
+
+App.controller('foOnboardingController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', 'localStorage', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state, localStorage) {
+    var getMojios, getVehicles;
+    getVehicles = function() {
+      return mojioRemote2.GET({
+        operation: "me",
+        onSuccess: function(res) {
+          $scope.UserData = res;
+          return console.log(res);
+        }
+      });
+    };
+    getMojios = function() {
+      return mojioRemote2.GET({
+        operation: "me",
+        onSuccess: function(res) {
+          $scope.UserData = res;
+          return console.log(res);
+        }
+      });
+    };
+    getVehicles = function() {};
+    mojioRemote2.GET({
+      operation: "me",
+      onSuccess: function(res) {
+        $scope.UserData = res;
+        return console.log(res);
+      }
+    });
+    getVehicles();
+    getVehicles();
+    getVehicles();
+    $scope.StartOperation = function() {
+      var dealer, pdata;
+      dealer = localStorage.get("Dealer");
+      console.log(dealer);
+      pdata = {
+        "GroupId": dealer.MojioGroupId,
+        "Permissions": ["read"]
+      };
+      mojioRemote2.POST({
+        operation: "users/" + $scope.UserData.Id + "/permissions",
+        data: pdata,
+        onSuccess: function() {
+          return FinishStep('users');
+        },
+        onError: function() {
+          return ErrorStep('users');
+        }
+      });
+      mojioRemote2.POST({
+        operation: "users/" + $scope.UserData.Id + "/permissions",
+        data: pdata,
+        onSuccess: function() {
+          return FinishStep('users');
+        },
+        onError: function() {
+          return ErrorStep('users');
+        }
+      });
+      return mojioRemote2.POST({
+        operation: "users/" + $scope.UserData.Id + "/permissions",
+        data: pdata,
+        onSuccess: function() {
+          return FinishStep('users');
+        },
+        onError: function() {
+          return ErrorStep('users');
+        }
+      });
+    };
+  }
+]);
+
+App.controller('importSimsController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {
+    $scope.data = {
+      Description: '',
+      Name: ''
+    };
+    $scope.importData = function() {
+      var action, fileInput, formdata, i, xhr;
+      action = mojioGlobal.apiUrl() + '/SimCards/InventoryAsync?desc=' + $scope.data.Description + '&name=' + $scope.data.Name;
+      formdata = new FormData;
+      fileInput = document.getElementById('csvFile');
+      i = 0;
+      while (i < fileInput.files.length) {
+        formdata.append('csvFile', fileInput.files[0], fileInput.files[0].name);
+        i++;
+      }
+      xhr = new XMLHttpRequest;
+      xhr.open('POST', action);
+      xhr.send(formdata);
+      return xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 202) {
+            toaster.success({
+              title: "Import SIMs",
+              body: "Import SIMs Successfully"
+            });
+          } else {
+            toaster.error({
+              title: "Import SIMs",
+              body: "Error Importing SIMs"
+            });
+          }
+        }
+      };
     };
   }
 ]);
@@ -6867,606 +6861,6 @@ App.controller('manageDeviceController', [
     };
     $scope.PrintInConsole = function(data) {
       return console.log(data);
-    };
-  }
-]);
-
-App.controller('importSimsController', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {
-    $scope.data = {
-      Description: '',
-      Name: ''
-    };
-    $scope.importData = function() {
-      var action, fileInput, formdata, i, xhr;
-      action = mojioGlobal.apiUrl() + '/SimCards/InventoryAsync?desc=' + $scope.data.Description + '&name=' + $scope.data.Name;
-      formdata = new FormData;
-      fileInput = document.getElementById('csvFile');
-      i = 0;
-      while (i < fileInput.files.length) {
-        formdata.append('csvFile', fileInput.files[0], fileInput.files[0].name);
-        i++;
-      }
-      xhr = new XMLHttpRequest;
-      xhr.open('POST', action);
-      xhr.send(formdata);
-      return xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 202) {
-            toaster.success({
-              title: "Import SIMs",
-              body: "Import SIMs Successfully"
-            });
-          } else {
-            toaster.error({
-              title: "Import SIMs",
-              body: "Error Importing SIMs"
-            });
-          }
-        }
-      };
-    };
-  }
-]);
-
-App.controller('myMojio2TripsController', [
-  '$modal', '$templateCache', '$sce', '$compile', '$rootScope', '$stateParams', '$scope', 'mojioRemote2', 'localStorage', 'toaster', 'mojioGlobal', 'myMojio2Factory', '$timeout', '$filter', 'googlemapFactory', function($modal, $templateCache, $sce, $compile, $rootScope, $stateParams, $scope, mojioRemote, localStorage, toaster, mojioGlobal, myMojioFactory, $timeout, $filter, googlemapFactory) {
-    var CreateAddressString, LoadAllEvents, MakeTripsVisible, RemoveCurrentTrips, buildCriteria, createEvents, createMarker, drawHeatMap, fitMap, fitMapPromise, fitMapStart, getHeatMap, getTripEvents, getTrips, hideTripFromMap, myOptions, showTripOnMapStep1, showTripOnMapStep2;
-    $scope.AllData = myMojioFactory.Content;
-    $scope.AllSort = [
-      {
-        field: 'StartTime',
-        title: 'mymojio_trip.sort.Date'
-      }, {
-        field: 'Distance',
-        title: 'mymojio_trip.sort.Distance'
-      }
-    ];
-    $scope.SortBy = $scope.AllSort[0];
-    $scope.SortAsc = true;
-    $scope.changeSortDirection = function() {
-      $scope.SortAsc = !$scope.SortAsc;
-    };
-    $scope.changeSort = function(s) {
-      $scope.SortBy = s;
-    };
-    $scope.AllRange = [
-      {
-        code: 7,
-        title: "common.range.d7"
-      }, {
-        code: 14,
-        title: "common.range.d14"
-      }, {
-        code: 30,
-        title: "common.range.d30"
-      }, {
-        code: 90,
-        title: "common.range.m3"
-      }, {
-        code: 365,
-        title: "common.range.m12"
-      }, {
-        code: 36500,
-        title: "common.range.all"
-      }
-    ];
-    $scope.SelectedRange = $scope.AllRange[0];
-    $scope.AllHeatMap = [
-      {
-        code: 0,
-        title: "mymojio_trip.HeatMap.HeatMapOff"
-      }, {
-        code: 1,
-        title: "mymojio_trip.HeatMap.TripsHeatMap"
-      }, {
-        code: 2,
-        title: "mymojio_trip.HeatMap.ParksHeatMap"
-      }
-    ];
-    $scope.SelectedHeatMap = $scope.AllHeatMap[0];
-    $scope.changeHeatMap = function(r) {
-      $scope.SelectedHeatMap = r;
-      return getHeatMap();
-    };
-    drawHeatMap = function(heatmapData) {
-      var bounds, gradient, j, len, ll;
-      if ($scope.heatmap !== null) {
-        $scope.heatmap.setMap(null);
-      }
-      $scope.heatmap = new google.maps.visualization.HeatmapLayer({
-        data: heatmapData
-      });
-      bounds = new google.maps.LatLngBounds();
-      for (j = 0, len = heatmapData.length; j < len; j++) {
-        ll = heatmapData[j];
-        bounds.extend(ll);
-      }
-      $scope.map.fitBounds(bounds);
-      gradient = ['rgba(0, 255, 255, 0)', 'rgba(0, 255, 255, 1)', 'rgba(0, 191, 255, 1)', 'rgba(0, 0, 255, 1)', 'rgba(0, 63, 255, 1)', 'rgba(0, 0, 255, 1)', 'rgba(0, 0, 223, 1)', 'rgba(0, 0, 191, 1)', 'rgba(0, 0, 159, 1)', 'rgba(0, 0, 0, 1)', 'rgba(63, 0, 91, 1)', 'rgba(0, 0, 63, 1)', 'rgba(191, 0, 31, 1)', 'rgba(255, 0, 0, 1)'];
-      $scope.heatmap.set('gradient', gradient);
-      $scope.heatmap.setMap($scope.map);
-    };
-    getHeatMap = function() {
-      var ev, heatmapData, j, k, len, len1, ref, ref1, t, te;
-      if ($scope.SelectedHeatMap.code === 0) {
-        if ($scope.heatmap !== null) {
-          $scope.heatmap.setMap(null);
-        }
-        return;
-      }
-      heatmapData = [];
-      if ($scope.SelectedHeatMap.code === 1) {
-        for (te in $scope.Events) {
-          ref = $scope.Events[te];
-          for (j = 0, len = ref.length; j < len; j++) {
-            ev = ref[j];
-            if (typeof ev.Location !== "undefined" && ev.Location !== null && !isNaN(ev.Location.Lat) && !isNaN(ev.Location.Lng)) {
-              heatmapData.push(new google.maps.LatLng(ev.Location.Lat, ev.Location.Lng));
-            }
-          }
-        }
-      }
-      if ($scope.SelectedHeatMap.code === 2) {
-        ref1 = $scope.Trips;
-        for (k = 0, len1 = ref1.length; k < len1; k++) {
-          t = ref1[k];
-          if (t.StartLocation !== null && !isNaN(t.StartLocation.Lat) && !isNaN(t.StartLocation.Lng)) {
-            heatmapData.push(new google.maps.LatLng(t.StartLocation.Lat, t.StartLocation.Lng));
-          }
-          if (t.EndLocation !== null && !isNaN(t.EndLocation.Lat) && !isNaN(t.EndLocation.Lng)) {
-            heatmapData.push(new google.maps.LatLng(t.EndLocation.Lat, t.EndLocation.Lng));
-          }
-        }
-      }
-      drawHeatMap(heatmapData);
-    };
-    CreateAddressString = function(adr) {
-      var AdrStr;
-      if (typeof adr === "undefined" || adr === null) {
-        return "";
-      }
-      AdrStr = "";
-      if (adr.Address1 !== null) {
-        AdrStr = adr.Address1;
-      }
-      if (adr.Address2 !== null) {
-        AdrStr += " " + adr.Address2;
-      }
-      AdrStr += " " + adr.City;
-      AdrStr += " " + adr.State;
-      AdrStr += " " + adr.Zip;
-      AdrStr += " " + adr.Country;
-      return AdrStr;
-    };
-    $scope.downloadTrips = function() {
-      var EndAddress, StartAddress, csv, j, len, ref, row, trip;
-      csv = ['"StartTime","EndTime","MaxSpeed","MaxAcceleration","MaxDeceleration","MaxRPM","FuelLevel","FuelEfficiency","Distance","StartLocation","EndLocation","StartAddress","EndAddress","StartMilage","EndMilage"'];
-      ref = $scope.Trips;
-      for (j = 0, len = ref.length; j < len; j++) {
-        trip = ref[j];
-        StartAddress = CreateAddressString(trip.StartAddress);
-        EndAddress = CreateAddressString(trip.StartAddress);
-        row = '"' + trip.StartTime + '",' + '"' + trip.EndTime + '",' + '"' + trip.MaxSpeed + '",' + '"' + trip.MaxAcceleration + '",' + '"' + trip.MaxDeceleration + '",' + '"' + trip.MaxRPM + '",' + '"' + trip.FuelLevel + '",' + '"' + trip.FuelEfficiency + '",' + '"' + trip.Distance + '",' + '"' + (trip.StartLocation === null ? "" : trip.StartLocation.Lat + "," + trip.StartLocation.Lng) + '",' + '"' + (trip.EndLocation === null ? "" : trip.EndLocation.Lat + "," + trip.EndLocation.Lng) + '",' + '"' + StartAddress + '",' + '"' + EndAddress + '",' + '"' + trip.StartMilage + '",' + '"' + trip.EndMilage + '"';
-        csv.push(row);
-      }
-      saveAs(new Blob([csv.join("\r\n")], {
-        type: 'text/csv'
-      }), "Trips.csv");
-    };
-    $scope.Trips = [];
-    $scope.SelectedTrips = [];
-    $scope.Events = {};
-    $scope.Loading = false;
-    myMojioFactory.prepareData();
-    myOptions = {
-      scrollwheel: false,
-      zoom: 4,
-      center: new google.maps.LatLng(49, -123),
-      disableDefaultUI: true,
-      styles: googlemapFactory.MapStyle,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      mapTypeControl: false,
-      zoomControl: true,
-      zoomControlOptions: {
-        style: google.maps.ZoomControlStyle.SMALL,
-        position: google.maps.ControlPosition.LEFT_CENTER
-      },
-      scaleControl: false,
-      streetViewControl: false
-    };
-    $scope.map = new google.maps.Map(document.getElementById('map'), myOptions);
-    $scope.heatmap = null;
-    $scope.sid = null;
-    $scope.$watch('AllData.SelectedVehicle', function() {
-      if ($scope.AllData.SelectedVehicle !== null && $scope.sid !== $scope.AllData.SelectedVehicle._id) {
-        RemoveCurrentTrips();
-        $scope.sid = $scope.AllData.SelectedVehicle._id;
-        getTrips();
-      }
-    });
-    $scope.$watch('SelectedRange', function() {
-      RemoveCurrentTrips();
-      return getTrips();
-    });
-    $scope.changeSelectedVehicle = myMojioFactory.changeSelectedVehicle;
-    $scope.changeDateRange = function(r) {
-      return $scope.SelectedRange = r;
-    };
-    RemoveCurrentTrips = function() {
-      var j, len, pos, ref, trip;
-      ref = $scope.SelectedTrips;
-      for (pos = j = 0, len = ref.length; j < len; pos = ++j) {
-        trip = ref[pos];
-        trip.selected = false;
-      }
-      $scope.SelectedTrips = [];
-      return showTripOnMapStep1();
-    };
-    $scope.selectAll = function() {
-      var j, k, len, len1, pos, ref, ref1, trip;
-      if ($scope.SelectedTrips.length === $scope.Trips.length) {
-        ref = $scope.SelectedTrips;
-        for (pos = j = 0, len = ref.length; j < len; pos = ++j) {
-          trip = ref[pos];
-          trip.selected = false;
-        }
-        $scope.SelectedTrips = [];
-      } else {
-        ref1 = $scope.Trips;
-        for (pos = k = 0, len1 = ref1.length; k < len1; pos = ++k) {
-          trip = ref1[pos];
-          if (!trip.selected) {
-            $scope.SelectedTrips.push(trip);
-            trip.selected = true;
-          }
-        }
-      }
-      return showTripOnMapStep1();
-    };
-    createEvents = function(Events) {
-      var event, j, k, len, len1, oldEvents, pos, ref, storage, trip;
-      oldEvents = angular.copy($scope.Events);
-      for (j = 0, len = Events.length; j < len; j++) {
-        event = Events[j];
-        if (event.TripId === null) {
-          continue;
-        }
-        if (typeof oldEvents[event.TripId] !== "undefined") {
-          continue;
-        }
-        if (typeof $scope.Events[event.TripId] === "undefined") {
-          $scope.Events[event.TripId] = [];
-        }
-        storage = $scope.Events[event.TripId];
-        if (storage.length !== 0 && storage[storage.length - 1].EventType === "IgnitionOff" && event.EventType === "OffStatus") {
-          continue;
-        }
-        $scope.Events[event.TripId].push(event);
-      }
-      ref = $scope.Trips;
-      for (pos = k = 0, len1 = ref.length; k < len1; pos = ++k) {
-        trip = ref[pos];
-        trip.hasEvents = true;
-      }
-    };
-    getTrips = function() {
-      var criteria;
-      if ($scope.AllData.SelectedVehicle === null) {
-        return;
-      }
-      $scope.Trips = [];
-      $scope.Events = {};
-      $scope.SelectedTrips = [];
-      $scope.Loading = true;
-      criteria = buildCriteria();
-      return mojioRemote.GET("Trips", 1000, 0, "VehicleId=" + $scope.AllData.SelectedVehicle._id + ";" + "StartTime=" + criteria, null, function(TripsResult) {
-        $scope.TempTrips = TripsResult.Data;
-        if ($scope.TempTrips.length === 0) {
-          $scope.Loading = false;
-          return $scope.AllEvents = true;
-        } else {
-          LoadAllEvents();
-          return MakeTripsVisible();
-        }
-      });
-    };
-    MakeTripsVisible = function() {
-      var LastTrip;
-      $scope.Trips = $scope.TempTrips;
-      getHeatMap();
-      if ($scope.Trips.length !== 0) {
-        LastTrip = $scope.Trips[$scope.Trips.length - 1];
-        if (typeof LastTrip.selected === "undefined" || LastTrip.selected === false) {
-          $scope.SelectedTrips.push(LastTrip);
-          LastTrip.selected = true;
-        }
-        $timeout(function() {
-          return showTripOnMapStep1(LastTrip._id);
-        });
-      }
-      $scope.Loading = false;
-    };
-    LoadAllEvents = function(callback) {
-      var criteria;
-      $scope.AllEvents = false;
-      criteria = buildCriteria();
-      mojioRemote.GET("Events", 100000, 0, "VehicleId=" + $scope.AllData.SelectedVehicle._id + ";" + "Time=" + criteria, "sortBy=Time&desc=false", function(EventsResult) {
-        createEvents(EventsResult.Data);
-        $scope.AllEvents = true;
-        if (typeof callback !== "undefined") {
-          return callback();
-        }
-      });
-    };
-    buildCriteria = function() {
-      var e, eStr, s, sStr, today;
-      today = new Date();
-      s = new Date();
-      s.setDate((new Date()).getDate() - $scope.SelectedRange.code);
-      sStr = s.getFullYear() + "." + (s.getMonth() + 1) + "." + s.getDate();
-      e = new Date();
-      e.setDate((new Date()).getDate() + 1);
-      eStr = e.getFullYear() + "." + (e.getMonth() + 1) + "." + e.getDate();
-      return sStr + "-" + eStr;
-    };
-    $scope.showDuration = function(row) {
-      return ((new Date(row.EndTime)) - (new Date(row.StartTime))) / 1000;
-    };
-    $scope.mergeTrips = function() {
-      var AllId, FirstId, j, k, lastSelected, len, len1, pos, ref, ref1, trip;
-      lastSelected = -1;
-      AllId = [];
-      FirstId = null;
-      ref = $scope.Trips;
-      for (pos = j = 0, len = ref.length; j < len; pos = ++j) {
-        trip = ref[pos];
-        if (trip.selected) {
-          if (FirstId === null) {
-            FirstId = trip._id;
-          } else {
-            AllId.push(trip._id);
-          }
-          if (pos !== lastSelected + 1 && lastSelected !== -1) {
-            toaster.error({
-              title: $filter('translate')('mymojio_trip.MergeTrips.error.title'),
-              body: $filter('translate')('mymojio_trip.MergeTrips.error.notNeighborBody')
-            });
-            return;
-          }
-          lastSelected = pos;
-        }
-      }
-      ref1 = $scope.SelectedTrips;
-      for (pos = k = 0, len1 = ref1.length; k < len1; pos = ++k) {
-        trip = ref1[pos];
-        hideTripFromMap(trip);
-      }
-      mojioRemote.POST("Trips/" + FirstId + "/Trips", AllId, function() {
-        toaster.success({
-          title: $filter('translate')('mymojio_trip.MergeTrips.success.title'),
-          body: $filter('translate')('mymojio_trip.MergeTrips.success.body')
-        });
-        return getTrips();
-      }, function() {
-        return toaster.error({
-          title: $filter('translate')('mymojio_trip.MergeTrips.error.title'),
-          body: $filter('translate')('mymojio_trip.MergeTrips.error.body')
-        });
-      });
-    };
-    $scope.deleteTrips = function() {
-      var deleted, i, j, k, len, pos, ref, ref1, total, trip;
-      total = $scope.SelectedTrips.length;
-      deleted = 0;
-      ref = $scope.SelectedTrips;
-      for (pos = j = 0, len = ref.length; j < len; pos = ++j) {
-        trip = ref[pos];
-        mojioRemote.DELETE("Trips/" + trip._id, function(result) {
-          return deleted++;
-        }, function(result) {
-          return deleted++;
-        });
-      }
-      for (i = k = ref1 = $scope.Trips.length - 1; k >= 0; i = k += -1) {
-        trip = $scope.Trips[i];
-        if (trip.selected) {
-          $scope.Trips.splice(i, 1);
-        }
-      }
-      $scope.SelectedTrips = [];
-      showTripOnMapStep1();
-    };
-    $scope.tripEvents = function(trip) {
-      return $scope.Events[trip._id];
-    };
-    $scope.selectTrip = function($event, row, multi) {
-      var j, k, len, len1, pos, ref, ref1, trip;
-      $event.stopPropagation();
-      if (multi === true) {
-        ref = $scope.SelectedTrips;
-        for (pos = j = 0, len = ref.length; j < len; pos = ++j) {
-          trip = ref[pos];
-          if (trip === row) {
-            row.selected = false;
-            $scope.SelectedTrips.splice(pos, 1);
-            hideTripFromMap(trip);
-            return;
-          }
-        }
-        $scope.SelectedTrips.push(row);
-        row.selected = true;
-        showTripOnMapStep1();
-      } else {
-        ref1 = $scope.SelectedTrips;
-        for (pos = k = 0, len1 = ref1.length; k < len1; pos = ++k) {
-          trip = ref1[pos];
-          trip.selected = false;
-        }
-        $scope.SelectedTrips = [];
-        $scope.SelectedTrips.push(row);
-        row.selected = true;
-        showTripOnMapStep1();
-      }
-    };
-    showTripOnMapStep1 = function() {
-      var j, len, ref, trip;
-      ref = $scope.Trips;
-      for (j = 0, len = ref.length; j < len; j++) {
-        trip = ref[j];
-        if (trip.selected) {
-          if (typeof trip.onmap === "undefined" || trip.onmap === false) {
-            if (typeof $scope.Events[trip._id] !== "undefined") {
-              showTripOnMapStep2(trip);
-            } else {
-              getTripEvents(trip, showTripOnMapStep2);
-            }
-          }
-        } else {
-          if (trip.onmap === true) {
-            hideTripFromMap(trip);
-          }
-        }
-      }
-    };
-    getTripEvents = function(trip, callback) {
-      mojioRemote.GET("Trips/" + trip._id + "/Events", 10000, 0, null, "sortBy=Time&desc=false", function(result) {
-        var allEvents;
-        if (typeof $scope.Events[trip._id] !== "undefined") {
-          callback(trip);
-          return;
-        }
-        $scope.Events[trip._id] = result.Data;
-        allEvents = $scope.Events[trip._id];
-        if (allEvents.length !== 0 && allEvents[allEvents.length - 1].EventType === "OffStatus") {
-          allEvents.splice(allEvents.length - 1, 1);
-        }
-        trip.hasEvents = true;
-        callback(trip);
-      });
-    };
-    hideTripFromMap = function(trip) {
-      if (!trip.onmap) {
-        return;
-      }
-      if (typeof trip.TripPath !== "undefined") {
-        trip.TripPath.setMap(null);
-        trip.TripPath = null;
-      }
-      if (typeof trip.st !== "undefined") {
-        trip.st.setMap(null);
-        trip.st = null;
-      }
-      if (typeof trip.en !== "undefined") {
-        trip.en.setMap(null);
-        trip.en = null;
-      }
-      trip.onmap = false;
-      fitMap();
-    };
-    showTripOnMapStep2 = function(trip) {
-      var AllCoordinates, bounds, d, en, enLoc, j, len, ref, st, stLoc, tripPath;
-      if (typeof trip === "undefined" || typeof trip.selected === "undefined" || !trip.selected) {
-        return;
-      }
-      AllCoordinates = [];
-      bounds = new google.maps.LatLngBounds();
-      st = null;
-      en = null;
-      ref = $scope.Events[trip._id];
-      for (j = 0, len = ref.length; j < len; j++) {
-        d = ref[j];
-        if (typeof d.Location !== "undefined" && d.Location !== null && !isNaN(d.Location.Lat) && !isNaN(d.Location.Lng) && d.Location.IsValid === true) {
-          if (st === null) {
-            st = d;
-          }
-          en = d;
-          AllCoordinates.push(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
-          bounds.extend(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
-        }
-      }
-      if (st !== null) {
-        stLoc = new google.maps.LatLng(st.Location.Lat, st.Location.Lng);
-        trip.st = createMarker($scope.map, stLoc, null, null, null, "point-start text-circle3", "A");
-      }
-      if (en !== null) {
-        enLoc = new google.maps.LatLng(en.Location.Lat, en.Location.Lng);
-        trip.en = createMarker($scope.map, enLoc, null, null, null, "point-end text-circle3", "B");
-      }
-      if (AllCoordinates.length !== 0) {
-        tripPath = new google.maps.Polyline({
-          path: AllCoordinates,
-          geodesic: false,
-          strokeColor: '#71cfef',
-          strokeOpacity: 0.8,
-          strokeWeight: 5
-        });
-        tripPath.setMap($scope.map);
-        trip.TripPath = tripPath;
-        trip.SouthWest = bounds.getSouthWest();
-        trip.NorthEast = bounds.getNorthEast();
-        trip.onmap = true;
-        fitMap();
-      }
-    };
-    fitMapPromise = null;
-    fitMap = function() {
-      if (fitMapPromise !== null) {
-        $timeout.cancel(fitMapPromise);
-      }
-      return fitMapPromise = $timeout(fitMapStart, 100);
-    };
-    fitMapStart = function() {
-      var bounds, j, len, ref, trip;
-      bounds = new google.maps.LatLngBounds();
-      ref = $scope.Trips;
-      for (j = 0, len = ref.length; j < len; j++) {
-        trip = ref[j];
-        if (trip.onmap === true || $scope.SelectedTrips.length === 0) {
-          if (typeof trip.NorthEast !== "undefined") {
-            bounds.extend(trip.NorthEast);
-          }
-          if (typeof trip.SouthWest !== "undefined") {
-            bounds.extend(trip.SouthWest);
-          }
-        }
-      }
-      $scope.map.fitBounds(bounds);
-    };
-    return createMarker = function(map, latlng, style, bgcolor, color, classes, text) {
-      var allstyle, labelClass, marker;
-      if (bgcolor === null) {
-        bgcolor = "rgba(255,0,0,0.5)";
-      }
-      if (color === null) {
-        color = "#000000";
-      }
-      labelClass = "labels";
-      if (classes !== null) {
-        labelClass += " " + classes;
-      }
-      allstyle = "font-size:10px;margin-top:1px;padding-top:1px;padding-left:4px;width:15px;height:15px;background-color:" + bgcolor + ";color:" + color + ";";
-      if (style !== null) {
-        allstyle += style;
-      }
-      marker = new MarkerWithLabel({
-        position: latlng,
-        icon: ' ',
-        map: map,
-        labelContent: text,
-        labelClass: labelClass,
-        labelAnchor: new google.maps.Point(7, 7)
-      });
-      marker.setMap(map);
-      return marker;
-    };
-  }
-]);
-
-App.controller('mymojioSupportController', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {
-    $scope.SendEmail = function() {
-      return window.location.href = "mailto:support@moj.io";
     };
   }
 ]);
@@ -7840,49 +7234,26 @@ App.controller('multiSimulatorController', [
   }
 ]);
 
-App.controller('observeController', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'mojioConnection', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, mojioConnection, toaster, $filter) {
-    var options;
-    options = {
-      "Type": "Observer",
-      "ObserverType": "Generic",
-      "Parent": "user",
-      "ParentId": mojioGlobal.data.user_data.id,
-      "Subject": "event",
-      "SubjectId": null,
-      "Transports": "SignalR"
-    };
-    mojioRemote.POST("Observers", options, function(data) {
-      var hub, hubConnection;
-      toaster.success({
-        title: "success.title",
-        body: "success.body"
-      });
-      console.log(data._id);
-      hubConnection = $.hubConnection(mojioConnection.SelectedSettings().url + "signalr", {
-        useDefaultPath: false
-      });
-      hub = hubConnection.createHubProxy("ObserverHub");
-      hub.on("UpdateEntity", function(entity) {});
-      return hub.connection.start().done(function() {
-        return hub.invoke("Subscribe", data._id);
-      });
-    }, function() {
-      return toaster.error({
-        title: "error.title",
-        body: "error.body"
-      });
-    });
-  }
-]);
-
 App.controller('myMojioDashboardController', [
-  '$modal', '$templateCache', '$sce', '$compile', '$rootScope', '$stateParams', '$scope', 'mojioRemote', 'localStorage', 'toaster', 'mojioGlobal', 'myMojioFactory', 'mojioGear', '$filter', function($modal, $templateCache, $sce, $compile, $rootScope, $stateParams, $scope, mojioRemote, localStorage, toaster, mojioGlobal, myMojioFactory, mojioGear, $filter) {
+  '$modal', '$templateCache', '$sce', '$compile', '$rootScope', '$stateParams', '$scope', 'mojioRemote', 'localStorage', 'toaster', 'mojioGlobal', 'myMojioFactory', 'mojioGear', '$filter', '$injector', function($modal, $templateCache, $sce, $compile, $rootScope, $stateParams, $scope, mojioRemote, localStorage, toaster, mojioGlobal, myMojioFactory, mojioGear, $filter, $injector) {
     var preparePortal, tohash;
     $scope.AllData = myMojioFactory.Content;
+    $scope.VehicleColor = myMojioFactory.VehicleColor;
     $scope.changeSelectedVehicle = myMojioFactory.changeSelectedVehicle;
     $scope.ShowPortal = false;
+    $scope.DashboardStorage = "DashboardStorage";
     preparePortal = function() {
+      var data;
+      data = localStorage.get($scope.DashboardStorage);
+      if (data !== null) {
+        $scope.windows = data;
+        $scope.ShowPortal = true;
+        $scope.changeActiveWindow(0);
+      } else {
+        $scope.ShowPortal = true;
+        $scope.AddDefaultGears();
+        $scope.changeActiveWindow(0);
+      }
       mojioRemote.GET("Users/" + mojioGlobal.data.user_data.id + "/Store/" + tohash(window.location.href), null, null, null, null, function(result) {
         var rawdata;
         rawdata = JSON.parse(result);
@@ -7975,6 +7346,12 @@ App.controller('myMojioDashboardController', [
       style = "margin:0px;padding:0px;border:0px;" + "height: " + height + "px;" + "background-color:" + p.BGColor + ";" + "color:" + p.Color + ";";
       return style;
     };
+    $scope.validDirective = function(widget) {
+      if (widget.Portlet === "gear-gauge-last-diagnostics") {
+        return false;
+      }
+      return true;
+    };
     $scope.portletDirective = function(widget, pid) {
       var el;
       el = $sce.trustAsHtml("'<div " + widget.Portlet + " data=\"v.Data\" portlet=\"" + pid + "\"></div>'");
@@ -7999,7 +7376,7 @@ App.controller('myMojioDashboardController', [
       $scope.windows = [[], [], [], []];
       $scope.changeActiveWindow(0);
       $scope.addPortlet($scope.GearList[1].gears[0], true);
-      $scope.addPortlet($scope.GearList[0].gears[2], true);
+      $scope.addPortlet($scope.GearList[1].gears[2], true);
       $scope.addPortlet($scope.GearList[0].gears[0], true);
       $scope.addPortlet($scope.GearList[0].gears[1], true);
       $scope.addPortlet($scope.GearList[1].gears[1], true);
@@ -8029,9 +7406,10 @@ App.controller('myMojioDashboardController', [
        */
       $scope.addPortlet($scope.GearList[1].gears[3], true);
       $scope.addPortlet($scope.GearList[2].gears[0], true);
-      $scope.addPortlet($scope.GearList[0].gears[3], true);
+      $scope.addPortlet($scope.GearList[0].gears[2], true);
     };
     $scope.savePortalState = function() {
+      localStorage.add($scope.DashboardStorage, $scope.windows);
       return mojioRemote.POST("Users/" + mojioGlobal.data.user_data.id + "/Store/" + tohash(window.location.href), '"' + JSON.stringify($scope.windows).replace(/"/g, '\\\"').replace(/(\\r\\n|\\n|\\r)/gm, " ") + '"', function(result) {}, function(result) {
         return console.log("save error");
       });
@@ -8039,20 +7417,14 @@ App.controller('myMojioDashboardController', [
     $scope.dropSuccess = function() {
       $scope.savePortalState();
     };
-    myMojioFactory.prepareData(preparePortal);
-    return $scope.VehicleColor = function(id) {
-      var colors, i, len, pos, ref, v, vpos;
-      colors = ['#4a75e6', '#caf200', 'green', 'black'];
-      pos = 0;
-      ref = myMojioFactory.Content.Vehicles;
-      for (vpos = i = 0, len = ref.length; i < len; vpos = ++i) {
-        v = ref[vpos];
-        if (v._id === id) {
-          pos = vpos;
-          break;
-        }
-      }
-      return colors[pos % colors.length];
+    return myMojioFactory.prepareData(preparePortal);
+  }
+]);
+
+App.controller('mymojioSupportController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {
+    $scope.SendEmail = function() {
+      return window.location.href = "mailto:support@moj.io";
     };
   }
 ]);
@@ -8206,7 +7578,7 @@ App.controller('myMojioTripsController', [
         StartAddress = CreateAddressString(trip.StartAddress);
         EndAddress = CreateAddressString(trip.EndAddress);
         duration = Math.abs((new Date(trip.EndTime)) - (new Date(trip.StartTime)));
-        row = '"' + new Date(trip.StartTime).toString() + '",' + '"' + new Date(trip.EndTime).toString() + '",' + '"' + msToTime(duration) + '",' + '"' + Math.round($filter('convertUnit')(trip.MaxSpeed, "speed", $rootScope.app.layout.unit)) + " " + $filter('unitTitle')("maxSpeed", $rootScope.app.layout.unit) + '",' + '"' + Math.round($filter('convertUnit')(trip.MaxAcceleration, "distance", $rootScope.app.layout.unit)) + '",' + '"' + Math.round($filter('convertUnit')(trip.MaxDeceleration, "distance", $rootScope.app.layout.unit)) + '",' + '"' + trip.MaxRPM + '",' + '"' + Math.round($filter('convertUnit')(trip.FuelLevel, "fuelconsumption", $rootScope.app.layout.unit)) + " " + $filter('unitTitle')("fuelconsumption", $rootScope.app.layout.unit) + '",' + '"' + Math.round($filter('convertUnit')(trip.FuelEfficiency, "fuelefficiency", $rootScope.app.layout.unit)) + " " + $filter('unitTitle')("fuelefficiency", $rootScope.app.layout.unit) + '",' + '"' + (Math.round(10 * $filter('convertUnit')(trip.Distance, "distance", $rootScope.app.layout.unit)) / 10) + " " + $filter('unitTitle')("distance", $rootScope.app.layout.unit) + '",' + '"' + (trip.StartLocation === null ? "" : trip.StartLocation.Lat + "," + trip.StartLocation.Lng) + '",' + '"' + (trip.EndLocation === null ? "" : trip.EndLocation.Lat + "," + trip.EndLocation.Lng) + '",' + '"' + StartAddress + '",' + '"' + EndAddress + '",' + '"' + (Math.round(10 * $filter('convertUnit')(trip.StartMilage, "distance", $rootScope.app.layout.unit)) / 10) + '",' + '"' + (Math.round(10 * $filter('convertUnit')(trip.EndMilage, "distance", $rootScope.app.layout.unit)) / 10) + '"';
+        row = '"' + new Date(trip.StartTime).toString() + '",' + '"' + new Date(trip.EndTime).toString() + '",' + '"' + msToTime(duration) + '",' + '"' + Math.round($filter('convertUnit')(trip.MaxSpeed, "speed", $rootScope.app.layout.unit)) + " " + $filter('unitTitle')("maxSpeed", $rootScope.app.layout.unit) + '",' + '"' + Math.round($filter('convertUnit')(trip.MaxAcceleration, "distance", $rootScope.app.layout.unit)) + '",' + '"' + Math.round($filter('convertUnit')(trip.MaxDeceleration, "distance", $rootScope.app.layout.unit)) + '",' + '"' + trip.MaxRPM + '",' + '"' + (Math.round(10 * $filter('convertUnit')(trip.FuelLevel, "fuelconsumption", $rootScope.app.layout.unit)) / 10) + " " + $filter('unitTitle')("fuelconsumption", $rootScope.app.layout.unit) + '",' + '"' + (Math.round(10 * $filter('convertUnit')(trip.FuelEfficiency, "fuelefficiency", $rootScope.app.layout.unit)) / 10) + " " + $filter('unitTitle')("fuelefficiency", $rootScope.app.layout.unit) + '",' + '"' + (Math.round(10 * $filter('convertUnit')(trip.Distance, "distance", $rootScope.app.layout.unit)) / 10) + " " + $filter('unitTitle')("distance", $rootScope.app.layout.unit) + '",' + '"' + (trip.StartLocation === null ? "" : trip.StartLocation.Lat + "," + trip.StartLocation.Lng) + '",' + '"' + (trip.EndLocation === null ? "" : trip.EndLocation.Lat + "," + trip.EndLocation.Lng) + '",' + '"' + StartAddress + '",' + '"' + EndAddress + '",' + '"' + (Math.round(10 * $filter('convertUnit')(trip.StartMilage, "distance", $rootScope.app.layout.unit)) / 10) + '",' + '"' + (Math.round(10 * $filter('convertUnit')(trip.EndMilage, "distance", $rootScope.app.layout.unit)) / 10) + '"';
         csv.push(row);
       }
       saveAs(new Blob([csv.join("\r\n")], {
@@ -8298,7 +7670,7 @@ App.controller('myMojioTripsController', [
           $scope.Events[event.TripId] = [];
         }
         storage = $scope.Events[event.TripId];
-        if (storage.length !== 0 && storage[storage.length - 1].EventType === "IgnitionOff" && event.EventType === "OffStatus") {
+        if (event.EventType === "OffStatus" || event.EventType === "HeartBeat") {
           continue;
         }
         $scope.Events[event.TripId].push(event);
@@ -8320,7 +7692,7 @@ App.controller('myMojioTripsController', [
       $scope.SelectedTrips = [];
       $scope.Loading = true;
       criteria = buildCriteria();
-      return mojioRemote.GET("Trips", 1000, 0, "VehicleId=" + $scope.AllData.SelectedVehicle._id + ";" + "StartTime=" + criteria, null, function(TripsResult) {
+      return mojioRemote.GET("Trips", 1000, 0, "VehicleId=" + $scope.AllData.SelectedVehicle._id + ";" + "StartTime=" + criteria, "sortBy=StartTime&desc=true", function(TripsResult) {
         $scope.TempTrips = TripsResult.Data;
         if ($scope.TempTrips.length === 0) {
           $scope.Loading = false;
@@ -8332,11 +7704,16 @@ App.controller('myMojioTripsController', [
       });
     };
     MakeTripsVisible = function() {
-      var LastTrip;
-      $scope.Trips = $scope.TempTrips;
+      var LastTrip, j, len, ref, t;
+      $scope.Trips = [];
+      ref = $scope.TempTrips;
+      for (j = 0, len = ref.length; j < len; j++) {
+        t = ref[j];
+        $scope.Trips.push(t);
+      }
       getHeatMap();
       if ($scope.Trips.length !== 0) {
-        LastTrip = $scope.Trips[$scope.Trips.length - 1];
+        LastTrip = $scope.Trips[0];
         if (typeof LastTrip.selected === "undefined" || LastTrip.selected === false) {
           $scope.SelectedTrips.push(LastTrip);
           LastTrip.selected = true;
@@ -8489,14 +7866,19 @@ App.controller('myMojioTripsController', [
     };
     getTripEvents = function(trip, callback) {
       mojioRemote.GET("Trips/" + trip._id + "/Events", 10000, 0, null, "sortBy=Time&desc=false", function(result) {
+        var e, j, len, ref;
         if (typeof $scope.Events[trip._id] !== "undefined") {
           callback(trip);
           return;
         }
-        if (result.Data.length !== 0 && result.Data[result.Data.length - 1].EventType === "OffStatus") {
-          result.Data.splice(result.Data.length - 1, 1);
+        $scope.Events[trip._id] = [];
+        ref = result.Data;
+        for (j = 0, len = ref.length; j < len; j++) {
+          e = ref[j];
+          if (e.EventType !== "OffStatus" && e.EventType !== "HeartBeat") {
+            $scope.Events[trip._id].push(e);
+          }
         }
-        $scope.Events[trip._id] = result.Data;
         trip.hasEvents = true;
         callback(trip);
       });
@@ -8521,7 +7903,7 @@ App.controller('myMojioTripsController', [
       fitMap();
     };
     showTripOnMapStep2 = function(trip) {
-      var AllCoordinates, bounds, d, en, enLoc, j, len, ref, st, stLoc, tripPath;
+      var AllCoordinates, AllEvents, EventCounts, bounds, d, en, enLoc, j, len, pos, st, stLoc, tripPath;
       if (typeof trip === "undefined" || typeof trip.selected === "undefined" || !trip.selected) {
         return;
       }
@@ -8529,17 +7911,21 @@ App.controller('myMojioTripsController', [
       bounds = new google.maps.LatLngBounds();
       st = null;
       en = null;
-      ref = $scope.Events[trip._id];
-      for (j = 0, len = ref.length; j < len; j++) {
-        d = ref[j];
-        if (typeof d.Location !== "undefined" && d.Location !== null && !isNaN(d.Location.Lat) && !isNaN(d.Location.Lng) && d.Location.IsValid === true) {
+      AllEvents = $scope.Events[trip._id];
+      EventCounts = AllEvents.length;
+      console.log("EventCounts " + EventCounts);
+      for (pos = j = 0, len = AllEvents.length; j < len; pos = ++j) {
+        d = AllEvents[pos];
+        if (myMojioFactory.IsValidLocation(d, "Location")) {
           if (st === null) {
             st = d;
           }
           en = d;
-          if (d.EventType !== "TripStatus") {
+          if (pos === 0 || pos === EventCounts - 1 || d.EventType !== "TripStatus" || myMojioFactory.IsInorderPoint(d, AllEvents[pos - 1], AllEvents[pos + 1])) {
             AllCoordinates.push(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
             bounds.extend(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
+          } else {
+            console.log("invalid");
           }
         }
       }
@@ -8623,160 +8009,39 @@ App.controller('myMojioTripsController', [
 
 App.controller('obsCotroller', ['$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {}]);
 
-App.controller('serenityServiceController', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
-    var getServices;
-    getServices = function() {
-      return mojioRemote2.GET({
-        moreparam: [
-          {
-            param: 'limit',
-            val: 1000
-          }
-        ],
-        endpoint: "firefly",
-        operation: "servicetemplates",
-        onSuccess: function(res) {
-          return $scope.Service = res;
-        }
+App.controller('observeController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'mojioConnection', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, mojioConnection, toaster, $filter) {
+    var options;
+    options = {
+      "Type": "Observer",
+      "ObserverType": "Generic",
+      "Parent": "user",
+      "ParentId": mojioGlobal.data.user_data.id,
+      "Subject": "event",
+      "SubjectId": null,
+      "Transports": "SignalR"
+    };
+    mojioRemote.POST("Observers", options, function(data) {
+      var hub, hubConnection;
+      toaster.success({
+        title: "success.title",
+        body: "success.body"
       });
-    };
-    $scope.Service = [];
-    getServices();
-    $scope.EditService = function(id) {
-      $state.go("serenity.service_edit", {
-        id: id
+      console.log(data._id);
+      hubConnection = $.hubConnection(mojioConnection.SelectedSettings().url + "signalr", {
+        useDefaultPath: false
       });
-    };
-  }
-]);
-
-App.controller('serenityServiceInstanceController', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
-    var getFireflyVehicles, getServices, getVehicles;
-    getFireflyVehicles = function() {
-      return mojioRemote2.GET({
-        moreparam: [
-          {
-            param: 'limit',
-            val: 1000
-          }
-        ],
-        endpoint: "firefly",
-        operation: "vehicles",
-        onSuccess: function(fireflyVehicles) {
-          return getVehicles(fireflyVehicles);
-        }
+      hub = hubConnection.createHubProxy("ObserverHub");
+      hub.on("UpdateEntity", function(entity) {});
+      return hub.connection.start().done(function() {
+        return hub.invoke("Subscribe", data._id);
       });
-    };
-    getVehicles = function(fireflyVehicles) {
-      return mojioRemote2.GET({
-        operation: "vehicles",
-        onSuccess: function(res) {
-          var fv, i, j, len, len1, mojioVehicles, v;
-          mojioVehicles = res.Data;
-          console.log(mojioVehicles);
-          console.log(fireflyVehicles);
-          for (i = 0, len = mojioVehicles.length; i < len; i++) {
-            v = mojioVehicles[i];
-            for (j = 0, len1 = fireflyVehicles.length; j < len1; j++) {
-              fv = fireflyVehicles[j];
-              if (v.Id === fv.mojioVehicleId) {
-                v.fireflyVehicleId = fv._id;
-                console.log("found");
-                break;
-              }
-            }
-          }
-          return $scope.Vehicle = mojioVehicles;
-        }
+    }, function() {
+      return toaster.error({
+        title: "error.title",
+        body: "error.body"
       });
-    };
-    getServices = function() {
-      return mojioRemote2.GET({
-        moreparam: [
-          {
-            param: 'limit',
-            val: 1000
-          }
-        ],
-        endpoint: "firefly",
-        operation: "servicetemplates",
-        onSuccess: function(res) {
-          return $scope.Service = res;
-        }
-      });
-    };
-    $scope.Service = [];
-    getFireflyVehicles();
-    getServices();
-    $scope.Create = function() {
-      var Data, i, j, len, len1, ref, ref1, st, v;
-      Data = {
-        "Vehicles": [],
-        "ServiceTemplates": []
-      };
-      ref = $scope.Service;
-      for (i = 0, len = ref.length; i < len; i++) {
-        st = ref[i];
-        if (st.selected) {
-          Data.ServiceTemplates.push(st._id);
-        }
-      }
-      ref1 = $scope.Vehicle;
-      for (j = 0, len1 = ref1.length; j < len1; j++) {
-        v = ref1[j];
-        if (v.selected) {
-          Data.Vehicles.push(v.fireflyVehicleId);
-        }
-      }
-      return mojioRemote2.POST({
-        endpoint: "firefly",
-        operation: "serviceitems",
-        data: Data,
-        onSuccess: function(res) {
-          return alert('create ok');
-        },
-        onError: function(res) {
-          return alert('create error');
-        }
-      });
-    };
-    $scope.selectServiceTemplate = function(row) {
-      var i, len, ref, st;
-      ref = $scope.Service;
-      for (i = 0, len = ref.length; i < len; i++) {
-        st = ref[i];
-        st.selected = false;
-      }
-      return row.selected = true;
-    };
-    $scope.VehicleSelectAll = true;
-    $scope.selectAllVehicles = function() {
-      var i, j, len, len1, ref, ref1, results, selNo, v, val;
-      val = true;
-      selNo = 0;
-      ref = $scope.Vehicle;
-      for (i = 0, len = ref.length; i < len; i++) {
-        v = ref[i];
-        if (v.selected) {
-          selNo++;
-        }
-      }
-      if ($scope.Vehicle.length === selNo) {
-        val = false;
-        $scope.VehicleSelectAll = false;
-      } else {
-        $scope.VehicleSelectAll = true;
-      }
-      ref1 = $scope.Vehicle;
-      results = [];
-      for (j = 0, len1 = ref1.length; j < len1; j++) {
-        v = ref1[j];
-        results.push(v.selected = val);
-      }
-      return results;
-    };
+    });
   }
 ]);
 
@@ -9231,6 +8496,122 @@ App.controller('portalController', [
   }
 ]);
 
+App.controller('serenityDealerController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
+    var getDealer;
+    getDealer = function() {
+      return mojioRemote2.GET({
+        moreparam: [
+          {
+            param: 'limit',
+            val: 1000
+          }
+        ],
+        endpoint: "firefly",
+        operation: "dealers",
+        onSuccess: function(res) {
+          return $scope.Dealer = res;
+        }
+      });
+    };
+    $scope.Dealer = [];
+    getDealer();
+    $scope.EditDealer = function(id) {
+      $state.go("serenity.dealer_edit", {
+        id: id
+      });
+    };
+  }
+]);
+
+App.controller('serenityDealerEditController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels) {
+    var getDealers;
+    $scope.DealerId = $stateParams.id;
+    $scope.DataReadyState = false;
+    getDealers = function() {
+      return mojioRemote2.GET({
+        endpoint: "firefly",
+        operation: "Dealers/" + $scope.DealerId,
+        onSuccess: function(res) {
+          $scope.Dealer = res;
+          return $scope.DataReadyState = true;
+        }
+      });
+    };
+    if ($scope.DealerId === "") {
+      $scope.Dealer = angular.copy(SerenityModels.Dealer);
+      $scope.DataReadyState = true;
+    } else {
+      getDealers();
+    }
+    $scope.SaveDealer = function() {
+      if ($scope.DealerId === '') {
+        $scope.CreateDealer();
+      } else {
+        $scope.EditDealer();
+      }
+    };
+    $scope.CreateDealer = function() {
+      mojioRemote2.POST({
+        endpoint: "firefly",
+        operation: "Dealers",
+        data: $scope.Dealer,
+        onSuccess: function(res) {
+          $scope.Dealer = res;
+          $scope.DealerId = res._id;
+          return alert('create ok');
+        },
+        onError: function(res) {
+          return alert('create error');
+        }
+      });
+    };
+    $scope.EditDealer = function() {
+      mojioRemote2.PUT({
+        endpoint: "firefly",
+        operation: "Dealers/" + $scope.DealerId,
+        data: $scope.Dealer,
+        onSuccess: function(res) {
+          $scope.Dealer = res;
+          return alert('edit ok');
+        },
+        onError: function(res) {
+          return alert('edit error');
+        }
+      });
+    };
+  }
+]);
+
+App.controller('serenityServiceController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
+    var getServices;
+    getServices = function() {
+      return mojioRemote2.GET({
+        moreparam: [
+          {
+            param: 'limit',
+            val: 1000
+          }
+        ],
+        endpoint: "firefly",
+        operation: "servicetemplates",
+        onSuccess: function(res) {
+          return $scope.Service = res;
+        }
+      });
+    };
+    $scope.Service = [];
+    getServices();
+    $scope.EditService = function(id) {
+      $state.go("serenity.service_edit", {
+        id: id
+      });
+    };
+  }
+]);
+
 App.controller('serenityServiceEditController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels) {
     var getServices;
@@ -9354,6 +8735,135 @@ App.controller('serenityServiceEditController', [
   }
 ]);
 
+App.controller('serenityServiceInstanceController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote2', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote2, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
+    var getFireflyVehicles, getServices, getVehicles;
+    getFireflyVehicles = function() {
+      return mojioRemote2.GET({
+        moreparam: [
+          {
+            param: 'limit',
+            val: 1000
+          }
+        ],
+        endpoint: "firefly",
+        operation: "vehicles",
+        onSuccess: function(fireflyVehicles) {
+          return getVehicles(fireflyVehicles);
+        }
+      });
+    };
+    getVehicles = function(fireflyVehicles) {
+      return mojioRemote2.GET({
+        operation: "vehicles",
+        onSuccess: function(res) {
+          var fv, i, j, len, len1, mojioVehicles, v;
+          mojioVehicles = res.Data;
+          console.log(mojioVehicles);
+          console.log(fireflyVehicles);
+          for (i = 0, len = mojioVehicles.length; i < len; i++) {
+            v = mojioVehicles[i];
+            for (j = 0, len1 = fireflyVehicles.length; j < len1; j++) {
+              fv = fireflyVehicles[j];
+              if (v.Id === fv.mojioVehicleId) {
+                v.fireflyVehicleId = fv._id;
+                console.log("found");
+                break;
+              }
+            }
+          }
+          return $scope.Vehicle = mojioVehicles;
+        }
+      });
+    };
+    getServices = function() {
+      return mojioRemote2.GET({
+        moreparam: [
+          {
+            param: 'limit',
+            val: 1000
+          }
+        ],
+        endpoint: "firefly",
+        operation: "servicetemplates",
+        onSuccess: function(res) {
+          return $scope.Service = res;
+        }
+      });
+    };
+    $scope.Service = [];
+    getFireflyVehicles();
+    getServices();
+    $scope.Create = function() {
+      var Data, i, j, len, len1, ref, ref1, st, v;
+      Data = {
+        "Vehicles": [],
+        "ServiceTemplates": []
+      };
+      ref = $scope.Service;
+      for (i = 0, len = ref.length; i < len; i++) {
+        st = ref[i];
+        if (st.selected) {
+          Data.ServiceTemplates.push(st._id);
+        }
+      }
+      ref1 = $scope.Vehicle;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        v = ref1[j];
+        if (v.selected) {
+          Data.Vehicles.push(v.fireflyVehicleId);
+        }
+      }
+      return mojioRemote2.POST({
+        endpoint: "firefly",
+        operation: "serviceitems",
+        data: Data,
+        onSuccess: function(res) {
+          return alert('create ok');
+        },
+        onError: function(res) {
+          return alert('create error');
+        }
+      });
+    };
+    $scope.selectServiceTemplate = function(row) {
+      var i, len, ref, st;
+      ref = $scope.Service;
+      for (i = 0, len = ref.length; i < len; i++) {
+        st = ref[i];
+        st.selected = false;
+      }
+      return row.selected = true;
+    };
+    $scope.VehicleSelectAll = true;
+    $scope.selectAllVehicles = function() {
+      var i, j, len, len1, ref, ref1, results, selNo, v, val;
+      val = true;
+      selNo = 0;
+      ref = $scope.Vehicle;
+      for (i = 0, len = ref.length; i < len; i++) {
+        v = ref[i];
+        if (v.selected) {
+          selNo++;
+        }
+      }
+      if ($scope.Vehicle.length === selNo) {
+        val = false;
+        $scope.VehicleSelectAll = false;
+      } else {
+        $scope.VehicleSelectAll = true;
+      }
+      ref1 = $scope.Vehicle;
+      results = [];
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        v = ref1[j];
+        results.push(v.selected = val);
+      }
+      return results;
+    };
+  }
+]);
+
 App.controller('serenitySituationController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'SerenityModels', '$state', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter, SerenityModels, $state) {
     $scope.Situation = [];
@@ -9468,7 +8978,7 @@ App.controller('tempSim2Controller', [
               });
             }
           }
-          newImei = "999" + parseInt(Math.random() * 1000000000);
+          newImei = "999" + parseInt(Math.random() * 1000000000000);
           $scope.AllDevices.push({
             Title: newImei + '(new)',
             Imei: newImei,
@@ -9845,571 +9355,6 @@ App.controller('tempSim2Controller', [
       } else if (mode === "last") {
         return $scope.SelState.No = $scope.SimulatorLogic.Settings.VehicleStates.length - 1;
       }
-    };
-  }
-]);
-
-App.controller('simpleSimulatorController', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'simulatorFactory', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter, simulatorFactory) {
-    var ChooseEventType, RandomEventTypes, myOptions, panoramaOptions, processSVData;
-    $scope.Settings = {
-      Title: 'New Trip Title',
-      Duration: 5,
-      NoOfEvents: 30,
-      RPM: {
-        Min: 300,
-        Max: 1200
-      },
-      Speed: {
-        Min: 30,
-        Max: 90
-      },
-      Fuel: {
-        Min: 70,
-        Max: 80
-      },
-      SpecialEventChance: 10,
-      Points: {
-        Start: null,
-        End: null,
-        WayPoint: []
-      },
-      CircularTrip: false,
-      Events: null
-    };
-    $scope.Marker = {
-      Start: null,
-      End: null,
-      WayPoint: []
-    };
-    $scope.Vehicle = {
-      Selected: null
-    };
-    $scope.Vehicles = null;
-    mojioRemote.GET("Users/" + mojioGlobal.data.user_data.id + "/Vehicles", 20, null, null, null, function(result) {
-      $scope.Vehicles = result.Data;
-      simulatorFactory.FixVehicleName($scope.Vehicles);
-      return $scope.Vehicle.Selected = $scope.Vehicles[0]._id;
-    });
-    $scope.SimulationMode = "Stop";
-    $scope.SimulationStep = 0;
-    $scope.SimulationTimer = null;
-    $scope.Info = {
-      EventsNo: 0,
-      LegsNo: 0,
-      StepsNo: 0,
-      LastImportantEvent: null,
-      LastEvent: null,
-      LastNetworkLatency: 0,
-      TotalNetworkLatency: 0,
-      AvgNetworkLatency: 0,
-      LastWaitBeforeSendingEvent: 0,
-      TotalWaitBeforeSendingEvent: 0
-    };
-    $scope.legs = null;
-    RandomEventTypes = [];
-    $scope.AllRandomEventTypes = {
-      "ConnectionLost": true,
-      "LowBattery": true,
-      "Accident": true,
-      "Acceleration": true,
-      "Deceleration": true
-    };
-    $scope.createMarker = function(latlng, name, html, color) {
-      var contentString, marker;
-      contentString = html;
-      marker = new google.maps.Marker({
-        position: latlng,
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          strokeColor: color,
-          scale: 3
-        },
-        draggable: true,
-        map: $scope.map
-      });
-      return marker;
-    };
-    $scope.PointType = "s";
-    myOptions = {
-      zoom: 8,
-      center: new google.maps.LatLng(43.907787, -79.359741),
-      mapTypeControl: true,
-      mapTypeControlOptions: {
-        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-      },
-      navigationControl: true,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    $scope.map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    $scope.directionsDisplay = new google.maps.DirectionsRenderer();
-    $scope.directionsService = new google.maps.DirectionsService();
-    panoramaOptions = {
-      clickToGo: false,
-      disableDefaultUI: true
-    };
-    $scope.panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
-    $scope.sv = new google.maps.StreetViewService();
-    $scope.map.setStreetView($scope.panorama);
-    $scope.SavePoints = function() {
-      var WayPoint, j, len, ref, wp;
-      if ($scope.Marker.Start) {
-        $scope.Settings.Points.Start = [$scope.Marker.Start.position.lat(), $scope.Marker.Start.position.lng()];
-      } else {
-        $scope.Settings.Points.Start = null;
-      }
-      if ($scope.Marker.End) {
-        $scope.Settings.Points.End = [$scope.Marker.End.position.lat(), $scope.Marker.End.position.lng()];
-      } else {
-        $scope.Settings.Points.End = null;
-      }
-      WayPoint = [];
-      ref = $scope.Marker.WayPoint;
-      for (j = 0, len = ref.length; j < len; j++) {
-        wp = ref[j];
-        WayPoint.push([wp.position.lat(), wp.position.lng()]);
-      }
-      $scope.Settings.Points.WayPoint = WayPoint;
-    };
-    $scope.LoadPoints = function() {
-      var AllPoints, LatLng, WayPoint, j, k, l, len, len1, len2, marker, op, ref, ref1, wp;
-      AllPoints = [];
-      if ($scope.Marker.Start) {
-        $scope.Marker.Start.setMap(null);
-        $scope.Marker.Start = null;
-      }
-      if ($scope.Settings.Points.Start) {
-        LatLng = new google.maps.LatLng($scope.Settings.Points.Start[0], $scope.Settings.Points.Start[1]);
-        $scope.Marker.Start = $scope.createMarker(LatLng, "Start Point", "Start Point", "blue");
-        AllPoints.push($scope.Marker.Start);
-      } else {
-        $scope.Marker.Start.setMap(null);
-        $scope.Marker.Start = null;
-      }
-      if ($scope.Marker.End) {
-        $scope.Marker.End.setMap(null);
-        $scope.Marker.End = null;
-      }
-      if ($scope.Settings.Points.End) {
-        LatLng = new google.maps.LatLng($scope.Settings.Points.End[0], $scope.Settings.Points.End[1]);
-        $scope.Marker.End = $scope.createMarker(LatLng, "End Point", "End Point", "red");
-        AllPoints.push($scope.Marker.End);
-      } else {
-        $scope.Marker.End.setMap(null);
-        $scope.Marker.End = null;
-      }
-      WayPoint = [];
-      ref = $scope.Marker.WayPoint;
-      for (j = 0, len = ref.length; j < len; j++) {
-        wp = ref[j];
-        wp.setMap(null);
-        wp = null;
-      }
-      $scope.Marker.WayPoint = [];
-      ref1 = $scope.Settings.Points.WayPoint;
-      for (k = 0, len1 = ref1.length; k < len1; k++) {
-        wp = ref1[k];
-        LatLng = new google.maps.LatLng(wp[0], wp[1]);
-        marker = $scope.createMarker(LatLng, "Way Point", "Way Point", "#green");
-        $scope.Marker.WayPoint.push(marker);
-        AllPoints.push(marker);
-      }
-      for (l = 0, len2 = AllPoints.length; l < len2; l++) {
-        op = AllPoints[l];
-        google.maps.event.addListener(op, 'dragend', function(m) {
-          $scope.ShowRoute();
-          $scope.Settings.Events = null;
-          $scope.SavePoints();
-        });
-      }
-    };
-    $scope.ClearEvents = function() {
-      $scope.Settings.Events = [];
-    };
-    $scope.showVehicle = function() {
-      return $filter('filter')($scope.Vehicles, {
-        _id: $scope.Vehicle.Selected
-      })[0].Name;
-    };
-    $scope.ShowRoute = function() {
-      var ipos, j, len, ref, request, waypts, wp;
-      if (!$scope.Marker.Start || !$scope.Marker.End) {
-        return;
-      }
-      $scope.directionsDisplay.setMap(null);
-      $scope.directionsDisplay.setMap($scope.map);
-      waypts = [];
-      ipos = 0;
-      ref = $scope.Marker.WayPoint;
-      for (j = 0, len = ref.length; j < len; j++) {
-        wp = ref[j];
-        waypts.push({
-          location: wp.position,
-          stopover: true
-        });
-      }
-      request = {
-        origin: $scope.Marker.Start.position,
-        destination: $scope.Marker.End.position,
-        waypoints: waypts,
-        optimizeWaypoints: true,
-        travelMode: google.maps.TravelMode.DRIVING
-      };
-      if ($scope.Settings.CircularTrip) {
-        waypts.push({
-          location: $scope.Marker.End.position,
-          stopover: true
-        });
-        request.destination = $scope.Marker.Start.position;
-      }
-      $scope.directionsService.route(request, function(response, status) {
-        var EventsNo, StepsNo, k, l, leg, len1, len2, ref1, ref2, step;
-        if (status !== google.maps.DirectionsStatus.OK) {
-          $scope.PrepareSimulator();
-          return;
-        }
-        $scope.Info.EventsNo = 0;
-        $scope.Info.LegsNo = 0;
-        $scope.Info.StepsNo = 0;
-        $scope.$apply(function() {
-          $scope.legs = response.routes[0].legs;
-          return $scope.Info.LegsNo += $scope.legs.length;
-        });
-        StepsNo = 0;
-        EventsNo = 0;
-        ref1 = $scope.legs;
-        for (k = 0, len1 = ref1.length; k < len1; k++) {
-          leg = ref1[k];
-          StepsNo += leg.steps.length;
-          ref2 = leg.steps;
-          for (l = 0, len2 = ref2.length; l < len2; l++) {
-            step = ref2[l];
-            EventsNo += step.path.length;
-          }
-        }
-        $scope.$apply(function() {
-          $scope.Info.StepsNo += StepsNo;
-          return $scope.Info.EventsNo += EventsNo;
-        });
-        return $scope.directionsDisplay.setDirections(response);
-      });
-    };
-    ChooseEventType = function(legsNo, stepNo, pathNo, legsMax, stepMax, pathMax) {
-      var eType;
-      eType = "TripStatus";
-      if (legsNo === 0 && stepNo === 0 && pathNo === 0) {
-        eType = "MovementStart";
-      } else if (pathNo === 0) {
-        eType = "HeadingChange";
-      } else if (legsNo === legsMax - 1 && stepNo === stepMax - 1 && pathNo === pathMax - 1) {
-        eType = "MovementStop";
-      } else if (Math.random() * 100 > $scope.Settings.NoOfEvents) {
-        eType = "";
-      } else if (Math.random() * 100 <= $scope.Settings.SpecialEventChance) {
-        eType = RandomEventTypes[Math.floor(Math.random() * RandomEventTypes.length)];
-      }
-      return eType;
-    };
-    $scope.CreateEvents = function() {
-      var CurrPoint, CurrentEventNo, FuelLevel, PrePoint, RandomSpeed, RandonRPM, TotalEventsNo, amax, apos, distanceSoFar, ev, imax, ipos, j, jmax, jpos, k, l, leg, len, len1, len2, len3, len4, n, newEvent, o, p0, p1, point, ref, ref1, ref2, ref3, ref4, step, thisStepDistance;
-      RandomEventTypes = [];
-      for (ev in $scope.AllRandomEventTypes) {
-        if ($scope.AllRandomEventTypes[ev]) {
-          RandomEventTypes.push(ev);
-        }
-      }
-      $scope.Settings.Events = [];
-      TotalEventsNo = 0;
-      CurrentEventNo = 0;
-      ref = $scope.legs;
-      for (j = 0, len = ref.length; j < len; j++) {
-        leg = ref[j];
-        ref1 = leg.steps;
-        for (k = 0, len1 = ref1.length; k < len1; k++) {
-          step = ref1[k];
-          TotalEventsNo += step.path.length;
-        }
-      }
-      newEvent = angular.copy(simulatorFactory.EventTemplate);
-      newEvent.EventType = "IgnitionOn";
-      newEvent.Location.Lng = $scope.legs[0].steps[0].path[0].lng();
-      newEvent.Location.Lat = $scope.legs[0].steps[0].path[0].lat();
-      newEvent.Odometer = 0;
-      $scope.Settings.Events.push(newEvent);
-      PrePoint = null;
-      CurrPoint = null;
-      RandonRPM = function() {
-        return Math.floor($scope.Settings.RPM.Min + ($scope.Settings.RPM.Max - $scope.Settings.RPM.Min) * Math.random());
-      };
-      RandomSpeed = function() {
-        return Math.floor($scope.Settings.Speed.Min + ($scope.Settings.Speed.Max - $scope.Settings.Speed.Min) * Math.random());
-      };
-      FuelLevel = function(i, m) {
-        var fl;
-        fl = $scope.Settings.Fuel.Max - ($scope.Settings.Fuel.Max - $scope.Settings.Fuel.Min) * i / m;
-        return Math.round(10 * fl) / 10;
-      };
-      distanceSoFar = 0;
-      amax = $scope.legs.length;
-      ref2 = $scope.legs;
-      for (apos = l = 0, len2 = ref2.length; l < len2; apos = ++l) {
-        leg = ref2[apos];
-        imax = leg.steps.length;
-        ref3 = leg.steps;
-        for (ipos = n = 0, len3 = ref3.length; n < len3; ipos = ++n) {
-          step = ref3[ipos];
-          thisStepDistance = step.distance.value;
-          jmax = step.path.length;
-          ref4 = step.path;
-          for (jpos = o = 0, len4 = ref4.length; o < len4; jpos = ++o) {
-            point = ref4[jpos];
-            PrePoint = CurrPoint;
-            CurrPoint = point;
-            newEvent = angular.copy(simulatorFactory.EventTemplate);
-            newEvent.EventType = ChooseEventType(apos, ipos, jpos, amax, imax, jmax);
-            if (newEvent.EventType.length === 0) {
-              jpos++;
-              CurrentEventNo++;
-              continue;
-            }
-            newEvent.Location.Lng = CurrPoint.lng();
-            newEvent.Location.Lat = CurrPoint.lat();
-            newEvent.RPM = RandonRPM();
-            newEvent.Speed = RandomSpeed();
-            newEvent.FuelLevel = FuelLevel(CurrentEventNo, TotalEventsNo);
-            newEvent.Odometer = (distanceSoFar + Math.round(thisStepDistance * (jpos + 1) / jmax)) / 1000;
-            if (PrePoint !== null) {
-              p0 = new google.maps.LatLng(PrePoint.lat(), PrePoint.lng());
-              p1 = new google.maps.LatLng(CurrPoint.lat(), CurrPoint.lng());
-              newEvent.Heading = google.maps.geometry.spherical.computeHeading(p0, p1);
-            }
-            $scope.Settings.Events.push(newEvent);
-            CurrentEventNo++;
-          }
-          distanceSoFar += thisStepDistance;
-        }
-      }
-      newEvent = angular.copy(simulatorFactory.EventTemplate);
-      newEvent.EventType = "IgnitionOff";
-      newEvent.Location.Lng = CurrPoint.lng();
-      newEvent.Location.Lat = CurrPoint.lat();
-      newEvent.Odometer = distanceSoFar / 1000;
-      $scope.Settings.Events.push(newEvent);
-    };
-    $scope.SimulationPlay = function() {
-      $scope.SimulationMode = "Play";
-      $scope.SimulationNextStep();
-    };
-    $scope.SimulationPause = function() {
-      $scope.SimulationMode = "Pause";
-    };
-    $scope.SimulationStop = function() {
-      $scope.SimulationMode = "Stop";
-      $scope.SimulationStep = 0;
-      $scope.Info.LastNetworkLatency = 0;
-      $scope.Info.TotalNetworkLatency = 0;
-      $scope.Info.AvgNetworkLatency = 0;
-      $scope.Info.LastWaitBeforeSendingEvent = 0;
-      $scope.Info.TotalWaitBeforeSendingEvent = 0;
-    };
-    processSVData = function(data, status) {
-      if (status === google.maps.StreetViewStatus.OK) {
-        $scope.panorama.setPano(data.location.pano);
-        $scope.panorama.setPov({
-          heading: $scope.heading,
-          pitch: 0
-        });
-        return $scope.panorama.setVisible(true);
-      }
-    };
-    $scope.SimulationNextStep = function() {
-      var cEvent, date1, sEvent;
-      if ($scope.SimulationStep >= $scope.Settings.Events.length) {
-        $scope.$apply(function() {
-          return $scope.SimulationStop();
-        });
-        return;
-      }
-      cEvent = $scope.Settings.Events[$scope.SimulationStep];
-      $scope.Info.LastEvent = cEvent;
-      if (cEvent.EventType !== "TripStatus") {
-        $scope.Info.LastImportantEvent = cEvent;
-      }
-      $scope.heading = cEvent.Heading;
-      $scope.sv.getPanoramaByLocation(new google.maps.LatLng(cEvent.Location.Lat, cEvent.Location.Lng), 50, processSVData);
-      date1 = new Date();
-      cEvent.Time = new Date();
-      sEvent = angular.copy(cEvent);
-      delete sEvent._viewStatus;
-      delete sEvent.ResponseTime;
-      sEvent.VehicleId = $scope.Vehicle.Selected;
-      mojioRemote.POST("events", sEvent, function() {
-        var date2, tspan;
-        date2 = new Date();
-        tspan = date2 - date1;
-        $scope.Info.LastNetworkLatency = tspan;
-        $scope.Info.TotalNetworkLatency += tspan;
-        $scope.Info.AvgNetworkLatency = Math.round($scope.Info.TotalNetworkLatency / ($scope.SimulationStep + 1));
-        cEvent.ResponseTime = new Date();
-        return $scope.SimulationPrepareNextStep(tspan);
-      }, function() {
-        var date2, tspan;
-        date2 = new Date();
-        tspan = date2 - date1;
-        $scope.Info.LastNetworkLatency = tspan;
-        $scope.Info.TotalNetworkLatency += tspan;
-        $scope.Info.AvgNetworkLatency = Math.round($scope.Info.TotalNetworkLatency / ($scope.SimulationStep + 1));
-        $scope.SimulationPrepareNextStep(Math.max($scope.Info.LastNetworkLatency, $scope.Info.AvgNetworkLatency));
-        return $scope.SimulationPrepareNextStep();
-      });
-    };
-    $scope.SimulationPrepareNextStep = function(tspan) {
-      var delay;
-      $scope.SimulationStep++;
-      if ($scope.SimulationStep >= $scope.Settings.Events.length) {
-        if (!$scope.$$phase) {
-          $scope.$apply(function() {
-            return $scope.SimulationStop();
-          });
-        } else {
-          $scope.SimulationStop();
-        }
-        return;
-      } else if ($scope.SimulationMode === "Play") {
-        delay = Math.round($scope.Settings.Duration * 60 * 1000 / $scope.Settings.Events.length);
-        delay = delay - tspan;
-        if (delay < 1) {
-          delay = 1;
-        }
-        $scope.Info.LastWaitBeforeSendingEvent = delay;
-        $scope.Info.TotalWaitBeforeSendingEvent += delay;
-        $scope.SimulationTimer = window.setTimeout($scope.SimulationNextStep, delay);
-      }
-    };
-    $scope.SimpleSimulationPlay = function() {
-      $scope.CreateEvents();
-      $scope.SimulationPlay();
-    };
-    $scope.PrepareSimulator = function() {
-      var CitiesLatLng, OneCity, latlng;
-      console.log("prepare");
-      if ($scope.Marker.Start) {
-        $scope.Marker.Start.setMap(null);
-        $scope.Marker.Start = null;
-      }
-      if ($scope.Marker.End) {
-        $scope.Marker.End.setMap(null);
-        $scope.Marker.End = null;
-      }
-      CitiesLatLng = [[49.9, 97.1], [48.45, 123.33], [47.2, 122.3]];
-      OneCity = CitiesLatLng[Math.round((CitiesLatLng.length - 1) * Math.random())];
-      latlng = new google.maps.LatLng(OneCity[0] + .2 - 0.4 * Math.random(), -OneCity[1] + .2 - 0.4 * Math.random());
-      $scope.Marker.Start = $scope.createMarker(latlng, "Start Point", "Start Point", "blue");
-      latlng = new google.maps.LatLng(OneCity[0] + .2 - 0.4 * Math.random(), -OneCity[1] + .2 - 0.4 * Math.random());
-      $scope.Marker.End = $scope.createMarker(latlng, "End Point", "End Point", "red");
-      $scope.ShowRoute();
-      $scope.Settings.Events = null;
-      $scope.SavePoints();
-    };
-    return $scope.PrepareSimulator();
-  }
-]);
-
-App.controller('tcuVisualizer', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {
-    var myOptions;
-    $scope.EventData = null;
-    $scope.EventSelected = null;
-    $scope.AdvTitle = "";
-    $scope.createMarker = function(ev, latlng, name, html, color, size) {
-      var contentString, marker;
-      contentString = html;
-      marker = new MarkerWithLabel({
-        position: latlng,
-        icon: ' ',
-        map: $scope.map,
-        labelContent: '<kbd style="background-color:rgba(100,100,100,0.2);color:' + color + '">' + Math.round(ev.SequenceNumber) + '</kbd>',
-        labelClass: "labels"
-      });
-      marker.setMap($scope.map);
-      google.maps.event.addListener(marker, 'click', function() {
-        return $scope.$apply(function() {
-          return $scope.EventSelected = ev;
-        });
-      });
-      return marker;
-    };
-    myOptions = {
-      zoom: 8,
-      center: new google.maps.LatLng(43.907787, -79.359741),
-      mapTypeControl: true,
-      mapTypeControlOptions: {
-        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-      },
-      navigationControl: true,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    $scope.map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    $scope.ChangeViewStatus = function(ev) {
-      if (typeof ev._viewStatus === "undefined" || ev._viewStatus === 'c') {
-        ev._viewStatus = 'e';
-      } else {
-        ev._viewStatus = 'c';
-      }
-    };
-    $scope.ShowOnMap = function() {
-      var Desc, LatLng, Title, bounds, ev, i, len, ref;
-      bounds = new google.maps.LatLngBounds();
-      ref = $scope.EventData;
-      for (i = 0, len = ref.length; i < len; i++) {
-        ev = ref[i];
-        if (ev.Latitude === null || ev.Longitude === null) {
-          continue;
-        }
-        if (ev.Marker) {
-          ev.Marker.setMap(null);
-          ev.Marker = null;
-        }
-        LatLng = new google.maps.LatLng(ev.Latitude, ev.Longitude);
-        Title = ev.SequenceNumber + ":" + ev.OpCode;
-        Desc = Title;
-        ev.Marker = $scope.createMarker(ev, LatLng, Title, Desc, "black", 3);
-        bounds.extend(ev.Marker.getPosition());
-      }
-      $scope.map.fitBounds(bounds);
-    };
-    $scope.HighlightIt = function(ev) {
-      $scope.SelectNewEvent(ev);
-    };
-    $scope.SelectNewEvent = function(ev) {
-      var Desc, LatLng, Title;
-      if ($scope.EventSelected !== null) {
-        $scope.EventSelected.Marker.setMap(null);
-        $scope.EventSelected.Marker = null;
-        LatLng = new google.maps.LatLng(ev.Latitude, ev.Longitude);
-        Title = $scope.EventSelected.SequenceNumber + ":" + $scope.EventSelected.OpCode;
-        Desc = Title;
-        ev.Marker = $scope.createMarker($scope.EventSelected, LatLng, Title, Desc, "black", 3);
-      }
-      $scope.EventSelected = ev;
-      if (ev.Marker) {
-        ev.Marker.setMap(null);
-        ev.Marker = null;
-      }
-      LatLng = new google.maps.LatLng(ev.Latitude, ev.Longitude);
-      Title = ev.SequenceNumber + ":" + ev.OpCode;
-      Desc = Title;
-      ev.Marker = $scope.createMarker(ev, LatLng, Title, Desc, "red", 6);
-    };
-    $scope.ShowField = function(key, fl) {
-      if (typeof fl === "object" || key[0] === "_") {
-        return false;
-      } else {
-        return true;
-      }
-    };
-    $scope.ShowFieldOnTitle = function(key) {
-      $scope.AdvTitle = key;
     };
   }
 ]);
@@ -11042,6 +9987,472 @@ App.controller('tempSim2ControllerOld', [
   }
 ]);
 
+App.controller('simpleSimulatorController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'simulatorFactory', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter, simulatorFactory) {
+    var ChooseEventType, RandomEventTypes, myOptions, panoramaOptions, processSVData;
+    $scope.Settings = {
+      Title: 'New Trip Title',
+      Duration: 5,
+      NoOfEvents: 30,
+      RPM: {
+        Min: 300,
+        Max: 1200
+      },
+      Speed: {
+        Min: 30,
+        Max: 90
+      },
+      Fuel: {
+        Min: 70,
+        Max: 80
+      },
+      SpecialEventChance: 10,
+      Points: {
+        Start: null,
+        End: null,
+        WayPoint: []
+      },
+      CircularTrip: false,
+      Events: null
+    };
+    $scope.Marker = {
+      Start: null,
+      End: null,
+      WayPoint: []
+    };
+    $scope.Vehicle = {
+      Selected: null
+    };
+    $scope.Vehicles = null;
+    mojioRemote.GET("Users/" + mojioGlobal.data.user_data.id + "/Vehicles", 20, null, null, null, function(result) {
+      $scope.Vehicles = result.Data;
+      simulatorFactory.FixVehicleName($scope.Vehicles);
+      return $scope.Vehicle.Selected = $scope.Vehicles[0]._id;
+    });
+    $scope.SimulationMode = "Stop";
+    $scope.SimulationStep = 0;
+    $scope.SimulationTimer = null;
+    $scope.Info = {
+      EventsNo: 0,
+      LegsNo: 0,
+      StepsNo: 0,
+      LastImportantEvent: null,
+      LastEvent: null,
+      LastNetworkLatency: 0,
+      TotalNetworkLatency: 0,
+      AvgNetworkLatency: 0,
+      LastWaitBeforeSendingEvent: 0,
+      TotalWaitBeforeSendingEvent: 0
+    };
+    $scope.legs = null;
+    RandomEventTypes = [];
+    $scope.AllRandomEventTypes = {
+      "ConnectionLost": true,
+      "LowBattery": true,
+      "Accident": true,
+      "Acceleration": true,
+      "Deceleration": true
+    };
+    $scope.createMarker = function(latlng, name, html, color) {
+      var contentString, marker;
+      contentString = html;
+      marker = new google.maps.Marker({
+        position: latlng,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          strokeColor: color,
+          scale: 3
+        },
+        draggable: true,
+        map: $scope.map
+      });
+      return marker;
+    };
+    $scope.PointType = "s";
+    myOptions = {
+      zoom: 8,
+      center: new google.maps.LatLng(43.907787, -79.359741),
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+      },
+      navigationControl: true,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    $scope.map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    $scope.directionsDisplay = new google.maps.DirectionsRenderer();
+    $scope.directionsService = new google.maps.DirectionsService();
+    panoramaOptions = {
+      clickToGo: false,
+      disableDefaultUI: true
+    };
+    $scope.panorama = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+    $scope.sv = new google.maps.StreetViewService();
+    $scope.map.setStreetView($scope.panorama);
+    $scope.SavePoints = function() {
+      var WayPoint, j, len, ref, wp;
+      if ($scope.Marker.Start) {
+        $scope.Settings.Points.Start = [$scope.Marker.Start.position.lat(), $scope.Marker.Start.position.lng()];
+      } else {
+        $scope.Settings.Points.Start = null;
+      }
+      if ($scope.Marker.End) {
+        $scope.Settings.Points.End = [$scope.Marker.End.position.lat(), $scope.Marker.End.position.lng()];
+      } else {
+        $scope.Settings.Points.End = null;
+      }
+      WayPoint = [];
+      ref = $scope.Marker.WayPoint;
+      for (j = 0, len = ref.length; j < len; j++) {
+        wp = ref[j];
+        WayPoint.push([wp.position.lat(), wp.position.lng()]);
+      }
+      $scope.Settings.Points.WayPoint = WayPoint;
+    };
+    $scope.LoadPoints = function() {
+      var AllPoints, LatLng, WayPoint, j, k, l, len, len1, len2, marker, op, ref, ref1, wp;
+      AllPoints = [];
+      if ($scope.Marker.Start) {
+        $scope.Marker.Start.setMap(null);
+        $scope.Marker.Start = null;
+      }
+      if ($scope.Settings.Points.Start) {
+        LatLng = new google.maps.LatLng($scope.Settings.Points.Start[0], $scope.Settings.Points.Start[1]);
+        $scope.Marker.Start = $scope.createMarker(LatLng, "Start Point", "Start Point", "blue");
+        AllPoints.push($scope.Marker.Start);
+      } else {
+        $scope.Marker.Start.setMap(null);
+        $scope.Marker.Start = null;
+      }
+      if ($scope.Marker.End) {
+        $scope.Marker.End.setMap(null);
+        $scope.Marker.End = null;
+      }
+      if ($scope.Settings.Points.End) {
+        LatLng = new google.maps.LatLng($scope.Settings.Points.End[0], $scope.Settings.Points.End[1]);
+        $scope.Marker.End = $scope.createMarker(LatLng, "End Point", "End Point", "red");
+        AllPoints.push($scope.Marker.End);
+      } else {
+        $scope.Marker.End.setMap(null);
+        $scope.Marker.End = null;
+      }
+      WayPoint = [];
+      ref = $scope.Marker.WayPoint;
+      for (j = 0, len = ref.length; j < len; j++) {
+        wp = ref[j];
+        wp.setMap(null);
+        wp = null;
+      }
+      $scope.Marker.WayPoint = [];
+      ref1 = $scope.Settings.Points.WayPoint;
+      for (k = 0, len1 = ref1.length; k < len1; k++) {
+        wp = ref1[k];
+        LatLng = new google.maps.LatLng(wp[0], wp[1]);
+        marker = $scope.createMarker(LatLng, "Way Point", "Way Point", "#green");
+        $scope.Marker.WayPoint.push(marker);
+        AllPoints.push(marker);
+      }
+      for (l = 0, len2 = AllPoints.length; l < len2; l++) {
+        op = AllPoints[l];
+        google.maps.event.addListener(op, 'dragend', function(m) {
+          $scope.ShowRoute();
+          $scope.Settings.Events = null;
+          $scope.SavePoints();
+        });
+      }
+    };
+    $scope.ClearEvents = function() {
+      $scope.Settings.Events = [];
+    };
+    $scope.showVehicle = function() {
+      return $filter('filter')($scope.Vehicles, {
+        _id: $scope.Vehicle.Selected
+      })[0].Name;
+    };
+    $scope.ShowRoute = function() {
+      var ipos, j, len, ref, request, waypts, wp;
+      if (!$scope.Marker.Start || !$scope.Marker.End) {
+        return;
+      }
+      $scope.directionsDisplay.setMap(null);
+      $scope.directionsDisplay.setMap($scope.map);
+      waypts = [];
+      ipos = 0;
+      ref = $scope.Marker.WayPoint;
+      for (j = 0, len = ref.length; j < len; j++) {
+        wp = ref[j];
+        waypts.push({
+          location: wp.position,
+          stopover: true
+        });
+      }
+      request = {
+        origin: $scope.Marker.Start.position,
+        destination: $scope.Marker.End.position,
+        waypoints: waypts,
+        optimizeWaypoints: true,
+        travelMode: google.maps.TravelMode.DRIVING
+      };
+      if ($scope.Settings.CircularTrip) {
+        waypts.push({
+          location: $scope.Marker.End.position,
+          stopover: true
+        });
+        request.destination = $scope.Marker.Start.position;
+      }
+      $scope.directionsService.route(request, function(response, status) {
+        var EventsNo, StepsNo, k, l, leg, len1, len2, ref1, ref2, step;
+        if (status !== google.maps.DirectionsStatus.OK) {
+          $scope.PrepareSimulator();
+          return;
+        }
+        $scope.Info.EventsNo = 0;
+        $scope.Info.LegsNo = 0;
+        $scope.Info.StepsNo = 0;
+        $scope.$apply(function() {
+          $scope.legs = response.routes[0].legs;
+          return $scope.Info.LegsNo += $scope.legs.length;
+        });
+        StepsNo = 0;
+        EventsNo = 0;
+        ref1 = $scope.legs;
+        for (k = 0, len1 = ref1.length; k < len1; k++) {
+          leg = ref1[k];
+          StepsNo += leg.steps.length;
+          ref2 = leg.steps;
+          for (l = 0, len2 = ref2.length; l < len2; l++) {
+            step = ref2[l];
+            EventsNo += step.path.length;
+          }
+        }
+        $scope.$apply(function() {
+          $scope.Info.StepsNo += StepsNo;
+          return $scope.Info.EventsNo += EventsNo;
+        });
+        return $scope.directionsDisplay.setDirections(response);
+      });
+    };
+    ChooseEventType = function(legsNo, stepNo, pathNo, legsMax, stepMax, pathMax) {
+      var eType;
+      eType = "TripStatus";
+      if (legsNo === 0 && stepNo === 0 && pathNo === 0) {
+        eType = "MovementStart";
+      } else if (pathNo === 0) {
+        eType = "HeadingChange";
+      } else if (legsNo === legsMax - 1 && stepNo === stepMax - 1 && pathNo === pathMax - 1) {
+        eType = "MovementStop";
+      } else if (Math.random() * 100 > $scope.Settings.NoOfEvents) {
+        eType = "";
+      } else if (Math.random() * 100 <= $scope.Settings.SpecialEventChance) {
+        eType = RandomEventTypes[Math.floor(Math.random() * RandomEventTypes.length)];
+      }
+      return eType;
+    };
+    $scope.CreateEvents = function() {
+      var CurrPoint, CurrentEventNo, FuelLevel, PrePoint, RandomSpeed, RandonRPM, TotalEventsNo, amax, apos, distanceSoFar, ev, imax, ipos, j, jmax, jpos, k, l, leg, len, len1, len2, len3, len4, n, newEvent, o, p0, p1, point, ref, ref1, ref2, ref3, ref4, step, thisStepDistance;
+      RandomEventTypes = [];
+      for (ev in $scope.AllRandomEventTypes) {
+        if ($scope.AllRandomEventTypes[ev]) {
+          RandomEventTypes.push(ev);
+        }
+      }
+      $scope.Settings.Events = [];
+      TotalEventsNo = 0;
+      CurrentEventNo = 0;
+      ref = $scope.legs;
+      for (j = 0, len = ref.length; j < len; j++) {
+        leg = ref[j];
+        ref1 = leg.steps;
+        for (k = 0, len1 = ref1.length; k < len1; k++) {
+          step = ref1[k];
+          TotalEventsNo += step.path.length;
+        }
+      }
+      newEvent = angular.copy(simulatorFactory.EventTemplate);
+      newEvent.EventType = "IgnitionOn";
+      newEvent.Location.Lng = $scope.legs[0].steps[0].path[0].lng();
+      newEvent.Location.Lat = $scope.legs[0].steps[0].path[0].lat();
+      newEvent.Odometer = 0;
+      $scope.Settings.Events.push(newEvent);
+      PrePoint = null;
+      CurrPoint = null;
+      RandonRPM = function() {
+        return Math.floor($scope.Settings.RPM.Min + ($scope.Settings.RPM.Max - $scope.Settings.RPM.Min) * Math.random());
+      };
+      RandomSpeed = function() {
+        return Math.floor($scope.Settings.Speed.Min + ($scope.Settings.Speed.Max - $scope.Settings.Speed.Min) * Math.random());
+      };
+      FuelLevel = function(i, m) {
+        var fl;
+        fl = $scope.Settings.Fuel.Max - ($scope.Settings.Fuel.Max - $scope.Settings.Fuel.Min) * i / m;
+        return Math.round(10 * fl) / 10;
+      };
+      distanceSoFar = 0;
+      amax = $scope.legs.length;
+      ref2 = $scope.legs;
+      for (apos = l = 0, len2 = ref2.length; l < len2; apos = ++l) {
+        leg = ref2[apos];
+        imax = leg.steps.length;
+        ref3 = leg.steps;
+        for (ipos = n = 0, len3 = ref3.length; n < len3; ipos = ++n) {
+          step = ref3[ipos];
+          thisStepDistance = step.distance.value;
+          jmax = step.path.length;
+          ref4 = step.path;
+          for (jpos = o = 0, len4 = ref4.length; o < len4; jpos = ++o) {
+            point = ref4[jpos];
+            PrePoint = CurrPoint;
+            CurrPoint = point;
+            newEvent = angular.copy(simulatorFactory.EventTemplate);
+            newEvent.EventType = ChooseEventType(apos, ipos, jpos, amax, imax, jmax);
+            if (newEvent.EventType.length === 0) {
+              jpos++;
+              CurrentEventNo++;
+              continue;
+            }
+            newEvent.Location.Lng = CurrPoint.lng();
+            newEvent.Location.Lat = CurrPoint.lat();
+            newEvent.RPM = RandonRPM();
+            newEvent.Speed = RandomSpeed();
+            newEvent.FuelLevel = FuelLevel(CurrentEventNo, TotalEventsNo);
+            newEvent.Odometer = (distanceSoFar + Math.round(thisStepDistance * (jpos + 1) / jmax)) / 1000;
+            if (PrePoint !== null) {
+              p0 = new google.maps.LatLng(PrePoint.lat(), PrePoint.lng());
+              p1 = new google.maps.LatLng(CurrPoint.lat(), CurrPoint.lng());
+              newEvent.Heading = google.maps.geometry.spherical.computeHeading(p0, p1);
+            }
+            $scope.Settings.Events.push(newEvent);
+            CurrentEventNo++;
+          }
+          distanceSoFar += thisStepDistance;
+        }
+      }
+      newEvent = angular.copy(simulatorFactory.EventTemplate);
+      newEvent.EventType = "IgnitionOff";
+      newEvent.Location.Lng = CurrPoint.lng();
+      newEvent.Location.Lat = CurrPoint.lat();
+      newEvent.Odometer = distanceSoFar / 1000;
+      $scope.Settings.Events.push(newEvent);
+    };
+    $scope.SimulationPlay = function() {
+      $scope.SimulationMode = "Play";
+      $scope.SimulationNextStep();
+    };
+    $scope.SimulationPause = function() {
+      $scope.SimulationMode = "Pause";
+    };
+    $scope.SimulationStop = function() {
+      $scope.SimulationMode = "Stop";
+      $scope.SimulationStep = 0;
+      $scope.Info.LastNetworkLatency = 0;
+      $scope.Info.TotalNetworkLatency = 0;
+      $scope.Info.AvgNetworkLatency = 0;
+      $scope.Info.LastWaitBeforeSendingEvent = 0;
+      $scope.Info.TotalWaitBeforeSendingEvent = 0;
+    };
+    processSVData = function(data, status) {
+      if (status === google.maps.StreetViewStatus.OK) {
+        $scope.panorama.setPano(data.location.pano);
+        $scope.panorama.setPov({
+          heading: $scope.heading,
+          pitch: 0
+        });
+        return $scope.panorama.setVisible(true);
+      }
+    };
+    $scope.SimulationNextStep = function() {
+      var cEvent, date1, sEvent;
+      if ($scope.SimulationStep >= $scope.Settings.Events.length) {
+        $scope.$apply(function() {
+          return $scope.SimulationStop();
+        });
+        return;
+      }
+      cEvent = $scope.Settings.Events[$scope.SimulationStep];
+      $scope.Info.LastEvent = cEvent;
+      if (cEvent.EventType !== "TripStatus") {
+        $scope.Info.LastImportantEvent = cEvent;
+      }
+      $scope.heading = cEvent.Heading;
+      $scope.sv.getPanoramaByLocation(new google.maps.LatLng(cEvent.Location.Lat, cEvent.Location.Lng), 50, processSVData);
+      date1 = new Date();
+      cEvent.Time = new Date();
+      sEvent = angular.copy(cEvent);
+      delete sEvent._viewStatus;
+      delete sEvent.ResponseTime;
+      sEvent.VehicleId = $scope.Vehicle.Selected;
+      mojioRemote.POST("events", sEvent, function() {
+        var date2, tspan;
+        date2 = new Date();
+        tspan = date2 - date1;
+        $scope.Info.LastNetworkLatency = tspan;
+        $scope.Info.TotalNetworkLatency += tspan;
+        $scope.Info.AvgNetworkLatency = Math.round($scope.Info.TotalNetworkLatency / ($scope.SimulationStep + 1));
+        cEvent.ResponseTime = new Date();
+        return $scope.SimulationPrepareNextStep(tspan);
+      }, function() {
+        var date2, tspan;
+        date2 = new Date();
+        tspan = date2 - date1;
+        $scope.Info.LastNetworkLatency = tspan;
+        $scope.Info.TotalNetworkLatency += tspan;
+        $scope.Info.AvgNetworkLatency = Math.round($scope.Info.TotalNetworkLatency / ($scope.SimulationStep + 1));
+        $scope.SimulationPrepareNextStep(Math.max($scope.Info.LastNetworkLatency, $scope.Info.AvgNetworkLatency));
+        return $scope.SimulationPrepareNextStep();
+      });
+    };
+    $scope.SimulationPrepareNextStep = function(tspan) {
+      var delay;
+      $scope.SimulationStep++;
+      if ($scope.SimulationStep >= $scope.Settings.Events.length) {
+        if (!$scope.$$phase) {
+          $scope.$apply(function() {
+            return $scope.SimulationStop();
+          });
+        } else {
+          $scope.SimulationStop();
+        }
+        return;
+      } else if ($scope.SimulationMode === "Play") {
+        delay = Math.round($scope.Settings.Duration * 60 * 1000 / $scope.Settings.Events.length);
+        delay = delay - tspan;
+        if (delay < 1) {
+          delay = 1;
+        }
+        $scope.Info.LastWaitBeforeSendingEvent = delay;
+        $scope.Info.TotalWaitBeforeSendingEvent += delay;
+        $scope.SimulationTimer = window.setTimeout($scope.SimulationNextStep, delay);
+      }
+    };
+    $scope.SimpleSimulationPlay = function() {
+      $scope.CreateEvents();
+      $scope.SimulationPlay();
+    };
+    $scope.PrepareSimulator = function() {
+      var CitiesLatLng, OneCity, latlng;
+      console.log("prepare");
+      if ($scope.Marker.Start) {
+        $scope.Marker.Start.setMap(null);
+        $scope.Marker.Start = null;
+      }
+      if ($scope.Marker.End) {
+        $scope.Marker.End.setMap(null);
+        $scope.Marker.End = null;
+      }
+      CitiesLatLng = [[49.9, 97.1], [48.45, 123.33], [47.2, 122.3]];
+      OneCity = CitiesLatLng[Math.round((CitiesLatLng.length - 1) * Math.random())];
+      latlng = new google.maps.LatLng(OneCity[0] + .2 - 0.4 * Math.random(), -OneCity[1] + .2 - 0.4 * Math.random());
+      $scope.Marker.Start = $scope.createMarker(latlng, "Start Point", "Start Point", "blue");
+      latlng = new google.maps.LatLng(OneCity[0] + .2 - 0.4 * Math.random(), -OneCity[1] + .2 - 0.4 * Math.random());
+      $scope.Marker.End = $scope.createMarker(latlng, "End Point", "End Point", "red");
+      $scope.ShowRoute();
+      $scope.Settings.Events = null;
+      $scope.SavePoints();
+    };
+    return $scope.PrepareSimulator();
+  }
+]);
+
 App.controller('simulatorController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'simulatorFactory', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter, simulatorFactory) {
     var ChooseEventType, RandomEventTypes, myOptions, panoramaOptions, processSVData;
@@ -11653,6 +11064,105 @@ App.controller('simulatorController', [
   }
 ]);
 
+App.controller('tcuVisualizer', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {
+    var myOptions;
+    $scope.EventData = null;
+    $scope.EventSelected = null;
+    $scope.AdvTitle = "";
+    $scope.createMarker = function(ev, latlng, name, html, color, size) {
+      var contentString, marker;
+      contentString = html;
+      marker = new MarkerWithLabel({
+        position: latlng,
+        icon: ' ',
+        map: $scope.map,
+        labelContent: '<kbd style="background-color:rgba(100,100,100,0.2);color:' + color + '">' + Math.round(ev.SequenceNumber) + '</kbd>',
+        labelClass: "labels"
+      });
+      marker.setMap($scope.map);
+      google.maps.event.addListener(marker, 'click', function() {
+        return $scope.$apply(function() {
+          return $scope.EventSelected = ev;
+        });
+      });
+      return marker;
+    };
+    myOptions = {
+      zoom: 8,
+      center: new google.maps.LatLng(43.907787, -79.359741),
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+      },
+      navigationControl: true,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    $scope.map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    $scope.ChangeViewStatus = function(ev) {
+      if (typeof ev._viewStatus === "undefined" || ev._viewStatus === 'c') {
+        ev._viewStatus = 'e';
+      } else {
+        ev._viewStatus = 'c';
+      }
+    };
+    $scope.ShowOnMap = function() {
+      var Desc, LatLng, Title, bounds, ev, i, len, ref;
+      bounds = new google.maps.LatLngBounds();
+      ref = $scope.EventData;
+      for (i = 0, len = ref.length; i < len; i++) {
+        ev = ref[i];
+        if (ev.Latitude === null || ev.Longitude === null) {
+          continue;
+        }
+        if (ev.Marker) {
+          ev.Marker.setMap(null);
+          ev.Marker = null;
+        }
+        LatLng = new google.maps.LatLng(ev.Latitude, ev.Longitude);
+        Title = ev.SequenceNumber + ":" + ev.OpCode;
+        Desc = Title;
+        ev.Marker = $scope.createMarker(ev, LatLng, Title, Desc, "black", 3);
+        bounds.extend(ev.Marker.getPosition());
+      }
+      $scope.map.fitBounds(bounds);
+    };
+    $scope.HighlightIt = function(ev) {
+      $scope.SelectNewEvent(ev);
+    };
+    $scope.SelectNewEvent = function(ev) {
+      var Desc, LatLng, Title;
+      if ($scope.EventSelected !== null) {
+        $scope.EventSelected.Marker.setMap(null);
+        $scope.EventSelected.Marker = null;
+        LatLng = new google.maps.LatLng(ev.Latitude, ev.Longitude);
+        Title = $scope.EventSelected.SequenceNumber + ":" + $scope.EventSelected.OpCode;
+        Desc = Title;
+        ev.Marker = $scope.createMarker($scope.EventSelected, LatLng, Title, Desc, "black", 3);
+      }
+      $scope.EventSelected = ev;
+      if (ev.Marker) {
+        ev.Marker.setMap(null);
+        ev.Marker = null;
+      }
+      LatLng = new google.maps.LatLng(ev.Latitude, ev.Longitude);
+      Title = ev.SequenceNumber + ":" + ev.OpCode;
+      Desc = Title;
+      ev.Marker = $scope.createMarker(ev, LatLng, Title, Desc, "red", 6);
+    };
+    $scope.ShowField = function(key, fl) {
+      if (typeof fl === "object" || key[0] === "_") {
+        return false;
+      } else {
+        return true;
+      }
+    };
+    $scope.ShowFieldOnTitle = function(key) {
+      $scope.AdvTitle = key;
+    };
+  }
+]);
+
 App.filter('fuelEfficiencyScore', [
   '$filter', function($filter) {
     return function(input, type) {
@@ -11817,12 +11327,12 @@ App.filter('duration', function() {
     retVal = "";
     diff = Math.abs(((new Date(edate)) - (new Date(sdate))) / 1000);
     if (diff < 60) {
-      retVal = Math.round(diff) + " Sec";
+      retVal = Math.floor(diff) + " Sec";
     } else if (diff < 60 * 60) {
-      retVal = Math.round(diff / 60) + " Min";
+      retVal = Math.floor(diff / 60) + " Min";
     } else {
-      hrs = Math.round(diff / 3600);
-      min = Math.round((diff - hrs * 3600) / 60);
+      hrs = Math.floor(diff / 3600);
+      min = Math.floor((diff - hrs * 3600) / 60);
       if (min === 0) {
         min = "";
       } else {
@@ -11931,7 +11441,7 @@ App.directive('gearAdminMojio', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/gear_admin_mojio.html',
+      templateUrl: 'gear_admin_mojio.html',
       controller: ["$rootScope", "$scope", function($rootScope, $scope) {
         var getMojio;
         getMojio = function() {
@@ -11953,7 +11463,7 @@ App.directive('gearAdminVehicle', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/gear_admin_vehicle.html',
+      templateUrl: 'gear_admin_vehicle.html',
       controller: ["$rootScope", "$scope", function($rootScope, $scope) {}],
       link: function($rootScope, scope, element, attrs) {}
     };
@@ -11964,7 +11474,7 @@ App.directive('gearClaim', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', '$filter', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, $filter) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/gear_claim.html',
+      templateUrl: 'gear_claim.html',
       controller: ["$rootScope", "$scope", function($rootScope, $scope) {
         $scope.Data = {
           IMEI: ""
@@ -12001,7 +11511,7 @@ App.directive('gearCloakStatus', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', 'myMojioFactory', '$timeout', 'googlemapFactory', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, myMojioFactory, $timeout, googlemapFactory) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/gear_cloak_status.html',
+      templateUrl: 'gear_cloak_status.html',
       controller: ["$rootScope", "$scope", function($rootScope, $scope) {
         var createMarker, showStatus;
         showStatus = function() {
@@ -12079,7 +11589,7 @@ App.directive('gearGaugeBatteryLevel', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/gear_gauge_battery_level.html',
+      templateUrl: 'gear_gauge_battery_level.html',
       controller: ["$rootScope", "$scope", function($rootScope, $scope) {
         return $scope.BatteryStatus = function(bv) {
           if (typeof bv === "undefined" || bv === null || isNaN(bv)) {
@@ -12107,7 +11617,7 @@ App.directive('gearGaugeServiceSchedule', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', 'myMojioFactory', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, myMojioFactory) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/gear_gauge_service_schedule.html',
+      templateUrl: 'gear_gauge_service_schedule.html',
       controller: ["$rootScope", "$scope", function($rootScope, $scope) {
         var getServices;
         getServices = function() {
@@ -12135,28 +11645,29 @@ App.directive('gearGaugeServiceSchedule', [
   }
 ]);
 
-App.directive('gearGaugeLastDiagnostics', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/gear_gauge_last_diagnostics.html',
-      controller: ["$rootScope", "$scope", function($rootScope, $scope) {}],
-      link: function($rootScope, scope, element, attrs) {}
-    };
-  }
-]);
-
 App.directive('gearGaugeVehicleHealth', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/gear_gauge_vehicle_health.html',
+      templateUrl: 'gear_gauge_vehicle_health.html',
       controller: ["$rootScope", "$scope", function($rootScope, $scope) {
-        return $scope.HealthStatus = function(FaultsDetected) {
+        $scope.ShowMode = "Overall";
+        $scope.HealthStatus = function(FaultsDetected) {
           if (FaultsDetected) {
             return "gear.gear_gauge_vehicle_health.HealthStatus.FaultsDetected";
           } else {
             return "gear.gear_gauge_vehicle_health.HealthStatus.Good";
+          }
+        };
+        $scope.ChangeMode = function(NewMode, Category) {
+          $scope.ShowMode = NewMode;
+          $scope.Category = Category;
+        };
+        $scope.ShowThisCategory = function(Category) {
+          if (Category.replace(' ', '') === $scope.Category) {
+            return true;
+          } else {
+            return false;
           }
         };
       }],
@@ -12169,7 +11680,7 @@ App.directive('gearTrekChart', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', '$timeout', 'myMojioFactory', '$filter', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, $timeout, myMojioFactory, $filter) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/gear_trek_chart.html',
+      templateUrl: 'gear_trek_chart.html',
       controller: ["$rootScope", "$scope", function($rootScope, $scope) {
         var buildCriteria, changeChart, distanceInMs, monthNames, prepareChart;
         monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -12305,6 +11816,10 @@ App.directive('gearTrekChart', [
         };
         $scope.ChartTypes = [
           {
+            title: "gear.gear_trek_chart.ChartType.MaxSpeed",
+            field: "maxSpeed",
+            unit: "speed"
+          }, {
             title: "gear.gear_trek_chart.ChartType.FuelEfficiency",
             field: "fuelEfficiency",
             unit: "fuelefficiency"
@@ -12324,10 +11839,6 @@ App.directive('gearTrekChart', [
             title: "gear.gear_trek_chart.ChartType.Trips",
             field: "trips",
             unit: "trips"
-          }, {
-            title: "gear.gear_trek_chart.ChartType.MaxSpeed",
-            field: "maxSpeed",
-            unit: "speed"
           }
         ];
         $scope.changeChartType = function(ct, p) {
@@ -12409,11 +11920,224 @@ App.directive('gearTrekChart', [
   }
 ]);
 
+App.directive('gearTrekDrivingStat', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', '$timeout', 'myMojioFactory', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, $timeout, myMojioFactory) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'gear_trek_driving_stat.html',
+      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
+        var buildCriteria, monthNames, prepareData;
+        monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        buildCriteria = function() {
+          var e, eStr, s, sStr, today;
+          today = new Date();
+          s = new Date();
+          s.setDate((new Date()).getDate() - 14);
+          sStr = s.getFullYear() + "." + (s.getMonth() + 1) + "." + s.getDate();
+          e = new Date();
+          e.setDate((new Date()).getDate() + 1);
+          eStr = e.getFullYear() + "." + (e.getMonth() + 1) + "." + e.getDate();
+          return sStr + "-" + eStr;
+        };
+        prepareData = function() {
+          var calcData, criteria;
+          criteria = buildCriteria();
+          calcData = {
+            trips: 0,
+            distance: 0,
+            duration: 0,
+            fuelConsumption: 0,
+            fuelEfficiency: 0,
+            maxSpeed: 0
+          };
+          mojioRemote.GET("Trips", 10000, 0, "VehicleId=" + $scope.AllData.SelectedVehicle._id + ";StartTime=" + criteria, null, function(result) {
+            var appop, d, i, len, ref;
+            ref = result.Data;
+            for (i = 0, len = ref.length; i < len; i++) {
+              d = ref[i];
+              calcData.trips++;
+              appop = 12;
+              appop++;
+              if (d.MaxSpeed > calcData.maxSpeed) {
+                calcData.maxSpeed = d.MaxSpeed;
+              }
+              calcData.distance += d.Distance;
+              calcData.duration += ((new Date(d.EndTime)) - (new Date(d.StartTime))) / 1000;
+              if (d.Distance > 0.1 && d.FuelEfficiency > 1) {
+                calcData.fuelConsumption += d.FuelEfficiency * d.Distance / 100;
+                calcData.fuelEfficiency = 100 * calcData.fuelConsumption / calcData.distance;
+              }
+            }
+            $scope.data = angular.copy(calcData);
+          });
+        };
+        $scope.AllData = myMojioFactory.Content;
+        return $scope.$watch('AllData.SelectedVehicle', function() {
+          return prepareData();
+        });
+      }],
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('gearTrekLastTripMap', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', 'myMojioFactory', '$timeout', 'googlemapFactory', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, myMojioFactory, $timeout, googlemapFactory) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'gear_trek_last_trip_map.html',
+      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
+        var createMarker, drawMap, getEvents;
+        $scope.showDuration = function(row) {
+          if (typeof row === "undefined" || row === null || typeof row.EndTime === "undefined" || typeof row.StartTime === "undefined" || row.EndTime === null || row.StartTime === null) {
+            return 0;
+          }
+          return ((new Date(row.EndTime)) - (new Date(row.StartTime))) / 1000;
+        };
+        createMarker = function(map, latlng, style, bgcolor, color, classes, text) {
+          var allstyle, labelClass, marker;
+          if (bgcolor === null) {
+            bgcolor = "rgba(255,0,0,0.5)";
+          }
+          if (color === null) {
+            color = "#000000";
+          }
+          labelClass = "labels";
+          if (classes !== null) {
+            labelClass += " " + classes;
+          }
+          allstyle = "font-size:10px;margin-top:1px;padding-top:1px;padding-left:4px;width:15px;height:15px;background-color:" + bgcolor + ";color:" + color + ";";
+          if (style !== null) {
+            allstyle += style;
+          }
+          marker = new MarkerWithLabel({
+            position: latlng,
+            icon: ' ',
+            map: map,
+            labelContent: text,
+            labelClass: labelClass,
+            labelAnchor: new google.maps.Point(7, 7)
+          });
+          marker.setMap(map);
+          return marker;
+        };
+        getEvents = function() {
+          myMojioFactory.LastTripEvents().then(function(data) {
+            drawMap(data);
+          });
+        };
+        $scope.AllData = myMojioFactory.Content;
+        $scope.$watch('AllData.SelectedVehicle.LastContactTime', function() {
+          return getEvents();
+        });
+        return drawMap = function(data) {
+          var AllCoordinates, EventCounts, bounds, d, en, enLoc, i, len, points, pos, st, stLoc;
+          if ($scope.stMarker !== null) {
+            $scope.stMarker.setMap(null);
+            $scope.stMarker = null;
+          }
+          if ($scope.enMarker !== null) {
+            $scope.enMarker.setMap(null);
+            $scope.enMarker = null;
+          }
+          if ($scope.tripPath !== null) {
+            $scope.tripPath.setMap(null);
+            $scope.tripPath = null;
+          }
+          $scope.data = data;
+          bounds = new google.maps.LatLngBounds();
+          AllCoordinates = [];
+          st = null;
+          en = null;
+          points = 0;
+          EventCounts = data.length;
+          for (pos = i = 0, len = data.length; i < len; pos = ++i) {
+            d = data[pos];
+            if (myMojioFactory.IsValidLocation(d, "Location")) {
+              if (st === null) {
+                st = d;
+              }
+              en = d;
+              points++;
+              if (d.EventType === "OffStatus" || d.EventType === "HeartBeat") {
+                continue;
+              }
+              if (pos === 0 || pos === EventCounts - 1 || d.EventType !== "TripStatus" || myMojioFactory.IsInorderPoint(d, data[pos - 1], data[pos + 1])) {
+                AllCoordinates.push(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
+                bounds.extend(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
+              }
+            }
+          }
+          if (points === 0) {
+            return;
+          }
+          $scope.map.fitBounds(bounds);
+          $scope.tripPath = new google.maps.Polyline({
+            path: AllCoordinates,
+            geodesic: false,
+            strokeColor: '#71cfef',
+            strokeOpacity: 0.8,
+            strokeWeight: 5
+          });
+          $scope.tripPath.setMap($scope.map);
+          if ($scope.st !== null) {
+            stLoc = new google.maps.LatLng(st.Location.Lat, st.Location.Lng);
+            $scope.stMarker = createMarker($scope.map, stLoc, null, null, null, "point-start text-circle3", "A");
+          }
+          if (en !== null) {
+            enLoc = new google.maps.LatLng(en.Location.Lat, en.Location.Lng);
+            $scope.enMarker = createMarker($scope.map, enLoc, null, null, null, "point-end text-circle3", "B");
+          }
+        };
+      }],
+      link: function(scope, element, attrs) {
+        var myOptions;
+        scope.element = element.find('.map-place');
+        myOptions = {
+          scrollwheel: false,
+          zoom: 4,
+          center: new google.maps.LatLng(49, -123),
+          disableDefaultUI: true,
+          styles: googlemapFactory.MapStyle,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          mapTypeControl: false,
+          zoomControl: true,
+          zoomControlOptions: {
+            style: google.maps.ZoomControlStyle.SMALL,
+            position: google.maps.ControlPosition.LEFT_CENTER
+          },
+          scaleControl: false,
+          streetViewControl: false
+        };
+        scope.map = new google.maps.Map(scope.element[0], myOptions);
+        scope.tripPath = null;
+        scope.stMarker = null;
+        scope.enMarker = null;
+      }
+    };
+  }
+]);
+
+App.directive('gearTrekVehicleDetails', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'gear_trek_vehicle_details.html',
+      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
+        return $scope.showDuration = function(row) {
+          return ((new Date(row.EndTime)) - (new Date(row.StartTime))) / 1000;
+        };
+      }],
+      link: function($rootScope, scope, element, attrs) {}
+    };
+  }
+]);
+
 App.directive('widgetCmsEmbed', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_cms_embed.html',
+      templateUrl: 'widget_cms_embed.html',
       scope: {
         data: '='
       },
@@ -12429,7 +12153,7 @@ App.directive('widgetCmsGithubI1', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_cms_github_i1.html',
+      templateUrl: 'widget_cms_github_i1.html',
       scope: {
         data: '='
       },
@@ -12541,7 +12265,7 @@ App.directive('widgetCmsGithubMenu', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_cms_github_menu.html',
+      templateUrl: 'widget_cms_github_menu.html',
       scope: {
         data: '='
       },
@@ -12622,7 +12346,7 @@ App.directive('widgetDetailApp', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_detail_app.html',
+      templateUrl: 'widget_detail_app.html',
       controller: ["$rootScope", "$scope", "mojioRemote", function($rootScope, $scope, mojioRemote) {
         $scope.reset = function() {
           return $scope.rel = {
@@ -12706,7 +12430,7 @@ App.directive('widgetDetailDevice', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_detail_device.html',
+      templateUrl: 'widget_detail_device.html',
       controller: ["$rootScope", "$scope", "mojioRemote", function($rootScope, $scope, mojioRemote) {
         $scope.reset = function() {
           return $scope.rel = {
@@ -12775,7 +12499,7 @@ App.directive('widgetDetailEvent', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_detail_event.html',
+      templateUrl: 'widget_detail_event.html',
       controller: ["$rootScope", "$scope", "mojioRemote", function($rootScope, $scope, mojioRemote) {
         $scope.reset = function() {
           return $scope.rel = {
@@ -12829,218 +12553,11 @@ App.directive('widgetDetailEvent', [
   }
 ]);
 
-App.directive('gearTrekLastTripMap', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', 'myMojioFactory', '$timeout', 'googlemapFactory', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, myMojioFactory, $timeout, googlemapFactory) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/gear_trek_last_trip_map.html',
-      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
-        var createMarker, drawMap, getEvents;
-        $scope.showDuration = function(row) {
-          if (typeof row === "undefined" || row === null || typeof row.EndTime === "undefined" || typeof row.StartTime === "undefined" || row.EndTime === null || row.StartTime === null) {
-            return 0;
-          }
-          return ((new Date(row.EndTime)) - (new Date(row.StartTime))) / 1000;
-        };
-        createMarker = function(map, latlng, style, bgcolor, color, classes, text) {
-          var allstyle, labelClass, marker;
-          if (bgcolor === null) {
-            bgcolor = "rgba(255,0,0,0.5)";
-          }
-          if (color === null) {
-            color = "#000000";
-          }
-          labelClass = "labels";
-          if (classes !== null) {
-            labelClass += " " + classes;
-          }
-          allstyle = "font-size:10px;margin-top:1px;padding-top:1px;padding-left:4px;width:15px;height:15px;background-color:" + bgcolor + ";color:" + color + ";";
-          if (style !== null) {
-            allstyle += style;
-          }
-          marker = new MarkerWithLabel({
-            position: latlng,
-            icon: ' ',
-            map: map,
-            labelContent: text,
-            labelClass: labelClass,
-            labelAnchor: new google.maps.Point(7, 7)
-          });
-          marker.setMap(map);
-          return marker;
-        };
-        getEvents = function() {
-          myMojioFactory.LastTripEvents().then(function(data) {
-            drawMap(data);
-          });
-        };
-        $scope.AllData = myMojioFactory.Content;
-        $scope.$watch('AllData.SelectedVehicle', function() {
-          return getEvents();
-        });
-        return drawMap = function(data) {
-          var AllCoordinates, bounds, d, en, enLoc, i, len, points, st, stLoc;
-          if ($scope.stMarker !== null) {
-            $scope.stMarker.setMap(null);
-            $scope.stMarker = null;
-          }
-          if ($scope.enMarker !== null) {
-            $scope.enMarker.setMap(null);
-            $scope.enMarker = null;
-          }
-          if ($scope.tripPath !== null) {
-            $scope.tripPath.setMap(null);
-            $scope.tripPath = null;
-          }
-          $scope.data = data;
-          bounds = new google.maps.LatLngBounds();
-          AllCoordinates = [];
-          st = null;
-          en = null;
-          points = 0;
-          for (i = 0, len = data.length; i < len; i++) {
-            d = data[i];
-            if (typeof d.Location !== "undefined" && d.Location !== null && !isNaN(d.Location.Lat) && !isNaN(d.Location.Lng) && d.Location.IsValid === true) {
-              if (st === null) {
-                st = d;
-              }
-              en = d;
-              points++;
-              AllCoordinates.push(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
-              bounds.extend(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
-            }
-          }
-          if (points === 0) {
-            return;
-          }
-          $scope.map.fitBounds(bounds);
-          $scope.tripPath = new google.maps.Polyline({
-            path: AllCoordinates,
-            geodesic: false,
-            strokeColor: '#71cfef',
-            strokeOpacity: 0.8,
-            strokeWeight: 5
-          });
-          $scope.tripPath.setMap($scope.map);
-          if ($scope.st !== null) {
-            stLoc = new google.maps.LatLng(st.Location.Lat, st.Location.Lng);
-            $scope.stMarker = createMarker($scope.map, stLoc, null, null, null, "point-start text-circle3", "A");
-          }
-          if (en !== null) {
-            enLoc = new google.maps.LatLng(en.Location.Lat, en.Location.Lng);
-            $scope.enMarker = createMarker($scope.map, enLoc, null, null, null, "point-end text-circle3", "B");
-          }
-        };
-      }],
-      link: function(scope, element, attrs) {
-        var myOptions;
-        scope.element = element.find('.map-place');
-        myOptions = {
-          scrollwheel: false,
-          zoom: 4,
-          center: new google.maps.LatLng(49, -123),
-          disableDefaultUI: true,
-          styles: googlemapFactory.MapStyle,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          mapTypeControl: false,
-          zoomControl: true,
-          zoomControlOptions: {
-            style: google.maps.ZoomControlStyle.SMALL,
-            position: google.maps.ControlPosition.LEFT_CENTER
-          },
-          scaleControl: false,
-          streetViewControl: false
-        };
-        scope.map = new google.maps.Map(scope.element[0], myOptions);
-        scope.tripPath = null;
-        scope.stMarker = null;
-        scope.enMarker = null;
-      }
-    };
-  }
-]);
-
-App.directive('gearTrekDrivingStat', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', '$timeout', 'myMojioFactory', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, $timeout, myMojioFactory) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/gear_trek_driving_stat.html',
-      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
-        var buildCriteria, monthNames, prepareData;
-        monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        buildCriteria = function() {
-          var e, eStr, s, sStr, today;
-          today = new Date();
-          s = new Date();
-          s.setDate((new Date()).getDate() - 14);
-          sStr = s.getFullYear() + "." + (s.getMonth() + 1) + "." + s.getDate();
-          e = new Date();
-          e.setDate((new Date()).getDate() + 1);
-          eStr = e.getFullYear() + "." + (e.getMonth() + 1) + "." + e.getDate();
-          return sStr + "-" + eStr;
-        };
-        prepareData = function() {
-          var calcData, criteria;
-          criteria = buildCriteria();
-          calcData = {
-            trips: 0,
-            distance: 0,
-            duration: 0,
-            fuelConsumption: 0,
-            fuelEfficiency: 0,
-            maxSpeed: 0
-          };
-          mojioRemote.GET("Trips", 10000, 0, "VehicleId=" + $scope.AllData.SelectedVehicle._id + ";StartTime=" + criteria, null, function(result) {
-            var appop, d, i, len, ref;
-            ref = result.Data;
-            for (i = 0, len = ref.length; i < len; i++) {
-              d = ref[i];
-              calcData.trips++;
-              appop = 12;
-              appop++;
-              if (d.MaxSpeed > calcData.maxSpeed) {
-                calcData.maxSpeed = d.MaxSpeed;
-              }
-              calcData.distance += d.Distance;
-              calcData.duration += ((new Date(d.EndTime)) - (new Date(d.StartTime))) / 1000;
-              if (d.Distance > 0.1 && d.FuelEfficiency > 1) {
-                calcData.fuelConsumption += d.FuelEfficiency * d.Distance / 100;
-                calcData.fuelEfficiency = 100 * calcData.fuelConsumption / calcData.distance;
-              }
-            }
-            $scope.data = angular.copy(calcData);
-          });
-        };
-        $scope.AllData = myMojioFactory.Content;
-        return $scope.$watch('AllData.SelectedVehicle', function() {
-          return prepareData();
-        });
-      }],
-      link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
-App.directive('gearTrekVehicleDetails', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/gear_trek_vehicle_details.html',
-      controller: ["$rootScope", "$scope", function($rootScope, $scope) {
-        return $scope.showDuration = function(row) {
-          return ((new Date(row.EndTime)) - (new Date(row.StartTime))) / 1000;
-        };
-      }],
-      link: function($rootScope, scope, element, attrs) {}
-    };
-  }
-]);
-
 App.directive('widgetDetailInfo', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_detail_info.html',
+      templateUrl: 'widget_detail_info.html',
       controller: ["$rootScope", "$scope", function($rootScope, $scope) {
         $scope.data = null;
         $scope.deselect = function() {
@@ -13057,11 +12574,69 @@ App.directive('widgetDetailInfo', [
   }
 ]);
 
+App.directive('widgetDetailTrip', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'widget_detail_trip.html',
+      controller: ["$rootScope", "$scope", "mojioRemote", function($rootScope, $scope, mojioRemote) {
+        $scope.reset = function() {
+          return $scope.rel = {
+            users: [],
+            loadUsers: false,
+            trips: [],
+            moreTrips: false,
+            loadTrips: false,
+            events: [],
+            moreEvents: false,
+            loadEvents: false
+          };
+        };
+        $scope.reset();
+        $rootScope.$on('MojioObjectSelected', function(event, data) {
+          if (data.Type === "Trip") {
+            return $scope.reset();
+          }
+        });
+        $scope.broadcast = function(data) {
+          $rootScope.$broadcast('MojioObjectSelected', data);
+        };
+        $scope.showVehicle = function() {
+          mojioRemote.GET("Vehicles/" + $scope.data.VehicleId, null, null, null, null, function(result) {
+            return $rootScope.$broadcast('MojioObjectSelected', result);
+          });
+        };
+        $scope.showDevice = function() {
+          mojioRemote.GET("Mojios/" + $scope.data.MojioId, null, null, null, null, function(result) {
+            return $rootScope.$broadcast('MojioObjectSelected', result);
+          });
+        };
+        $scope.showRecentEvents = function() {
+          $scope.rel.loadEvents = true;
+          $scope.rel.moreEvents = false;
+          mojioRemote.GET("Trips/" + $scope.data._id + "/Events", 10, $scope.rel.events.length, null, "sortBy=Time&desc=true", function(result) {
+            $scope.rel.events = $scope.rel.events.concat(result.Data);
+            $scope.rel.loadEvents = false;
+            if (result.TotalRows > $scope.rel.events.length) {
+              return $scope.rel.moreEvents = true;
+            } else {
+              return $scope.rel.moreEvents = false;
+            }
+          });
+        };
+      }],
+      link: function($rootScope, $scope, element, attrs) {
+        $scope.data = attrs.data;
+      }
+    };
+  }
+]);
+
 App.directive('widgetDetailUser', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_detail_user.html',
+      templateUrl: 'widget_detail_user.html',
       controller: ["$rootScope", "$scope", "mojioRemote", function($rootScope, $scope, mojioRemote) {
         $scope.reset = function() {
           return $scope.rel = {
@@ -13141,69 +12716,11 @@ App.directive('widgetDetailUser', [
   }
 ]);
 
-App.directive('widgetDetailTrip', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/widget_detail_trip.html',
-      controller: ["$rootScope", "$scope", "mojioRemote", function($rootScope, $scope, mojioRemote) {
-        $scope.reset = function() {
-          return $scope.rel = {
-            users: [],
-            loadUsers: false,
-            trips: [],
-            moreTrips: false,
-            loadTrips: false,
-            events: [],
-            moreEvents: false,
-            loadEvents: false
-          };
-        };
-        $scope.reset();
-        $rootScope.$on('MojioObjectSelected', function(event, data) {
-          if (data.Type === "Trip") {
-            return $scope.reset();
-          }
-        });
-        $scope.broadcast = function(data) {
-          $rootScope.$broadcast('MojioObjectSelected', data);
-        };
-        $scope.showVehicle = function() {
-          mojioRemote.GET("Vehicles/" + $scope.data.VehicleId, null, null, null, null, function(result) {
-            return $rootScope.$broadcast('MojioObjectSelected', result);
-          });
-        };
-        $scope.showDevice = function() {
-          mojioRemote.GET("Mojios/" + $scope.data.MojioId, null, null, null, null, function(result) {
-            return $rootScope.$broadcast('MojioObjectSelected', result);
-          });
-        };
-        $scope.showRecentEvents = function() {
-          $scope.rel.loadEvents = true;
-          $scope.rel.moreEvents = false;
-          mojioRemote.GET("Trips/" + $scope.data._id + "/Events", 10, $scope.rel.events.length, null, "sortBy=Time&desc=true", function(result) {
-            $scope.rel.events = $scope.rel.events.concat(result.Data);
-            $scope.rel.loadEvents = false;
-            if (result.TotalRows > $scope.rel.events.length) {
-              return $scope.rel.moreEvents = true;
-            } else {
-              return $scope.rel.moreEvents = false;
-            }
-          });
-        };
-      }],
-      link: function($rootScope, $scope, element, attrs) {
-        $scope.data = attrs.data;
-      }
-    };
-  }
-]);
-
 App.directive('widgetDetailVehicle', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_detail_vehicle.html',
+      templateUrl: 'widget_detail_vehicle.html',
       controller: ["$rootScope", "$scope", "mojioRemote", function($rootScope, $scope, mojioRemote) {
         $scope.reset = function() {
           return $scope.rel = {
@@ -13286,7 +12803,7 @@ App.directive('widgetJson', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_json.html',
+      templateUrl: 'widget_json.html',
       controller: ["$rootScope", "$scope", function($rootScope, $scope) {
         $scope.data = null;
         $rootScope.$on('MojioObjectSelected', function(event, data) {
@@ -13298,11 +12815,22 @@ App.directive('widgetJson', [
   }
 ]);
 
+App.directive('widgetMojioList', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'widget_mojio_list.html',
+      controller: ["$scope", function($scope) {}],
+      link: function($rootScope, scope, element, attrs) {}
+    };
+  }
+]);
+
 App.directive('widgetTripList', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_trip_list.html',
+      templateUrl: 'widget_trip_list.html',
       controller: ["$scope", function($scope) {}],
       link: function($rootScope, scope, element, attrs) {}
     };
@@ -13313,7 +12841,18 @@ App.directive('widgetUserList', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_user_list.html',
+      templateUrl: 'widget_user_list.html',
+      controller: ["$scope", function($scope) {}],
+      link: function($rootScope, scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('widgetVehicleList', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'widget_vehicle_list.html',
       controller: ["$scope", function($scope) {}],
       link: function($rootScope, scope, element, attrs) {}
     };
@@ -13324,7 +12863,7 @@ App.directive('widgetVehicleReport', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/widget_vehicle_report.html',
+      templateUrl: 'widget_vehicle_report.html',
       controller: ["$rootScope", "$scope", "mojioGlobal", "mojioRemote", function($rootScope, $scope, mojioGlobal, mojioRemote) {
         var tdf, tdt;
         tdf = new Date();
@@ -13391,17 +12930,6 @@ App.directive('widgetVehicleReport', [
       link: function($rootScope, $scope, element, attrs) {
         $scope.data = attrs.data;
       }
-    };
-  }
-]);
-
-App.directive('widgetVehicleList', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/widget_vehicle_list.html',
-      controller: ["$scope", function($scope) {}],
-      link: function($rootScope, scope, element, attrs) {}
     };
   }
 ]);
@@ -13692,17 +13220,6 @@ App.directive('widgetVehiclesTextDirection', [
   }
 ]);
 
-App.directive('widgetMojioList', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/widget_mojio_list.html',
-      controller: ["$scope", function($scope) {}],
-      link: function($rootScope, scope, element, attrs) {}
-    };
-  }
-]);
-
 App.directive('serviceAdviceEdit', [
   function() {
     return {
@@ -13711,7 +13228,7 @@ App.directive('serviceAdviceEdit', [
         parent: '='
       },
       restrict: 'EA',
-      templateUrl: 'app/views/service_advice_edit.html',
+      templateUrl: 'service_advice_edit.html',
       controller: ["$scope", function($scope) {
         $scope.AddTag = function(parent) {
           parent.tag.push("");
@@ -13734,7 +13251,7 @@ App.directive('serviceOfferEdit', [
         parent: '='
       },
       restrict: 'EA',
-      templateUrl: 'app/views/service_offer_edit.html',
+      templateUrl: 'service_offer_edit.html',
       controller: ["$scope", function($scope) {
         $scope.AddTag = function(parent) {
           parent.tag.push("");
@@ -13753,28 +13270,7 @@ App.directive('cmsBreadcrumb', [
   'contentFactory', function(contentFactory) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/cms_breadcrumb.html',
-      controller: ["$scope", function($scope) {
-        $scope.Content = contentFactory.Content;
-        $scope.Child = contentFactory.Child;
-        $scope.Parent = contentFactory.Parent;
-        $scope.MenuNodes = contentFactory.MenuNodes;
-        return $scope.GotoNode = contentFactory.GotoNode;
-      }],
-      link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
-App.directive('cmsMenuListview', [
-  'contentFactory', function(contentFactory) {
-    return {
-      scope: {
-        nodes: '=',
-        menuconfig: '='
-      },
-      restrict: 'EA',
-      templateUrl: 'app/views/cms_menu_listview.html',
+      templateUrl: 'cms_breadcrumb.html',
       controller: ["$scope", function($scope) {
         $scope.Content = contentFactory.Content;
         $scope.Child = contentFactory.Child;
@@ -13796,7 +13292,28 @@ App.directive('cmsMenu', [
         menuconfig: '='
       },
       restrict: 'EA',
-      templateUrl: 'app/views/cms_menu.html',
+      templateUrl: 'cms_menu.html',
+      controller: ["$scope", function($scope) {
+        $scope.Content = contentFactory.Content;
+        $scope.Child = contentFactory.Child;
+        $scope.Parent = contentFactory.Parent;
+        $scope.MenuNodes = contentFactory.MenuNodes;
+        return $scope.GotoNode = contentFactory.GotoNode;
+      }],
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('cmsMenuListview', [
+  'contentFactory', function(contentFactory) {
+    return {
+      scope: {
+        nodes: '=',
+        menuconfig: '='
+      },
+      restrict: 'EA',
+      templateUrl: 'cms_menu_listview.html',
       controller: ["$scope", function($scope) {
         $scope.Content = contentFactory.Content;
         $scope.Child = contentFactory.Child;
@@ -13817,7 +13334,7 @@ App.directive('cmsMenuTile', [
         menuconfig: '='
       },
       restrict: 'EA',
-      templateUrl: 'app/views/cms_menu_tile.html',
+      templateUrl: 'cms_menu_tile.html',
       controller: ["$scope", function($scope) {
         $scope.Content = contentFactory.Content;
         $scope.Child = contentFactory.Child;
@@ -13838,7 +13355,7 @@ App.directive('cmsMenuTreeview', [
         menuconfig: '='
       },
       restrict: 'EA',
-      templateUrl: 'app/views/cms_menu_treeview.html',
+      templateUrl: 'cms_menu_treeview.html',
       controller: ["$scope", function($scope) {
         $scope.Content = contentFactory.Content;
         $scope.Child = contentFactory.Child;
@@ -13855,7 +13372,7 @@ App.directive('deviceGrid', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/device_grid.html',
+      templateUrl: 'device_grid.html',
       scope: {
         searchProperty: '=',
         searchImei: '=',
@@ -13878,7 +13395,7 @@ App.directive('eventGrid', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/event_grid.html',
+      templateUrl: 'event_grid.html',
       scope: {
         adminMode: '=',
         settings: '=',
@@ -13937,7 +13454,7 @@ App.directive('fuelEfficiencyScore', [
         stype: '@'
       },
       restrict: 'EA',
-      templateUrl: 'app/views/fuelEfficiencyScore.html',
+      templateUrl: 'fuelEfficiencyScore.html',
       controller: ["$scope", function($scope) {
         var title, v;
         if (typeof $scope.score === "undefined" || $scope.score === null) {
@@ -13970,16 +13487,6 @@ App.directive('fuelEfficiencyScore', [
           return $scope.arrow = "down";
         }
       }],
-      link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
-App.directive('mymojioFaqEn', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/mymojio_faq_en.html',
       link: function(scope, element, attrs) {}
     };
   }
@@ -14018,11 +13525,31 @@ App.directive('imageUploader', [
   }
 ]);
 
+App.directive('mymojioFaqEn', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'mymojio_faq_en.html',
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('mymojioFaqCs', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'mymojio_faq_cs.html',
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
 App.directive('notificationGrid', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/notification_grid.html',
+      templateUrl: 'notification_grid.html',
       scope: {
         adminMode: '=',
         settings: '=',
@@ -14039,12 +13566,30 @@ App.directive('notificationGrid', [
   }
 ]);
 
-App.directive('mymojioFaqCs', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
+App.directive('tripDetail', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', 'myMojioFactory', '$timeout', 'googlemapFactory', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, myMojioFactory, $timeout, googlemapFactory) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/mymojio_faq_cs.html',
-      link: function(scope, element, attrs) {}
+      templateUrl: 'trip_detail.html',
+      scope: {
+        trip: '=',
+        events: '='
+      },
+      controller: ["$rootScope", "$scope", function($rootScope, $scope) {}],
+      link: function(scope, element, attrs) {
+        var prepareData;
+        prepareData = function(edata, tdata) {
+          scope.MaxSpeed = Math.round(scope.trip.MaxSpeed);
+          return scope.MaxRPM = Math.round(scope.trip.MaxRPM);
+        };
+        if (scope.events) {
+          prepareData(scope.events);
+        } else {
+          mojioRemote.GET("Trips/" + scope.trip._id + "/Events", 10000, 0, null, "sortBy=Time&desc=false", function(result) {
+            return prepareData(result.Data);
+          });
+        }
+      }
     };
   }
 ]);
@@ -14053,7 +13598,7 @@ App.directive('tripGrid', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/trip_grid.html',
+      templateUrl: 'trip_grid.html',
       scope: {
         adminMode: '=',
         settings: '=',
@@ -14065,52 +13610,6 @@ App.directive('tripGrid', [
         subEvent: '=',
         subSubsGrid: '=',
         "export": '='
-      },
-      controller: 'mojioGridController',
-      link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
-App.directive('userGrid', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/user_grid.html',
-      scope: {
-        adminMode: '=',
-        settings: '=',
-        rowDetail: '=',
-        footer: '=',
-        api: '=',
-        broadcast: '=',
-        linkToDetail: '=',
-        subDevice: '=',
-        subVehicle: '=',
-        subSubsGrid: '='
-      },
-      controller: 'mojioGridController',
-      link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
-App.directive('vehicleGrid', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'app/views/vehicle_grid.html',
-      scope: {
-        adminMode: '=',
-        settings: '=',
-        rowDetail: '=',
-        footer: '=',
-        api: '=',
-        broadcast: '=',
-        linkToDetail: '=',
-        subTrip: '=',
-        subEvent: '=',
-        subSubsGrid: '='
       },
       controller: 'mojioGridController',
       link: function(scope, element, attrs) {}
@@ -14157,7 +13656,7 @@ App.directive('tripMap', [
           return marker;
         };
         drawMap = function(data) {
-          var AllCoordinates, bounds, d, en, enLoc, i, len, points, st, stLoc;
+          var AllCoordinates, AllEvents, EventCounts, bounds, d, en, enLoc, i, len, points, pos, st, stLoc;
           if (scope.stMarker !== null) {
             scope.stMarker.setMap(null);
             scope.stMarker = null;
@@ -14175,16 +13674,23 @@ App.directive('tripMap', [
           st = null;
           en = null;
           points = 0;
-          for (i = 0, len = data.length; i < len; i++) {
-            d = data[i];
-            if (d.Location !== null && !isNaN(d.Location.Lat) && !isNaN(d.Location.Lng) && d.Location.IsValid === true) {
+          AllEvents = data;
+          EventCounts = AllEvents.length;
+          for (pos = i = 0, len = data.length; i < len; pos = ++i) {
+            d = data[pos];
+            if (myMojioFactory.IsValidLocation(d, "Location")) {
               if (st === null) {
                 st = d;
               }
               en = d;
               points++;
-              AllCoordinates.push(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
-              bounds.extend(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
+              if (d.EventType === "OffStatus" || d.EventType === "HeartBeat") {
+                continue;
+              }
+              if (pos === 0 || pos === EventCounts - 1 || d.EventType !== "TripStatus" || myMojioFactory.IsInorderPoint(d, AllEvents[pos - 1], AllEvents[pos + 1])) {
+                AllCoordinates.push(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
+                bounds.extend(new google.maps.LatLng(d.Location.Lat, d.Location.Lng));
+              }
             }
           }
           if (points === 0) {
@@ -14240,30 +13746,67 @@ App.directive('tripMap', [
   }
 ]);
 
-App.directive('tripDetail', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$http', 'myMojioFactory', '$timeout', 'googlemapFactory', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster, $http, myMojioFactory, $timeout, googlemapFactory) {
+App.directive('userGrid', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/views/trip_detail.html',
+      templateUrl: 'user_grid.html',
       scope: {
-        trip: '=',
-        events: '='
+        adminMode: '=',
+        settings: '=',
+        rowDetail: '=',
+        footer: '=',
+        api: '=',
+        broadcast: '=',
+        linkToDetail: '=',
+        subDevice: '=',
+        subVehicle: '=',
+        subSubsGrid: '='
       },
-      controller: ["$rootScope", "$scope", function($rootScope, $scope) {}],
-      link: function(scope, element, attrs) {
-        var prepareData;
-        prepareData = function(edata, tdata) {
-          scope.MaxSpeed = Math.round(scope.trip.MaxSpeed);
-          return scope.MaxRPM = Math.round(scope.trip.MaxRPM);
-        };
-        if (scope.events) {
-          prepareData(scope.events);
-        } else {
-          mojioRemote.GET("Trips/" + scope.trip._id + "/Events", 10000, 0, null, "sortBy=Time&desc=false", function(result) {
-            return prepareData(result.Data);
-          });
-        }
-      }
+      controller: 'mojioGridController',
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('vehicleDropdown', [
+  'myMojioFactory', function(myMojioFactory) {
+    return {
+      scope: {
+        vehicles: '=',
+        selectedVehicle: '='
+      },
+      restrict: 'EA',
+      templateUrl: 'vehicle_dropdown.html',
+      controller: ["$scope", function($scope) {
+        $scope.VehicleSearch = "";
+        $scope.changeSelectedVehicle = myMojioFactory.changeSelectedVehicle;
+        $scope.VehicleColor = myMojioFactory.VehicleColor;
+      }],
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('vehicleGrid', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'vehicle_grid.html',
+      scope: {
+        adminMode: '=',
+        settings: '=',
+        rowDetail: '=',
+        footer: '=',
+        api: '=',
+        broadcast: '=',
+        linkToDetail: '=',
+        subTrip: '=',
+        subEvent: '=',
+        subSubsGrid: '='
+      },
+      controller: 'mojioGridController',
+      link: function(scope, element, attrs) {}
     };
   }
 ]);

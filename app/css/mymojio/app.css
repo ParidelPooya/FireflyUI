@@ -6837,6 +6837,7 @@ fieldset .form-group {
   box-shadow: 0 0 0 #000000;
 }
 .popover {
+  color: #000;
   box-shadow: 0 0 0 #000;
   border-color: #eee;
   border-bottom: 2px solid #e4eaec;
@@ -17094,9 +17095,10 @@ table.fixheader {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 160px);
   /* this can vary */
   margin-bottom: 0px;
+  padding-bottom: 0px;
 }
 table.fixheader * {
   box-sizing: inherit;
@@ -17138,7 +17140,7 @@ table.fixheader tfoot td {
   display: inline-block;
 }
 .fullheight {
-  height: calc(100vh - 150px);
+  height: calc(100vh - 170px);
   /*
   @media @upto-desktop {
     height:~"calc( (100vh - 210px)/2)"
@@ -17146,7 +17148,9 @@ table.fixheader tfoot td {
   */
 }
 .fullheightmap {
-  height: calc(100vh - 150px);
+  height: calc(100vh - 160px);
+  margin-bottom: 0px;
+  padding-bottom: 0px;
   /*
   @media @upto-desktop {
     height:100px;

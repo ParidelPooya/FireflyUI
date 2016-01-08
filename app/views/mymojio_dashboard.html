@@ -1,29 +1,5 @@
 <h3 ng-if="ShowPortal" class="mb0 visible-md visible-lg">
-   <span dropdown="dropdown" class="dropdown dropdown-list">
-      <span dropdown-toggle="dropdown-toggle">
-         <em ng-show="AllData.Vehicles.length&gt;1" class="fa fa-angle-down"></em>&nbsp;{{AllData.SelectedVehicle.Name || ("common.NoNameVehicle" | translate)}}</span>
-      <ul role="menu" style="top:initial" ng-show="AllData.Vehicles.length&gt;1" class="dropdown-menu">
-         <li>
-            <div class="list-group">
-               <a ng-repeat="v in AllData.Vehicles" ng-click="changeSelectedVehicle(v)" class="list-group-item">
-                  <div class="media-box">
-                     <div class="pull-left">
-                        <div ng-attr-style="height:50px;background-color:{{VehicleColor(v._id)}}" class="cartag"></div>
-                     </div>
-                     <div class="media-box-body clearfix">
-                        <p class="m0">
-                           <em class="fa fa-car"></em>&nbsp; {{v.Name || ("common.NoNameVehicle" | translate) }}</p>
-                        <p class="m0 text-muted">
-                           <div ng-if="v.VIN!=null &amp;&amp; v.VIN!=''" class="small">{{("common.VIN" | translate) }}: {{v.VIN}}</div>
-                           <div ng-if="v.LicensePlate!=null" class="small">{{("common.LicensePlate" | translate) }}: {{v.LicensePlate}}</div>
-                        </p>
-                     </div>
-                  </div>
-               </a>
-            </div>
-         </li>
-      </ul>
-   </span>
+   <vehicle-dropdown selected-vehicle="AllData.SelectedVehicle" vehicles="AllData.Vehicles"></vehicle-dropdown>
    <div class="pull-right">
       <span class="h5 mr-lg">{{ "common.CarStatus.Title" | translate }}:<b>  {{CarStatus(AllData.SelectedVehicle)}}</b>
       </span>
@@ -32,41 +8,17 @@
    </div>
 </h3>
 <div ng-if="ShowPortal" class="hidden-md hidden-lg">
-   <span dropdown="dropdown" class="dropdown dropdown-list">
-      <span dropdown-toggle="dropdown-toggle">
-         <em ng-show="AllData.Vehicles.length&gt;1" class="fa fa-angle-down"></em>&nbsp;{{AllData.SelectedVehicle.Name || ("common.NoNameVehicle" | translate) }}</span>
-      <ul role="menu" style="top:initial" ng-show="AllData.Vehicles.length&gt;1" class="dropdown-menu">
-         <li>
-            <div class="list-group">
-               <a ng-repeat="v in AllData.Vehicles" ng-click="changeSelectedVehicle(v)" class="list-group-item">
-                  <div class="media-box">
-                     <div class="pull-left">
-                        <div ng-attr-style="height:50px;background-color:{{VehicleColor(v._id)}}" class="cartag"></div>
-                     </div>
-                     <div class="media-box-body clearfix">
-                        <p class="m0">
-                           <em class="fa fa-car"></em>&nbsp; {{v.Name || ("common.NoNameVehicle" | translate)}}</p>
-                        <p class="m0 text-muted">
-                           <div ng-if="v.VIN!=null &amp;&amp; v.VIN!=''" class="small">{{("common.VIN" | translate) }}: {{v.VIN}}</div>
-                           <div ng-if="v.LicensePlate!=null" class="small">{{("common.LicensePlate" | translate) }}: {{v.LicensePlate}}</div>
-                        </p>
-                     </div>
-                  </div>
-               </a>
-            </div>
-         </li>
-      </ul>
-   </span>
+   <vehicle-dropdown selected-vehicle="AllData.SelectedVehicle" vehicles="AllData.Vehicles"></vehicle-dropdown>
    <div class="pull-right">
       <span class="h5 mr-lg">{{ "common.CarStatus.Title" | translate }}:<b>  {{CarStatus(AllData.SelectedVehicle)}}</b>
       </span>
-      <span class="fa-stack fa-sm bblue"><i ng-click="showAddPortletWindow()" class="fa fa-th-large fa-stack-2x"></i>
+      <span class="fa-stack fa-sm bblue"><i ng-click="showAddPortletWindow($event)" class="fa fa-th-large fa-stack-2x"></i>
       </span>
    </div>
 </div>
-<div class="row">
+<div ng-if="ShowPortal" class="row">
    <div class="col-md-10 col-xs-12">
-      <div ng-if="ShowPortal &amp;&amp; AllData.Vehicles.length!=0" ng-repeat="(k,v) in portal" lr-drag-src="wPlace" lr-drop-target="wPlace" lr-drop-success="dropSuccess()" class="p-sm {{portletCol(v)}} panelNo{{k}}">
+      <div ng-if="ShowPortal &amp;&amp; AllData.Vehicles.length!=0 &amp;&amp; validDirective(v)" ng-repeat="(k,v) in portal" lr-drag-src="wPlace" lr-drop-target="wPlace" lr-drop-success="dropSuccess()" class="p-sm {{portletCol(v)}} panelNo{{k}}">
          <a are-you-sure="removeWidget(k)" class="widget-icon-close">
             <em class="fa fa-times fa-1x"></em>
          </a>
@@ -86,7 +38,11 @@
             </div>
          </div>
       </div>
-      <div ng-if="Notifications.length==0" class="row">
+      <div ng-if="NotificationStatus=='Loading'" class="row">
+         <div class="col-xs-12 text-gray text-center h2"><i class="fa fa-spinner fa-spin fa-4x text-gray"></i>
+         </div>
+      </div>
+      <div ng-if="NotificationStatus=='Done' &amp;&amp; Notifications.length==0" class="row">
          <div class="col-xs-12 text-gray text-center h2">{{ "mymojio_dashboard.NoEvents" | translate }}</div>
       </div>
       <div ng-repeat="row in Notifications" class="row bb bg-darkness">
