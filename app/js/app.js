@@ -6100,6 +6100,13 @@ App.controller('dummyVehiclesController', [
   }
 ]);
 
+App.controller('eventDetailController', [
+  '$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
+    console.log($rootScope.eventRow);
+    $scope.Event = $rootScope.eventRow;
+  }
+]);
+
 App.controller('eventSimulatorController', [
   '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', 'simulatorFactory', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter, simulatorFactory) {
     $scope.Vehicles = null;
@@ -6274,13 +6281,6 @@ App.controller('eventSimulatorController', [
       sEvent.EventType = $scope.Data.EventType;
       $scope.Events.push(sEvent);
     };
-  }
-]);
-
-App.controller('eventDetailController', [
-  '$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
-    console.log($rootScope.eventRow);
-    $scope.Event = $rootScope.eventRow;
   }
 ]);
 
@@ -7234,6 +7234,14 @@ App.controller('multiSimulatorController', [
   }
 ]);
 
+App.controller('mymojioSupportController', [
+  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {
+    $scope.SendEmail = function() {
+      return window.location.href = "mailto:support@moj.io";
+    };
+  }
+]);
+
 App.controller('myMojioDashboardController', [
   '$modal', '$templateCache', '$sce', '$compile', '$rootScope', '$stateParams', '$scope', 'mojioRemote', 'localStorage', 'toaster', 'mojioGlobal', 'myMojioFactory', 'mojioGear', '$filter', '$injector', function($modal, $templateCache, $sce, $compile, $rootScope, $stateParams, $scope, mojioRemote, localStorage, toaster, mojioGlobal, myMojioFactory, mojioGear, $filter, $injector) {
     var preparePortal, tohash;
@@ -7418,14 +7426,6 @@ App.controller('myMojioDashboardController', [
       $scope.savePortalState();
     };
     return myMojioFactory.prepareData(preparePortal);
-  }
-]);
-
-App.controller('mymojioSupportController', [
-  '$scope', '$rootScope', '$stateParams', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', '$filter', function($scope, $rootScope, $stateParams, mojioRemote, mojioLocal, mojioGlobal, toaster, $filter) {
-    $scope.SendEmail = function() {
-      return window.location.href = "mailto:support@moj.io";
-    };
   }
 ]);
 
@@ -8798,7 +8798,8 @@ App.controller('serenityServiceInstanceController', [
       var Data, i, j, len, len1, ref, ref1, st, v;
       Data = {
         "Vehicles": [],
-        "ServiceTemplates": []
+        "ServiceTemplates": [],
+        "SendingNotification": true
       };
       ref = $scope.Service;
       for (i = 0, len = ref.length; i < len; i++) {
@@ -13283,28 +13284,6 @@ App.directive('cmsBreadcrumb', [
   }
 ]);
 
-App.directive('cmsMenu', [
-  'contentFactory', function(contentFactory) {
-    return {
-      scope: {
-        viewmode: '=',
-        nodes: '=',
-        menuconfig: '='
-      },
-      restrict: 'EA',
-      templateUrl: 'cms_menu.html',
-      controller: ["$scope", function($scope) {
-        $scope.Content = contentFactory.Content;
-        $scope.Child = contentFactory.Child;
-        $scope.Parent = contentFactory.Parent;
-        $scope.MenuNodes = contentFactory.MenuNodes;
-        return $scope.GotoNode = contentFactory.GotoNode;
-      }],
-      link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
 App.directive('cmsMenuListview', [
   'contentFactory', function(contentFactory) {
     return {
@@ -13368,6 +13347,28 @@ App.directive('cmsMenuTreeview', [
   }
 ]);
 
+App.directive('cmsMenu', [
+  'contentFactory', function(contentFactory) {
+    return {
+      scope: {
+        viewmode: '=',
+        nodes: '=',
+        menuconfig: '='
+      },
+      restrict: 'EA',
+      templateUrl: 'cms_menu.html',
+      controller: ["$scope", function($scope) {
+        $scope.Content = contentFactory.Content;
+        $scope.Child = contentFactory.Child;
+        $scope.Parent = contentFactory.Parent;
+        $scope.MenuNodes = contentFactory.MenuNodes;
+        return $scope.GotoNode = contentFactory.GotoNode;
+      }],
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
 App.directive('deviceGrid', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
     return {
@@ -13384,27 +13385,6 @@ App.directive('deviceGrid', [
         adminMode: '=',
         subSubsGrid: '=',
         "delete": '='
-      },
-      controller: 'mojioGridController',
-      link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
-App.directive('eventGrid', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'event_grid.html',
-      scope: {
-        adminMode: '=',
-        settings: '=',
-        rowDetail: '=',
-        footer: '=',
-        api: '=',
-        broadcast: '=',
-        linkToDetail: '=',
-        subSubsGrid: '='
       },
       controller: 'mojioGridController',
       link: function(scope, element, attrs) {}
@@ -13441,6 +13421,27 @@ App.directive('textFileReader', [
           return input.click();
         });
       }
+    };
+  }
+]);
+
+App.directive('eventGrid', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'event_grid.html',
+      scope: {
+        adminMode: '=',
+        settings: '=',
+        rowDetail: '=',
+        footer: '=',
+        api: '=',
+        broadcast: '=',
+        linkToDetail: '=',
+        subSubsGrid: '='
+      },
+      controller: 'mojioGridController',
+      link: function(scope, element, attrs) {}
     };
   }
 ]);
@@ -13525,21 +13526,21 @@ App.directive('imageUploader', [
   }
 ]);
 
-App.directive('mymojioFaqEn', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'mymojio_faq_en.html',
-      link: function(scope, element, attrs) {}
-    };
-  }
-]);
-
 App.directive('mymojioFaqCs', [
   '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
     return {
       restrict: 'EA',
       templateUrl: 'mymojio_faq_cs.html',
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('mymojioFaqEn', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'mymojio_faq_en.html',
       link: function(scope, element, attrs) {}
     };
   }
@@ -13559,6 +13560,29 @@ App.directive('notificationGrid', [
         broadcast: '=',
         linkToDetail: '=',
         subSubsGrid: '='
+      },
+      controller: 'mojioGridController',
+      link: function(scope, element, attrs) {}
+    };
+  }
+]);
+
+App.directive('tripGrid', [
+  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'trip_grid.html',
+      scope: {
+        adminMode: '=',
+        settings: '=',
+        rowDetail: '=',
+        footer: '=',
+        api: '=',
+        broadcast: '=',
+        linkToDetail: '=',
+        subEvent: '=',
+        subSubsGrid: '=',
+        "export": '='
       },
       controller: 'mojioGridController',
       link: function(scope, element, attrs) {}
@@ -13590,29 +13614,6 @@ App.directive('tripDetail', [
           });
         }
       }
-    };
-  }
-]);
-
-App.directive('tripGrid', [
-  '$rootScope', '$window', 'mojioRemote', 'mojioLocal', 'mojioGlobal', 'toaster', function($rootScope, $window, mojioRemote, mojioLocal, mojioGlobal, toaster) {
-    return {
-      restrict: 'EA',
-      templateUrl: 'trip_grid.html',
-      scope: {
-        adminMode: '=',
-        settings: '=',
-        rowDetail: '=',
-        footer: '=',
-        api: '=',
-        broadcast: '=',
-        linkToDetail: '=',
-        subEvent: '=',
-        subSubsGrid: '=',
-        "export": '='
-      },
-      controller: 'mojioGridController',
-      link: function(scope, element, attrs) {}
     };
   }
 ]);
