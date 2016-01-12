@@ -1,6 +1,27 @@
 <h3 class="mb0 visible-md visible-lg">
    <vehicle-dropdown selected-vehicle="AllData.SelectedVehicle" vehicles="AllData.Vehicles"></vehicle-dropdown>
    <div class="pull-right">
+      <span dropdown="dropdown" class="dropdown dropdown-list mr-lg">
+         <span dropdown-toggle="dropdown-toggle">
+            <em class="fa fa-angle-down"></em>&nbsp;{{SelTag || "No Tag"}}</span>
+         <ul role="menu" style="top:initial" class="dropdown-menu">
+            <li>
+               <div class="list-group">
+                  <a ng-repeat="t in TagList" ng-click="selectTag(t)" class="list-group-item">
+                     <div class="media-box">
+                        <div class="pull-left">
+                           <em class="fa fa-tag"></em>
+                        </div>
+                        <div class="media-box-body clearfix">
+                           <p class="m0">{{t}}</p>
+                           <p class="m0 text-muted"></p>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            </li>
+         </ul>
+      </span>
       <span ng-if="!AllEvents" class="mr-lg"><i class="fa fa-spinner fa-spin text-gray"></i>{{ "mymojio_trip.LoadingHeatMap" | translate}}</span>
       <span dropdown="dropdown" ng-if="AllEvents" class="dropdown dropdown-list mr-lg">
          <span dropdown-toggle="dropdown-toggle">
@@ -187,7 +208,7 @@
                   </div>
                </td>
             </tr>
-            <tr ng-repeat="row in Trips | orderBy:SortBy.field:SortAsc" ng-click="selectTrip($event,row,false)" ng-class="{'selected-trip':row.selected}">
+            <tr ng-repeat="row in Trips | orderBy:SortBy.field:SortAsc" ng-show="TripWithTag(row,SelTag)" ng-click="selectTrip($event,row,false)" ng-class="{'selected-trip':row.selected}">
                <td>
                   <div class="row trip-row">
                      <div class="col-xs-1 text-center">
@@ -224,6 +245,14 @@
                               <em class="fa fa-globe"></em>&nbsp; {{ "mymojio_trip.ShowRoute" | translate}}</a>
                         </div>
                         <div trip-map="trip-map" ng-if="row.ShowMap" events="tripEvents(row)" style="height:200px"></div>
+                     </div>
+                     <div ng-if="row.hasEvents" class="col-xs-12">
+                        <span ng-repeat="tag in row.Tags" class="tagbox">
+                           <em class="fa fa-tag"></em>{{tag}}</span>
+                        <span class="tagbox">
+                           <a href="" editable-text="row.NewTag" buttons="no" onbeforesave="updateTag(row,$data)">
+                              <em class="fa fa-tag"></em>{{ row.NewTag || "+" }}</a>
+                        </span>
                      </div>
                   </div>
                </td>

@@ -17498,6 +17498,13 @@ table.fixheader tfoot td {
   -ms-user-select: none;
   user-select: none;
 }
+.tagbox {
+  background-color: #B0E0E6;
+  border-radius: 4px;
+  padding: 0px 1px 0px 1px;
+  margin-right: 3px;
+  color: #444444;
+}
 .inp-small {
   width: 75px;
   border: 0px;
