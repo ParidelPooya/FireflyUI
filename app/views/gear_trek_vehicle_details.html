@@ -36,7 +36,7 @@
    </div>
    <div ng-if="$parent.AllData.SelectedVehicle.Info.Transmissions.length!=0" class="row">
       <div class="col-xs-6 text-right">{{ "gear.gear_trek_vehicle_details.Transmission" | translate }}</div>
-      <div class="col-xs-6 text-left">{{$parent.AllData.SelectedVehicle.Info.Transmissions[0].Name}}</div>
+      <div class="col-xs-6 text-left">{{FindTransmissions($parent.AllData.SelectedVehicle.Info.Transmissions)}}</div>
    </div>
    <div class="row">
       <div class="col-xs-6 text-right">{{ "gear.gear_trek_vehicle_details.Recalls" | translate }}</div>

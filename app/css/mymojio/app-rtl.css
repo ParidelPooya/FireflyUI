@@ -5533,12 +5533,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 @media (min-width: 768px) {
   .navbar-left {
     float: right !important;
-    float: right;
   }
 
   .navbar-right {
     float: left !important;
-    float: left;
     margin-left: -15px;
   }
 
@@ -8146,51 +8144,6 @@ button.close {
 /* ========================================================================
    Component: bootstrap-reset.less
  ========================================================================== */
-
-.glyphicon {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.glyphicon.fa-pull-left {
-  margin-left: 0.3em;
-}
-
-.glyphicon.fa-pull-right {
-  margin-right: 0.3em;
-}
-
-.glyphicon.pull-left {
-  margin-left: 0.3em;
-}
-
-.glyphicon.pull-right {
-  margin-right: 0.3em;
-}
-
-.glyphicon.glyphicon-chevron-left:before {
-  content: "\f053";
-}
-
-.glyphicon.glyphicon-chevron-right:before {
-  content: "\f054";
-}
-
-.glyphicon.glyphicon-chevron-up:before {
-  content: "\f077";
-}
-
-.glyphicon.glyphicon-chevron-down:before {
-  content: "\f078";
-}
-
-.glyphicon.glyphicon-folder-open:before {
-  content: "\f07c";
-}
 
 [ng\:cloak],
 [ng-cloak],
