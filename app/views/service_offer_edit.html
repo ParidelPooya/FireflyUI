@@ -23,7 +23,7 @@
    <li><i class="fa-li fa fa-tag"></i>Tag:&nbsp;<a ng-click="AddTag(offer)">Add</a>
       <span ng-repeat="(i,t) in offer.tag track by $index"><i ng-click="DeleteTag(offer.tag,i)" class="fa fa-times"></i><a href="" editable-text="offer.tag[i]" buttons="no">{{ offer.tag[i] || 'Edit Tag' }}</a>,&nbsp;</span>
    </li>
-   <li><i class="fa-li fa fa-calendar"></i>Expires:&nbsp;<a href="" editable-text="offer.expires" buttons="no">{{offer.expires}}</a>
+   <li><i class="fa-li fa fa-calendar"></i>Expires:&nbsp;<a href="" editable-text="offer.expires" buttons="no">{{offer.expires || 'No Expire Data'}}</a>
    </li>
    <li><a are-you-sure="$parent.RemoveOffer(offer,parent)" class="text-danger"><i class="fa fa-li fa-minus-square"></i>Delete</a>
    </li>
