@@ -3,57 +3,80 @@
       <button ng-click="Create()" class="btn btn-default">Create</button>
    </div>
 </h3>
-<div class="row">
-   <div class="col-xs-2">
-      <table class="table table-striped">
-         <thead class="bb">
-            <tr>
-               <th>Service Template</th>
-            </tr>
-         </thead>
-         <tbody>
-            <tr ng-repeat="(pos,row) in Service" ng-click="selectServiceTemplate(row)">
-               <td ng-class="{'bg-gray':row.selected}">{{row.name}}</td>
-            </tr>
-         </tbody>
-      </table>
-   </div>
-   <div class="col-xs-10">
-      <table class="table table-striped">
-         <thead class="bb">
-            <tr>
-               <th><i ng-click="selectAllVehicles()" ng-class="{'fa-check-square-o':VehicleSelectAll,'fa-square-o':!VehicleSelectAll}" class="fa fa-square-o"></i>
-               </th>
-               <th>Vehicles</th>
-               <th>VIN</th>
-               <th>MIL</th>
-               <th>DTC</th>
-               <th>Locotion</th>
-               <th>Weather</th>
-               <th>Temp</th>
-               <th>Battery</th>
-            </tr>
-         </thead>
-         <tbody>
-            <tr ng-repeat="(pos,row) in Vehicle" ng-show="row.fireflyVehicleId">
-               <th><i ng-click="row.selected=!row.selected" ng-class="{'fa-check-square-o':row.selected,'fa-square-o':!row.selected}" class="fa"></i>
-               </th>
-               <td>{{row.Name}}</td>
-               <td>{{row.VIN}}</td>
-               <td>{{row.MilStatus}}</td>
-               <td>{{row.DiagnosticCodes.length}}</td>
-               <td>
-                  <lat-lng-to-address loc="row.Location" cache="true" accuracy="3"></lat-lng-to-address>
-               </td>
-               <td>
-                  <lat-lng-to-weather type="'weather'" loc="row.Location" cache="true" accuracy="3"></lat-lng-to-weather>
-               </td>
-               <td>
-                  <lat-lng-to-weather type="'temp'" loc="row.Location" cache="true" accuracy="3"></lat-lng-to-weather>
-               </td>
-               <td>{{row.Battery.Value}}</td>
-            </tr>
-         </tbody>
-      </table>
-   </div>
+<div class="well">
+   <json-formatter open="0" json="Vehicle"></json-formatter>
 </div>
+<div class="well">
+   <div ng-click="showHelp=!showHelp">
+      <em ng-class="{'fa-caret-right':showHelp==false,'fa-caret-down':showHelp==true}" class="fa"></em>Help</div>
+   <div ng-show="showHelp" class="well">
+      <div ng-click="copyText($event)">vehicle.VinDetails.Make==="Ford"</div>
+      <div ng-click="copyText($event)">vehicle.MilStatus===true</div>
+      <div ng-click="copyText($event)">vehicle.DiagnosticCodes.length>0</div>
+      <div ng-click="copyText($event)">vehicle.Odometer.Value>90000</div>
+      <div ng-click="copyText($event)">vehicle.Battery.Value
+         <12</div>
+            <div ng-click="copyText($event)">vehicle.Location.Address.CountryCode==="CA"</div>
+            <div ng-click="copyText($event)">vehicle.Location.Address.State=="Ontario"</div>
+            <div ng-click="copyText($event)">vehicle.Location.Lat>43 && vehicle.Location.Lat
+               <44 && vehicle.Location.Lng<-79 && vehicle.Location.Lng>-80</div>
+            <div ng-click="copyText($event)">vehicle.weather.weather[0].main==="Snow"</div>
+            <div ng-click="copyText($event)">vehicle.weather.main.temp
+               <270</div>
+            </div>
+            <input ng-model="criteria" class="form-control" />
+      </div>
+      <div class="row">
+         <div class="col-xs-2">
+            <table class="table table-striped">
+               <thead class="bb">
+                  <tr>
+                     <th>Service Template</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr ng-repeat="(pos,row) in Service" ng-click="selectServiceTemplate(row)">
+                     <td ng-class="{'bg-gray':row.selected}">{{row.name}}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <div class="col-xs-10">
+            <table class="table table-striped">
+               <thead class="bb">
+                  <tr>
+                     <th><i ng-click="selectAllVehicles()" ng-class="{'fa-check-square-o':VehicleSelectAll,'fa-square-o':!VehicleSelectAll}" class="fa fa-square-o"></i>
+                     </th>
+                     <th>Vehicles</th>
+                     <th>VIN</th>
+                     <th>MIL</th>
+                     <th>DTC</th>
+                     <th>Locotion</th>
+                     <th>Weather</th>
+                     <th>Temp</th>
+                     <th>Battery</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr ng-repeat="(pos,row) in Vehicle" ng-show="checkCriteria(row,criteria)">
+                     <th><i ng-click="row.selected=!row.selected" ng-class="{'fa-check-square-o':row.selected,'fa-square-o':!row.selected}" class="fa"></i>
+                     </th>
+                     <td>{{row.Name}}</td>
+                     <td>{{row.VIN}}</td>
+                     <td>{{row.MilStatus}}</td>
+                     <td>{{row.DiagnosticCodes.length}}</td>
+                     <td>
+                        <lat-lng-to-address loc="row.Location" cache="true" accuracy="3"></lat-lng-to-address>
+                     </td>
+                     <td>
+                        <lat-lng-to-weather type="'weather'" loc="row.Location" attach-result="row" cache="true" accuracy="3"></lat-lng-to-weather>
+                     </td>
+                     <td>
+                        <lat-lng-to-weather type="'temp'" loc="row.Location" cache="true" accuracy="3"></lat-lng-to-weather>
+                     </td>
+                     <td>{{row.Battery.Value}}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
